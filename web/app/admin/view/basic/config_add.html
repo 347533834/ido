@@ -1,0 +1,88 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit" ng-app="hd" ng-controller="ctrl">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{$title}</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">币种</label>
+            <div class="layui-input-4">
+                <select name="coin_id">
+                    <option value=""></option>
+                    {foreach name='cat' item='v'}
+                    <option value="{$v.coin_id}" {if condition="$v.coin_id eq $infos['coin_id']" } selected="selected"{/if}>{$v.name} </option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">键名</label>
+            <div class="layui-input-4">
+                <input type="text" name="name" ng-model="field.name" lay-verify="required" placeholder="{:lang('pleaseEnter')}键名" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">键值</label>
+            <div class="layui-input-4">
+                <input type="text" name="value" ng-model="field.value" lay-verify="required" placeholder="{:lang('pleaseEnter')}键值" class="layui-input">
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">
+            <label class="layui-form-label">分组</label>
+            <div class="layui-input-4">
+                <input type="text" name="inc_type" ng-model="field.inc_type" lay-verify="required" placeholder="{:lang('pleaseEnter')}分组" class="layui-input">
+            </div>
+        </div>-->
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-4">
+                <input type="text" name="desc" ng-model="field.desc" lay-verify="required" placeholder="{:lang('pleaseEnter')}描述" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+                <a href="{:url('config')}" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<script>
+    var m = angular.module('hd',[]);
+    m.controller('ctrl',['$scope',function($scope) {
+        $scope.field = '{$info}'!='null'?{$info}:{};
+        layui.use(['form', 'layer'], function () {
+            var form = layui.form, $ = layui.jquery;
+            form.on('submit(submit)', function (data) {
+                // 提交到方法 默认为本身
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                data.field.id = $scope.field.id;
+                $.post("", data.field, function (res) {
+                    layer.close(loading);
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+                            location.href = res.url;
+                        });
+                    } else {
+                        layer.msg(res.msg, {time: 1800, icon: 2});
+                    }
+                });
+            })
+        });
+    }]);
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'date'
+            ,range: false
+            ,theme: 'molv'
+        });
+    });
+</script>

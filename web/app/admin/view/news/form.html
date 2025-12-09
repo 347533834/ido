@@ -1,0 +1,182 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit" ng-app="hd" ng-controller="ctrl">
+  <fieldset class="layui-elem-field layui-field-title">
+    <legend>{$title}</legend>
+  </fieldset>
+  <form class="layui-form layui-form-pane">
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">标题</label>
+      <div class="layui-input-4">
+        <input type="text" name="title" ng-model="field.title" lay-verify="required" placeholder="请输入资讯标题"
+               class="layui-input">
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">来源</label>
+      <div class="layui-input-4">
+        <input type="text" name="source" ng-model="field.source" lay-verify="required" placeholder="请输入资讯来源"
+               class="layui-input">
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">{:lang('order')}</label>
+      <div class="layui-input-4">
+        <input type="text" name="sort" ng-model="field.sort" value="" placeholder="从小到大排序" class="layui-input">
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">置顶</label>
+      <div class="layui-input-block">
+        <input type="checkbox" name="top" ng-model="field.top" ng-checked="field.top==1" ng-value="1"
+               title="置顶">
+        <!--<input type="radio" name="status" ng-model="field.top" ng-checked="field.top==0" ng-value="0"-->
+               <!--title="普通">-->
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">审核</label>
+      <div class="layui-input-block">
+        <input type="checkbox" name="status" ng-model="field.status" ng-checked="field.status==1" ng-value="1"
+               title="通过">
+        <!--<input type="radio" name="status" ng-model="field.status" ng-checked="field.status==0" ng-value="0"-->
+               <!--title="待审">-->
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">图片</label>
+      <input type="hidden" name="image" value="{{field.image}}">
+      <div class="layui-input-block">
+        <div class="layui-upload">
+          <button type="button" class="layui-btn layui-btn-primary" id="bnBtn"><i class="icon icon-upload3"></i>点击上传
+          </button>
+          <div class="layui-upload-list">
+            <img class="layui-upload-img" id="bnPic">
+            <p id="demoText"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+      <label class="layui-form-label">内容</label>
+      <div class="layui-input-block">
+        <textarea id="demo" name="content" style="display: none;"></textarea>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-input-block">
+        <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+        <a href="{:url('news_list')}" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+      </div>
+    </div>
+  </form>
+</div>
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<!--<script src="__STATIC__/plugins/lrz/lrz.min.js"></script>-->
+<script>
+  var imgs = {};
+  var m = angular.module('hd', []);
+  m.controller('ctrl', ['$scope', function ($scope) {
+    $scope.field = '{$info}' != 'null' ? {$info} : {id: '', title: '', content: ''};
+
+    layui.use(['form', 'layer', 'layedit', 'upload'], function () {
+      var form = layui.form, $ = layui.jquery, layedit = layui.layedit, upload = layui.upload;
+      layedit.set({
+        uploadImage: {
+          url: '{:url("UpFiles/editor")}' // 接口url
+          , type: 'post' //默认post
+        }
+      });
+
+      layedit.build('demo');
+      $('#LAY_layedit_1').contents().find('body').html($scope.field.content);
+
+      if ($scope.field.image) {
+        $('#bnPic').attr('src', "{:config('url.oss')}" + $scope.field.image).attr('style', 'width:10rem;');
+      }
+
+      form.on('submit(submit)', function (data) {
+        // 提交到方法 默认为本身
+        var loading = layer.load(1, {shade: [0.1, '#fff']});
+        data.field.content = $('#LAY_layedit_1').contents().find('body').html();
+        data.field.id = $scope.field.id;
+        console.log(data);
+
+        $.post("", data.field, function (res) {
+          layer.close(loading);
+          if (res.code > 0) {
+            layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+              location.href = res.url;
+            });
+          } else {
+            layer.msg(res.msg, {time: 1800, icon: 2});
+          }
+        });
+      });
+
+      // 普通图片上传
+      var uploadInst = upload.render({
+        elem: '#bnBtn'
+        , url: '{:url("UpFiles/oss")}'
+        , before: function (obj) {
+          //预读本地文件示例，不支持ie8
+          obj.preview(function (index, file, result) {
+            $('#bnPic').attr('src', result); //图片链接（base64）
+          });
+        },
+        done: function (res) {
+          if (res.code > 0) {
+            $('#image').val(res.url);
+          } else {
+            //如果上传失败
+            return layer.msg('上传失败');
+          }
+        }
+        , error: function () {
+          // 演示失败状态，并实现重传
+          var demoText = $('#demoText');
+          demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+          demoText.find('.demo-reload').on('click', function () {
+            uploadInst.upload();
+          });
+        }
+      });
+      // $('#field').click(function(){
+      //     $('#image').click();
+      // });
+      // $('#image').change(function () {
+      //     var _this = $(this);
+      //     var obj = $(this)[0].files[0];
+      //     var exts = obj.name.split('.');
+      //     var ext = exts[exts.length - 1];
+      //     if (['jpg', 'gif', 'png', 'jpeg'].indexOf(ext.toLowerCase()) == -1) {
+      //         window.toast(ext.toLowerCase() + '图片格式错误！');
+      //         return;
+      //     }
+      //
+      //     // lrz(obj, {
+      //     //     width: 500
+      //     // }).then(function (rst) {
+      //     //     console.log(rst.base64.length);
+      //     //     $('#img').attr('src', rst.base64).attr('style','width:10rem;');
+      //     //     imgs[_this.attr('name')] = rst.base64;
+      //     // });
+      //     // var FR= new FileReader();
+      //     // FR.readAsDataURL(obj);
+      //     // FR.onload = function(e){
+      //     //     _this.parent().find('img').attr('src', this.result).attr('style','width:10rem;');
+      //     //     imgs[_this.attr('name')] =this.result;
+      //     // };
+      // });
+    });
+  }]);
+
+</script>
+
+</script>

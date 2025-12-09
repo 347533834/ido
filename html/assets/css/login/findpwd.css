@@ -1,0 +1,45 @@
+.findpwd{
+    padding-top: 4rem;
+}
+.findpwd > .logo {
+    text-align: center;
+}
+
+.findpwd > .logo > img {
+    width: 3.1rem;
+    height: 3.5rem;
+}
+.findpwd >article div {
+    font-size: .8rem;
+    /*height: 3.3rem;*/
+    /*line-height: 3.3rem;*/
+    border-bottom: 1px solid #f1f1f1;
+    /*padding-top: .5rem;*/
+    padding:.5rem;
+}
+.findpwd >article{
+    padding: 2rem 1.5rem 0 1.5rem;
+    font-size: .78rem;
+}
+.findpwd >article >div>span{
+    width: 4.5rem;
+    display: inline-block;
+}
+.findpwd >article >div>input {
+    color: #333333;
+    width: 65%;
+    height: 1rem;
+    line-height: 1rem;
+    margin-left: .2rem;
+    font-size: .75rem;
+    padding: 1rem 0 1rem 0;
+}
+.findpwd>article>.verification>input{
+    width: 35% !important;
+}
+.findpwd>article>.verification>span:nth-of-type(2){
+    color: #6391DE;
+}
+.findpwd >article >button{
+    margin-top: 2rem;
+}

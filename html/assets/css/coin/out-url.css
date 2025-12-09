@@ -1,0 +1,29 @@
+.out-url {
+    padding: 2.4rem 0 0;
+    background: white;
+}
+
+.out-url > div {
+    position: relative;
+    /*width: 100%;*/
+    /*overflow-y: auto;*/
+    /*-webkit-overflow-scrolling: touch !important;*/
+    /*height: 100%;*/
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    height: 100%;
+}
+
+.out-url > div > iframe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 1px;
+    min-width: 100%;
+    *width: 100%;
+    *height: 100%;
+}

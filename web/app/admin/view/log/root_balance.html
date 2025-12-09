@@ -1,0 +1,39 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>根账户余额</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <a href="{:url('root_balance')}" class="layui-btn">刷新</a>
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+{include file="common/foot"/}
+<script>
+    layui.use('table', function () {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("root_balance")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {field: 'usdt_balance', title: 'USDT', align: 'center', sort: true},
+                // {field: 'btc_balance', title: 'BTC', align: 'center', sort: true},
+                // {field: 'eth_balance', title: 'ETH', align: 'center', sort: true},
+                // {field: 'ltc_balance', title: 'LTC', align: 'center', sort: true},
+                // {field: 'eos_balance', title: 'EOS', align: 'center', sort: true},
+                // {field: 'xrp_balance', title: 'XRP', align: 'center', sort: true},
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+    });
+
+</script>
+</body>
+</html>

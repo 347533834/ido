@@ -1,0 +1,21 @@
+@charset "UTF-8";
+.notice-details{
+    padding: 3.3rem .8rem .8rem;
+    background-color: white;
+}
+.notice-details h2{
+    line-height: 1.4rem;
+    font-size: .78rem;
+}
+.notice-details .time{
+    text-align: center;
+    margin: .6rem 0;
+    color: #cccccc;
+}
+.notice-details img{
+    width: 100%;
+}
+.notice-details section{
+    margin-top: .8rem;
+    font-size: .75rem;
+}

@@ -1,0 +1,151 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit" ng-app="hd" ng-controller="ctrl">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{$title}</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 200px">选择分区通证</label>
+            <div class="layui-input-4">
+                <select name="coin">
+                    <option value=""></option>
+                    {foreach name='cat' item='v'}
+                    <option value="{$v.coin_id},{$v.name}" name="main_coin_name" {if condition="$v.coin_id eq $infos['main_coin_id']" } selected="selected"{/if}>{$v.name} </option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+<!--        <div class="layui-form-item">
+            <label class="layui-form-label">分区通证名</label>
+            <div class="layui-input-4">
+                <select name="main_coin_name">
+                    <option value=""></option>
+                    {foreach name='cat' item='v'}
+                    <option value="{$v.name}" {if condition="$v.main_coin_name neq $infos['type']" } selected="selected"{/if}>{$v.name} </option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">兑换通证id</label>
+            <div class="layui-input-4">
+                <select name="exch_coin_id">
+                    <option value=""></option>
+                    {foreach name='cat' item='v'}
+                    <option value="{$v.coin_id}" {if condition="$v.main_coin_id neq $infos['type']" } selected="selected"{/if}>{$v.coin_id} </option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 200px">选择兑换通证</label>
+            <div class="layui-input-4">
+                <select name="coin1">
+                    <option value=""></option>
+                    {foreach name='cat' item='v'}
+                    <option value="{$v.coin_id},{$v.name}" {if condition="$v.coin_id eq $infos['exch_coin_id']" } selected="selected"{/if}>{$v.name} </option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 200px">价格</label>
+            <div class="layui-input-4">
+                <input type="text" name="price" ng-model="field.price" lay-verify="" placeholder="{:lang('pleaseEnter')}价格" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 200px">挂单手续费</label>
+            <div class="layui-input-4">
+                <input type="text" name="maker_fee" ng-model="field.maker_fee" lay-verify="" placeholder="{:lang('pleaseEnter')}挂单手续费" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 200px">吃单手续费</label>
+            <div class="layui-input-4">
+                <input type="text" name="taker_fee" ng-model="field.taker_fee" lay-verify="" placeholder="{:lang('pleaseEnter')}吃单手续费" class="layui-input">
+            </div>
+        </div>
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label" style="width: 200px">最小买入手续费</label>-->
+            <!--<div class="layui-input-4">-->
+                <!--<input type="text" name="buy_fee_min" ng-model="field.buy_fee_min" lay-verify="" placeholder="{:lang('pleaseEnter')}最小买入手续费" class="layui-input">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label" style="width: 200px">最小卖出手续费</label>-->
+            <!--<div class="layui-input-4">-->
+                <!--<input type="text" name="sell_fee_min" ng-model="field.sell_fee_min" lay-verify="" placeholder="{:lang('pleaseEnter')}最小卖出手续费" class="layui-input">-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 200px">最小交易数量</label>
+            <div class="layui-input-4">
+                <input type="text" name="num_min" ng-model="field.num_min" lay-verify="" placeholder="{:lang('pleaseEnter')}最小交易数量" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 200px">备注</label>
+            <div class="layui-input-4">
+                <input type="text" name="remark" ng-model="field.remark" lay-verify="" placeholder="{:lang('pleaseEnter')}备注" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 200px">涨跌幅</label>
+            <div class="layui-input-4">
+                <input type="text" name="change" ng-model="field.change" lay-verify="" placeholder="{:lang('pleaseEnter')}涨跌幅" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 200px">排序</label>
+            <div class="layui-input-4">
+                <input type="text" name="sort" ng-model="field.sort" lay-verify="" placeholder="{:lang('pleaseEnter')}排序" class="layui-input">
+            </div>
+        </div>
+        <!--        <div class="layui-form-item">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-4">
+                        <input type="text" name="status" ng-model="field.status" lay-verify="" placeholder="{:lang('pleaseEnter')}状态" class="layui-input">
+                    </div>
+                </div>-->
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+                <a href="{:url('coin_trade')}" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+            </div>
+        </div>
+
+</div>
+
+</form>
+</div>
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<script>
+    var m = angular.module('hd',[]);
+    m.controller('ctrl',['$scope',function($scope) {
+        $scope.field = '{$info}'!='null'?{$info}:{status:1,coin:''};
+        layui.use(['form', 'layer'], function () {
+            var form = layui.form, $ = layui.jquery;
+            form.on('submit(submit)', function (data) {
+                // 提交到方法 默认为本身
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                data.field.id = $scope.field.id;
+                $.post("", data.field, function (res) {
+                    layer.close(loading);
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+                            location.href = res.url;
+                        });
+                    } else {
+                        layer.msg(res.msg, {time: 1800, icon: 2});
+                    }
+                });
+            })
+        });
+    }]);
+</script>

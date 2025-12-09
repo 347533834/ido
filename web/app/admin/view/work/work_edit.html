@@ -1,0 +1,123 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit" ng-app="hd" ng-controller="ctrl">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{$title}</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 120px">主题</label>
+            <div class="layui-input-4">
+                <label class="layui-form-label" style="width: 1000px">{$infos['title']}</label>
+            </div>
+        </div>
+
+         <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 120px">图片</label>
+        <div class="layui-upload-list">
+            &nbsp;&nbsp;&nbsp;<img layer-pid="" layer-src="" src="{$infos.img}" id="img"  style=" width: 45rem" />
+        </div>
+    </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 120px">描述</label>
+            <div class="layui-input-4">
+                <label class="layui-form-label" style="width: 1000px">{$infos['content']}</label>
+            </div>
+
+        </div>
+
+        <div class="layui-form-item">
+        <!--<label class="layui-form-label" style="width: 120px">回复记录</label>-->
+  <!--      <div class="layui-input-4">
+            <div class="layui-form-div" style="width: 1000px">
+                {foreach($info_two as $k=>$v )}
+
+                <pre>
+                        {$v['name']}：   {$v['content']}
+                        {$v.addtime|date="Y-m-d H:i:s",###}
+                        <hr>
+                    </pre>
+
+                {/foreach}
+            </div>
+        </div>-->
+            {foreach($info_two as $k=>$v )}
+            <div class="layui-card">
+                <div class="layui-card-header"> {$v['name']}: {$v['content']}</div>
+                <div class="layui-card-body">
+                    {$v.addtime|date="Y-m-d H:i:s",###}
+                </div>
+            </div>
+            {/foreach}
+    </div>
+
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">回复</label>
+            <div class="layui-input-block">
+                <textarea id="demo" name="content"  style="display: none;"></textarea>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+                <a href="{:url('work')}" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<script>
+    var m = angular.module('hd',[]);
+    m.controller('ctrl',['$scope',function($scope) {
+        $scope.field = '{$info}'!='null'?{$info}:{};
+        layui.use(['form', 'layer', 'layedit'], function () {
+            var form = layui.form, $ = layui.jquery, layedit = layui.layedit;
+            layedit.set({
+                uploadImage: {
+                    url: '{:url("Work/uploads")}' //接口url
+                    , type: 'post' //默认post
+                }
+            });
+            layedit.build('demo');
+            //$('#LAY_layedit_1').contents().find('body').html($scope.field.content);
+
+            form.on('submit(submit)', function (data) {
+                // 提交到方法 默认为本身
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                data.field.content = $('#LAY_layedit_1').contents().find('body').html();
+                data.field.work_id = $scope.field.work_id;
+                $.post("", data.field, function (res) {
+                    layer.close(loading);
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+                            location.href = res.url;
+                        });
+                    } else {
+                        layer.msg(res.msg, {time: 1800, icon: 2});
+                    }
+                });
+            });
+/*            if($scope.field.img){
+                $('#img').attr('src',$scope.field.img).attr('style','width:10rem;');
+            }*/
+
+        });
+    }]);
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'date'
+            ,range: false
+            ,theme: 'molv'
+        });
+    });
+</script>

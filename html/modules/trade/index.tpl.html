@@ -1,0 +1,248 @@
+<main class="content transaction" style="margin-top:2.8rem;">
+    <ul class="transaction-inline">
+        <li id="buy_form">买入</li>
+        <li id="sell_form">卖出</li>
+        <li id="open_orders">当前委托</li>
+        <li id="order_history">历史委托</li>
+    </ul>
+    <div class="purchase title-1 clearfix" id="trade_tab">
+        <div class="purchase-left">
+            <ul class="purchasep-upper">
+                <li>
+                    <p>
+                        <input type="text" placeholder="委托价格" value="0.0000" id="price"
+                               onkeyup="if(isNaN(value))execCommand('undo')"
+                               onafterpaste="if(isNaN(value))execCommand('undo')">
+                        <span class="main_coin_name"></span>
+                    </p>
+                    <p>
+                        估值￥<span id="price_cny"></span>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <input type="text" placeholder="委托数量" id="num" onkeyup="if(isNaN(value))execCommand('undo')"
+                               onafterpaste="if(isNaN(value))execCommand('undo')">
+                        <span class="exch_coin_name"></span>
+                    </p>
+                    <p id="change_rate"><span data-rate="0.25">25%</span><span data-rate="0.5">50%</span><span data-rate="0.75">75%</span><span data-rate="1">100%</span></p>
+                </li>
+                <li>
+                    <p>
+                        <input type="text" placeholder="交易额" id="total" readonly>
+                        <span class="main_coin_name"></span>
+                    </p>
+                </li>
+            </ul>
+            <button><a href="#login" style="color: white">登录</a>/<a href="#register" style="color: white">注册</a>
+            </button>
+            <ul class="purchasep-lower">
+                <li>
+                    <p>
+                        <input type="text" placeholder="" class="main_coin_balance" readonly style="width: 99%">
+                    </p>
+
+                </li>
+                <li>
+                    <p>
+                        <input type="text" placeholder="" class="exch_coin_balance" readonly style="width: 99%">
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="purchase-right">
+            <ul class="sell-upper">
+                <li class="change_price sell6">
+                    <span class="sell-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price sell5">
+                    <span class="sell-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price sell4">
+                    <span class="sell-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price sell3">
+                    <span class="sell-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price sell2">
+                    <span class="sell-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price sell1">
+                    <span class="sell-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price sell0">
+                    <span class="sell-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+            </ul>
+            <div class="number">
+                <p><span id="last_price"></span></p>
+                <p><span id="last_price_cny"></span></p>
+            </div>
+            <ul class="sell-lower">
+                <li class="change_price buy0">
+                    <span class="purchase-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price buy1">
+                    <span class="purchase-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price buy2">
+                    <span class="purchase-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price buy3">
+                    <span class="purchase-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price buy4">
+                    <span class="purchase-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price buy5">
+                    <span class="purchase-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+                <li class="change_price buy6">
+                    <span class="purchase-color"></span>
+                    <span></span>
+                    <span></span>
+                </li>
+            </ul>
+            <!--<div class="depth">
+                <span>报价深度</span>
+            </div>-->
+        </div>
+        <div id="container_deep"></div>
+    </div>
+
+    <div class="current-entrustment title-1" id="open_orders_tab" style="display: none">
+        <dl>
+
+        </dl>
+        <div class="no_data none">
+            <img src="assets/img/user/wujilu.png">
+        </div>
+        <div class="more" style="display: none">查看更多</div>
+    </div>
+
+    <div class="current-entrustment history-entrustment title-1" id="order_history_tab" style="display: none">
+        <dl>
+
+        </dl>
+        <div class="no_data none">
+            <img src="assets/img/user/wujilu.png">
+        </div>
+        <div class="more" style="display: none">查看更多</div>
+    </div>
+    <!--筛选 层-->
+    <div class="screen-dialog none">
+        <div class="screen-content">
+            <div class="content-nav">
+
+            </div>
+            <ul class="home-inline">
+
+            </ul>
+            <ul class="home-eth title-2" style="display: block">
+
+            </ul>
+        </div>
+    </div>
+
+    <!--弹窗-->
+    <article class="box-mask box-coin none">
+        <div>
+            <ul>
+                <!-- <li>
+                     <p><img src="assets/img/coin/eth.png"></p>
+                     <p>ETH/USDT</p>
+                 </li>
+                 <li>
+                     <p><img src="assets/img/coin/eth.png"></p>
+                     <p>ETH/USDT</p>
+                 </li>
+                 <li>
+                     <p><img src="assets/img/coin/eth.png"></p>
+                     <p>ETH/USDT</p>
+                 </li>-->
+                <!--<li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>-->
+            </ul>
+            <!--<p>
+                <img src="assets/img/coin/right.png">
+                <img src="assets/img/coin/left.png">
+            </p>-->
+        </div>
+    </article>
+</main>

@@ -1,0 +1,99 @@
+.certification{
+    padding-top: 2.75rem;
+    font-size: .75rem;
+}
+.certification>.name>p{
+    background-color: white;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    padding: .7rem .8rem 0 .8rem;
+    border-bottom: 1px solid #EFEFEF;
+}
+.certification>.name>p>span{
+    font-weight: bold;
+}
+.certification>.name>p>input{
+    width: 75%;
+    height: 2.2rem;
+    font-size: .75rem;
+    margin-left: 1rem;
+}
+.certification>.photo{
+    padding: 0 .8rem 1rem .8rem;
+    border-top: 6px solid #F5F5F5;
+    background-color: white;
+}
+.certification>.photo>p{
+    line-height: 3rem;
+}
+.certification>.photo>p>span:nth-of-type(1){
+    float: left;
+    font-weight: bold;
+    font-size: .75rem;
+}
+.certification>.photo>p>span:nth-of-type(2){
+    float: right;
+    font-size: .7rem;
+}
+.certification>.photo>div>div{
+    width: 47%;
+    display: inline-block;
+    position: relative;
+}
+.certification>.photo>div>div:nth-of-type(1),
+.certification>.photo>div>div:nth-of-type(3){
+    margin-right: .8rem;
+}
+.certification>.photo>div>div img{
+    width: 8.8rem;
+    height: 5.5rem;
+}
+.certification>.photo>div>div>p:nth-of-type(2){
+    text-align: center;
+    font-size: .64rem;
+    color: #759DE2;
+    padding: .3rem 0 .5rem 0;
+}
+.certification>.photo>div>div>i{
+    position: absolute;
+    z-index: 99;
+    top: 57%;
+    left: 16%;
+    font-size: .64rem;
+}
+
+.certification>.photo>div>button{
+    margin-top: 1.3rem;
+}
+.certification>.photo>div>p{
+    text-align: center;
+    padding-top: .7rem;
+    color: #A8A8A8;
+    font-size: .7rem;
+}
+
+.real-name{
+    text-align: center;
+}
+.real-name>div:nth-of-type(1){
+    margin-top: 2.2rem;
+}
+.real-name>div:nth-of-type(n+2){
+    margin-top: .5rem;
+}
+.real-name>div>img{
+    width: 15rem;
+    height: 9rem;
+}
+.real-name>button{
+    width: 6.5rem;
+    height: 2.2rem;
+    line-height: 2.2rem;
+    text-align: center;
+    color: white;
+    border: 1.5px solid white;
+    border-radius: 3px;
+    background-color: transparent;
+    font-size: .8rem;
+    margin-top: 1rem;
+}

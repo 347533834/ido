@@ -1,0 +1,156 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>交易记录</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-label">通证名称：</label>
+                <select name="coin_id" id="select_status2" class="layui-select coin">
+                    <option value="">全部</option>
+                    {foreach name='cat' item='v'}
+                    <option value="{$v.coin_id}" name="main_coin_name">{$v.name}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('log_market')}" class="layui-btn">显示全部</a>
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<script type="text/html" id="pay_img">
+    {{# if(d.pay_img != ''){ }}
+
+    <img class="layui-btn" style="padding: 0" src="{:config('OSS_GLOBAL')['oss_url']}/{{d.pay_img}}?{{d.addtime}}" onclick="parent.layer.alert('<img src={:config(\'OSS_GLOBAL\')[\'oss_url\']}/{{d.pay_img}}?{{d.addtime}}>',{offset: '-10px', area: '550px'});">
+    {{# } }}
+
+</script>
+
+<script type="text/html" id="action">
+    {{# if(d.status==2 || d.status==12 ){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="pass">交易通过</a>
+    <a class="layui-btn layui-btn layui-btn-xs" lay-event="repeal2">交易撤销</a>
+    {{# }else if(d.status==1 || d.status==11){  }}
+    <a class="layui-btn layui-btn layui-btn-xs" lay-event="repeal1">交易撤销</a>
+    {{# } }}
+</script>
+<script type="text/html" id="type">
+    {{# if(d.type==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn" lay-event="">挂买</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="">挂卖</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="status">
+    {{# if(d.status==1){ }}
+    <a class="" lay-event="">已成交</a>
+    {{# }else{  }}
+    <a class="" lay-event="">已撤销</a>
+    {{# } }}
+</script>
+
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("log_market")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'log_market_id', title: '{:lang("id")}',align: 'center',fixed: true, sort: true},
+                {field: 'market_id', title: '交易ID',align: 'center',sort: true},
+                {field: 'type', title: '交易类型', align: 'center',sort: true,toolbar: '#type'},
+                {field: 'name', title: '通证名', align: 'center',sort: true},
+                //{field: 'buyer_id', title: '买家ID',align: 'center',sort: true},
+                //{field: 'buyer_username', title: '买家名称',align: 'center',sort: true},
+                {field: 'buyer_mobile', title: '买家手机', align: 'center'},
+                {field: 'buyer_id_name', title: '买家姓名', align: 'center'},
+                //{field: 'seller_id', title: '卖家ID',align: 'center',sort: true},
+                //{field: 'seller_username', title: '卖家名称',align: 'center',sort: true},
+                {field: 'seller_mobile', title: '卖家手机', align: 'center'},
+                {field: 'seller_id_name', title: '卖家姓名', align: 'center'},
+                {field: 'price', title: '价格(USDT)',align: 'center',sort: true},
+                {field: 'num', title: '数量',align: 'center',sort: true},
+                {field: 'total', title: '总额',align: 'center',sort: true},
+                //{field: 'status', title: '状态',align: 'center',sort: true,toolbar: '#status'},
+                //{field: 'remark', title: '备注',align: 'center',sort: true},
+                {field: 'addtime', title: '添加时间',align: 'center',sort: true},
+            ]],
+            limit: 10, //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var  date = $('#test').val();
+            var coin_id = $('#select_status2').val();
+            tableIn.reload({
+                where: {key: key,date:date,coin_id:coin_id}
+            });
+        });
+
+
+    table.on('tool(list)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'pass'){
+            layer.confirm('确定交易通过吗？', function(index){
+                $.post("{:url('pass')}",{id:data.log_market_id,type:data.type},function(res){
+                    if(res.code==1){
+                        layer.msg(res.msg,{time:1000,icon:1});
+
+                    }else{
+                        layer.msg(res.msg,{time:1000,icon:2});
+                    }
+                });
+                location.reload();
+            });
+        }else if(obj.event === 'repeal1'){
+            layer.confirm('确定交易撤销吗？', function(index){
+                $.post("{:url('repeal1')}",{id:data.log_market_id,type:data.type},function(res){
+                    if(res.code==1){
+                        layer.msg(res.msg,{time:1000,icon:1});
+
+                    }else{
+                        layer.msg(res.msg,{time:1000,icon:2});
+                    }
+                });
+                location.reload();
+            });
+        }else if(obj.event === 'repeal2') {
+            layer.confirm('确定交易撤销吗？', function (index) {
+                $.post("{:url('repeal2')}", {id: data.log_market_id, type: data.type}, function (res) {
+                    if (res.code == 1) {
+                        layer.msg(res.msg, {time: 1000, icon: 1});
+
+                    } else {
+                        layer.msg(res.msg, {time: 1000, icon: 2});
+                    }
+                });
+                location.reload();
+            });
+        };
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+    });
+
+</script>
+</body>
+</html>

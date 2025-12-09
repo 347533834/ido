@@ -1,0 +1,60 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>提现审核日志</legend>
+    </fieldset>
+    <div class="demoTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+        </div>
+        <label class="layui-label">时间：</label>
+        <div class="layui-inline">
+            <input type="text" class="layui-input" name="date" id="test">
+        </div>
+        <button class="layui-btn" id="search" data-type="reload">搜索</button>
+        <a href="{:url('log_cash')}" class="layui-btn">显示全部</a>
+    </div>
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'user_cash_id',
+            elem: '#list',
+            url: '{:url("log_cash")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {field:'user_cash_id', title: '审核申请记录', align: 'center', fixed: true},
+                {field:'number', title: '会员ID', align: 'center'},
+                {field:'username', title: '会员名', align: 'center'},
+                {field:'admin_name', title: '审核人', align: 'center'},
+                {field:'audit_time', title: '审核时间', align: 'center'},
+                {field:'remark', title: '备注', align: 'center'},
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var date = $('#test').val();
+            tableIn.reload({
+                where: {key: key,date:date}
+            });
+        });
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            , type: 'datetime'
+            , range: true
+            , theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

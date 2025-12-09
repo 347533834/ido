@@ -1,0 +1,271 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+  <fieldset class="layui-elem-field layui-field-title">
+    <legend>钱包{:lang('list')}</legend>
+  </fieldset>
+  <blockquote class="layui-elem-quote">
+    <div class="demoTable">
+      <div class="layui-inline">
+        <input class="layui-input" name="entry_id" placeholder="{:lang('pleaseEnter')}交易单号">
+      </div>
+      <div class="layui-inline">
+        <input class="layui-input" name="block_num" placeholder="{:lang('pleaseEnter')}交易被确认的区块">
+      </div>
+      <div class="layui-inline">
+        <input class="layui-input" name="contract_id" placeholder="{:lang('pleaseEnter')}合约地址">
+      </div>
+      <div class="layui-inline">
+        <input class="layui-input" name="amount_asset" placeholder="{:lang('pleaseEnter')}转账资产id">
+      </div>
+      <div class="layui-inline">
+        <input class="layui-input" name="to_chain_addr" placeholder="{:lang('pleaseEnter')}接受主链地址">
+      </div>
+      <!--<label class="layui-label">时间：</label>-->
+      <!--<div class="layui-inline">-->
+      <!--<input type="text" class="layui-input" name="date" id="test">-->
+      <!--</div>-->
+      <button class="layui-btn" id="search" data-type="reload">搜索</button>
+      <a href="{:url('achain_out')}" class="layui-btn">显示全部</a>
+      <button type="button" class="layui-btn layui-btn-danger" id="delAll">批量审核</button>
+    </div>
+  </blockquote>
+
+  <table class="layui-table" id="list" lay-filter="list"></table>
+  <form class="layui-form layui-form-pane ng-pristine ng-valid" id="from_audit"
+        style="width: 400px;height: 250px;background-color: white;padding: 20px;border: 1px solid;position: absolute;display: none">
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">审核结果</label>
+        <div class="layui-input-block">
+          <input type="radio" name="approval" title="审核通过" class="ng-pristine ng-untouched ng-valid ng-not-empty"
+                 value="1">
+          <input type="radio" name="approval" title="审核不通过" class="ng-pristine ng-untouched ng-valid ng-not-empty"
+                 value="-1">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+      <label class="layui-form-label">内容</label>
+      <div class="layui-input-block">
+        <textarea placeholder="请输广告内容" name="approval_txt"
+                  class="layui-textarea ng-pristine ng-valid ng-empty ng-touched"></textarea>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-input-block">
+        <button type="button" class="layui-btn">{:lang('submit')}</button>
+        <a class="layui-btn layui-btn-primary">{:lang('back')}</a>
+      </div>
+    </div>
+  </form>
+</div>
+<script type="text/html" id="approval">
+  {{# if(d.approval==1){ }}
+  <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="approval">不审批标识</a>
+  {{# }else if(d.approval==0){  }}
+  <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="approval">审批中</a>
+  {{# }else if(d.approval==2){ }}
+  <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="approval">人工审核通过</a>
+  {{# }else{ }}
+  <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="approval">审批失败</a>
+  {{# } }}
+</script>
+
+<script type="text/html" id="status">
+  {{# if(d.status==1){ }}
+  <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">入账</a>
+  {{# }else{  }}
+  <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="status">待入账</a>
+  {{# } }}
+</script>
+
+<script type="text/html" id="status_fee">
+  {{# if(d.status_fee==1){ }}
+  <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status_fee">入账</a>
+  {{# }else{  }}
+  <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="status_fee">待入账</a>
+  {{# } }}
+</script>
+
+<script type="text/html" id="status_asset">
+  {{# if(d.status_asset==1){ }}
+  <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status_asset">入账</a>
+  {{# }else{  }}
+  <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="status_asset">待入账</a>
+  {{# } }}
+</script>
+
+<script type="text/html" id="is_completed">
+  {{# if(d.is_completed==1){ }}
+  <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="is_completed">完成</a>
+  {{# }else{  }}
+  <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="is_completed">未完成</a>
+  {{# } }}
+</script>
+
+<script type="text/html" id="action">
+  {{# if(d.approval==0){ }}
+  <a class="layui-btn layui-btn-xs" lay-event="action">审核</a>
+  {{# } }}
+  <!--<a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>-->
+</script>
+
+{include file="common/foot"/}
+<script>
+  layui.use('table', function () {
+    var table = layui.table, $ = layui.jquery;
+    var tableIn = table.render({
+      id: 'id',
+      elem: '#list',
+      url: '{:url("achain_out")}',
+      method: 'post',
+      page: true,
+      cols: [[
+        {checkbox: true, fixed: true},
+        {width: 80, align: 'center', toolbar: '#action', fixed: true},
+        {field: 'id', title: '{:lang("id")}', width: 80, fixed: true, sort: true},
+        {field: 'entry_id', title: '交易单号', width: 350, sort: true},
+//                {field: 'trx_id', title: '交易单号', width: 350,sort: true},
+//                {field: 'trx_type', title: '交易类型', width: 100,sort: true,toolbar: '#trx_type'},
+//                {field: 'trx_time', title: '交易创建时间', width: 180,sort: true},
+        {field: 'block_num', title: '交易被确认的区块', width: 120, sort: true},
+        {field: 'contract_id', title: '合约地址', width: 320, sort: true},
+//                {field: 'call_abi', title: '', width: 80, sort: true},
+//                {field: 'event_param', title: '', width: 320,sort: true},
+//                {field: 'event_type', title: '', width: 150,sort: true},
+        {field: 'from_chain_addr', title: '主链转出地址', width: 300, sort: true},
+        {field: 'from_asset_addr', title: '资产转出地址', width: 120, sort: true},
+        {field: 'to_asset_addr', title: '接收资产地址', width: 300, sort: true},
+        {field: 'to_chain_addr', title: '接收主链地址', width: 300, sort: true},
+//                {field: 'to_chain_fee_addr', title: '转出地址', width: 350,sort: true},
+        {field: 'amount_asset', title: '转账资产id', width: 150, sort: true},
+        {
+          field: 'amount', title: '转账数量', width: 150, sort: true, templet: function (d) {
+            return d.amount / Math.pow(10, 8);
+          }
+        },
+        {field: 'fee_asset_name', title: '手续费资产', width: 150, sort: true},
+        {
+          field: 'fee_asset', title: '手续费数量', width: 150, sort: true, templet: function (d) {
+            return d.fee_asset / Math.pow(10, 8);
+          }
+        },
+        {
+          field: 'fee', title: '主链矿工费用(SERC)', width: 150, sort: true, templet: function (d) {
+            return d.fee / Math.pow(10, 8);
+          }
+        },
+//                {field: 'header', title: '', width: 80,sort: true},
+//                {field: 'transaction', title: '', width: 80,sort: true},
+//                {field: 'fee_transaction', title: '', width: 80,sort: true},
+        {field: 'is_completed', title: '交易是否完成', width: 150, sort: true, toolbar: '#is_completed'},
+        {field: 'remark', title: '备注', width: 150, sort: true},
+        {field: 'approval', title: '审核状态', width: 120, sort: true, toolbar: '#approval'},
+        {field: 'approval_txt', title: '审核失败原因', width: 150, sort: true},
+        {field: 'status', title: '主链资产转帐状态', width: 150, sort: true, toolbar: '#status'},
+        {field: 'status_fee', title: '手续费资产转账状态', width: 150, sort: true, toolbar: '#status_fee'},
+        {field: 'status_asset', title: '跨转资产状态', width: 150, sort: true, toolbar: '#status_asset'},
+      ]],
+      limit: 10 //每页默认显示的数量
+    });
+    //搜索
+    $('#search').on('click', function () {
+      var entry_id = $('input[name="entry_id"]').val();
+      var block_num = $('input[name="block_num"]').val();
+      var contract_id = $('input[name="contract_id"]').val();
+      var amount_asset = $('input[name="amount_asset"]').val();
+      var to_chain_addr = $('input[name="to_chain_addr"]').val();
+      var date = $('#test').val();
+      tableIn.reload({
+        where: {
+          entry_id: entry_id,
+          block_num: block_num,
+          contract_id: contract_id,
+          amount_asset: amount_asset,
+          to_chain_addr: to_chain_addr,
+          date: date
+        }
+      });
+    });
+    $('#from_audit .layui-input-block a').click(function () {
+      $('#from_audit').hide();
+    });
+    table.on('tool(list)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'action') {
+        var width = $(window).width();
+        var height = $(window).height();
+        $('#from_audit').css('top', (height) / 2 - 250 + 'px').css('right', (width - 400) / 2 + 'px');
+        $('#from_audit textarea').val('');
+        $('#from_audit .layui-form-radio')[0].click();
+        $('#from_audit').show();
+        $('#from_audit button').unbind().click(function () {
+          var approval = $('#from_audit input[name="approval"]:checked').val();
+          var approval_txt = $('#from_audit textarea').val();
+
+          console.log();
+          if (approval == undefined) {
+            layer.msg('请选择审核结果！')
+            return;
+          }
+          if (approval == -1 && approval_txt == '') {
+            layer.msg('请选输入拒绝原因！')
+            return;
+          }
+          var loading = layer.load(1, {shade: [0.1, '#fff']});
+          $.post('{:url("achain_audit")}', {
+            'id': data.id,
+            approval: approval,
+            approval_txt: approval_txt
+          }, function (res) {
+            $('#layui-layer1').hide();
+            layer.close(loading);
+            if (res.code === 1) {
+              layer.msg(res.msg, {time: 1000, icon: 1});
+              if (approval == 1) {
+                obj.tr.find('td:eq(17) a').html('人工审核通过');
+              } else {
+                obj.tr.find('td:eq(17) a').html('不审批标识');
+              }
+              obj.tr.find('td:eq(1)').html('');
+            } else {
+              layer.msg(res.msg, {time: 1000, icon: 2});
+            }
+            $('#from_audit').hide();
+          })
+        });
+      }
+    });
+    $('#delAll').click(function () {
+      layer.confirm('确认要审核通过选中信息吗？', {icon: 3}, function (index) {
+        var checkStatus = table.checkStatus('id'); //test即为参数id设定的值
+        var ids = [];
+        $(checkStatus.data).each(function (i, o) {
+          ids.push(o.id);
+        });
+        var loading = layer.load(1, {shade: [0.1, '#fff']});
+        console.log(ids);
+        $.post("{:url('achain_audit_all')}", {ids: ids}, function (data) {
+          layer.close(loading);
+          if (data.code === 1) {
+            layer.msg(data.msg, {time: 1000, icon: 1});
+            tableIn.reload();
+          } else {
+            layer.msg(data.msg, {time: 1000, icon: 2});
+          }
+        });
+      });
+    })
+  });
+  layui.use('laydate', function () {
+    var laydate = layui.laydate;
+    laydate.render({
+      elem: '#test'
+      , type: 'datetime'
+      , range: true
+      , theme: 'molv'
+    });
+  });
+</script>
+</body>
+</html>

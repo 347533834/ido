@@ -1,0 +1,43 @@
+.information{
+    padding-top: 2.75rem;
+    font-size: .75rem;
+}
+.information>.name{
+    border-bottom: 6px solid #EFEFEF;
+}
+.information>.name>p:nth-of-type(1){
+    border-bottom: 1px solid #EFEFEF;
+}
+.information>.name>p{
+    background-color: white;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    padding: .7rem .8rem 0 .8rem;
+}
+.information>.name>p>span:nth-of-type(1){
+    font-weight: bold;
+}
+.information>.name>p>span:nth-of-type(2){
+    margin-left: 1rem;
+}
+.information>.photo-1{
+    padding: 0 .8rem;
+}
+.information>.photo-1>h2{
+    line-height: 3rem;
+    font-weight: bold;font-size: .75rem;
+}
+.information>.photo-1>div{
+    width: 47%;
+    display: inline-block;
+}
+.information>.photo-1>div:nth-of-type(1){
+    margin-right: .8rem;
+}
+.information>.photo-1>div:nth-of-type(3){
+    margin-top: .7rem;
+}
+.information>.photo-1>div img{
+    width: 8.8rem;
+    height: 5.5rem;
+}

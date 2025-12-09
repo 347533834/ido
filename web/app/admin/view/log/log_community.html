@@ -1,0 +1,107 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>申请加入社区{:lang('list')}</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-label">类型：</label>
+                <select id="select_status" class="layui-select">
+                    <option value="">请选择类型</option>
+                    <option value="1">申请加入</option>
+                    <option value="2">申请更换</option>
+                </select>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-label">状态：</label>
+                <select id="select_status2" class="layui-select">
+                    <option value="">请选择状态</option>
+                    <option value="0">申请中</option>
+                    <option value="1">同意</option>
+                    <option value="2">拒绝</option>
+                </select>
+            </div>
+            <label class="layui-label">时间：</label>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" name="date" id="test">
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('log_community')}" class="layui-btn">显示全部</a>
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+<script type="text/html" id="status">
+    {{# if(d.status==1){ }}
+    <a class="layui-btn layui-btn-xs">同意</a>
+    {{# }else if(d.status==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm">申请中</a>
+    {{# }else if(d.status==2){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger">拒绝</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="type">
+    {{# if(d.type==1){ }}
+    <a class="layui-btn layui-btn-xs">申请加入</a>
+    {{# }else if(d.type==2){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm">申请更换</a>
+    {{# } }}
+</script>
+
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("log_community")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'log_community_id', title: '{:lang("id")}', align: 'center',fixed: true, sort: true},
+                {field: 'group_id', title: '社群id', align: 'center',sort: true},
+                {field: 'groupname', title: '社群名', align: 'center',sort: true},
+                {field: 'username', title: '社群群主', align: 'center',sort: true},
+                {field: 'community_name', title: '要加入社区', align: 'center',sort: true},
+                {field: 'verify', title: '验证消息', align: 'center',sort: true},
+                {field: 'remarks', title: '备注', align: 'center',sort: true},
+                {field: 'type', align: 'center',title: '类型', toolbar: '#type'},
+                {field: 'status', align: 'center',title: '状态', toolbar: '#status'},
+                {field: 'addtime', title: '申请时间', align: 'center',sort: true},
+
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var date = $('#test').val();
+            var status1 = $('#select_status').val();
+            var status2 = $('#select_status2').val();
+            tableIn.reload({
+                where: {key: key,date:date,status1:status1,status2:status2}
+            });
+        });
+
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

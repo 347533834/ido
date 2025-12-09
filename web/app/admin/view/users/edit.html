@@ -1,0 +1,194 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit" ng-app="hd" ng-controller="ctrl">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{$title}</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">所属用户组</label>-->
+            <!--<div class="layui-input-4">-->
+                <!--<select name="level" lay-verify="required" ng-model="field.level" ng-options="v.level_id as v.level_name for v in group" ng-selected="v.level_id==field.level">-->
+                    <!--<option value="">请选择会员组</option>-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">{:lang('nickname')}</label>
+            <div class="layui-input-4">
+                <input type="text" name="username" ng-model="field.username" lay-verify="required" placeholder="{:lang('pleaseEnter')}{:lang('nickname')}" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">{:lang('pwd')}</label>
+            <div class="layui-input-4">
+                <input type="password" name="password" placeholder="输入{:lang('pwd')}" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                密码必须大于6位，小于15位
+            </div>
+        </div>
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">{:lang('email')}</label>-->
+            <!--<div class="layui-input-4">-->
+                <!--<input type="text" name="email" ng-model="field.email" lay-verify="eamil" placeholder="输入{:lang('email')}" class="layui-input">-->
+            <!--</div>-->
+            <!--<div class="layui-form-mid layui-word-aux">-->
+                <!--必填：用于找回密码-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">国编码</label>
+            <div class="layui-input-4">
+                <select name="code" lay-verify="required" ng-model="field.code"
+                        ng-options="v.code as v.name for v in country" ng-selected="v.code==field.code">
+                    <option value="">请选择国编码</option>
+                </select>
+            </div>
+        </div>
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">{:lang('tel')}</label>-->
+            <!--<div class="layui-input-4">-->
+                <!--<input type="text" name="mobile" ng-model="field.mobile" lay-verify="mobile" placeholder="输入{:lang('tel')}" class="layui-input">-->
+            <!--</div>-->
+            <!--<div class="layui-form-mid layui-word-aux">-->
+                <!--只能填写数字-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">静态匹配等级</label>
+            <div class="layui-input-4">
+                <input type="text" name="matching_level" ng-model="field.matching_level" lay-verify="" placeholder="输入匹配等级" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                只能填写数字0-5
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">设置星级</label>
+            <div class="layui-input-4">
+                <input type="text" name="admin_level" ng-model="field.admin_level" lay-verify="" placeholder="输入会员星级" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                只能填写数字0-3
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">股东分成</label>
+            <div class="layui-input-4">
+                <input type="text" name="shareholder_rate" ng-model="field.shareholder_rate" lay-verify="" placeholder="输入股东分成" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                百分比
+            </div>
+        </div>
+        <!--<div class="layui-form-item">-->
+            <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">{:lang('sex')}</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<input type="radio" name="sex" ng-model="field.sex" ng-checked="field.sex==1" ng-value="1" title="{:lang('man')}">-->
+                    <!--<input type="radio" name="sex" ng-model="field.sex" ng-checked="field.sex==0" ng-value="0" title="{:lang('woman')}">-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">{:lang('qq')}</label>-->
+            <!--<div class="layui-input-4">-->
+                <!--<input type="text" name="qq" ng-model="field.qq" placeholder="输入{:lang('qq')}" class="layui-input">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">{:lang('address')}</label>-->
+            <!--<div class="layui-input-inline">-->
+                <!--<select name="province" ng-model="field.province" lay-filter="province" ng-options="v.id as v.name for v in province" ng-selected="v.id==field.province">-->
+                    <!--<option value="">请选择省</option>-->
+                <!--</select>-->
+            <!--</div>-->
+            <!--<div class="layui-input-inline" >-->
+                <!--<select name="city" id="city" ng-model="field.city" lay-filter="city" ng-options="v.id as v.name for v in city" ng-selected="v.id==field.city">-->
+                    <!--<option value="">请选择市</option>-->
+                <!--</select>-->
+            <!--</div>-->
+            <!--<div class="layui-input-inline">-->
+                <!--<select name="district" id="district" ng-model="field.district" lay-filter="district" ng-options="v.id as v.name for v in district" ng-selected="v.id==field.district">-->
+                    <!--<option value="">请选择县/区</option>-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item">
+            <label class="layui-form-label">重置身份证</label>
+            <div class="layui-input-block">
+                <input type="radio" name="idreset" value="1" title="确定"><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i><span>开启</span></div>
+                <input type="radio" name="idreset" checked="" value="0" title="取消"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><span>关闭</span></div>
+            </div>
+        </div>-->
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+                <a href="{:url('index')}" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<script>
+    var m = angular.module('hd',[]);
+    m.controller('ctrl',function($scope) {
+        $scope.field = {$info};
+        $scope.country = {$country};
+        //$scope.country = {$country};
+//        $scope.group = {$user_level};
+//        $scope.province = {$province};
+//        $scope.city = {$city};
+//        $scope.district = {$district};
+        layui.use(['form', 'layer'], function () {
+            var form = layui.form, layer = layui.layer,$= layui.jquery;
+//            form.on('select(province)', function(data) {
+//                var pid = data.value;
+//                var loading = layer.load(1, {shade: [0.1, '#fff']});
+//                $.get("{:url('getRegion')}?pid=" + pid, function (data) {
+//                    layer.close(loading);
+//                    var html='<option value="">请选择市</option>';
+//                    $.each(data, function (i, value) {
+//                        html += '<option value="number:'+value.id+'">'+value.name+'</option>';
+//                    });
+//                    $('#city').html(html);
+//                    $('#district').html('<option value="">请选择县/区</option>');
+//                    form.render()
+//                });
+//            });
+//            form.on('select(city)', function(data) {
+//                var pid = data.value;
+//                var loading = layer.load(1, {shade: [0.1, '#fff']});
+//                $.get("{:url('getRegion')}?pid=" + pid, function (data) {
+//                    layer.close(loading);
+//                    var html='<option value="">请选择县/区</option>';
+//                    $.each(data, function (i, value) {
+//                        html += '<option value="number:'+value.id+'">'+value.name+'</option>';
+//                    });
+//                    $('#district').html(html);
+//
+//                    form.render()
+//                });
+//            });
+            form.on('submit(submit)', function (data) {
+                // 提交到方法 默认为本身
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                data.field.user_id = $scope.field.user_id;
+                $.post("", data.field, function (res) {
+                    layer.close(loading);
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+                            location.href = res.url;
+                        });
+                    } else {
+                        layer.msg(res.msg, {time: 1800, icon: 2});
+                    }
+                });
+            })
+        });
+    });
+</script>
+</body>
+</html>

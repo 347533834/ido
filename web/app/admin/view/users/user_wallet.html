@@ -1,0 +1,78 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>钱包地址{:lang('list')}</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <!--<label class="layui-label">时间：</label>-->
+            <!--<div class="layui-inline">-->
+                <!--<input type="text" class="layui-input" name="date" id="test">-->
+            <!--</div>-->
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('user_wallet')}" class="layui-btn">显示全部</a>
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<script type="text/html" id="status">
+    {{# if(d.status==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">禁用</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn" lay-event="status">正常</a>
+    {{# } }}
+</script>
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'wallet_id',
+            elem: '#list',
+            url: '{:url("user_wallet")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'wallet_id', title: '{:lang("id")}', align: 'center',fixed: true, sort: true},
+                {field: 'user_id', title: '会员ID', align: 'center',sort: true},
+                {field: 'username', title: '会员名', align: 'center',sort: true},
+                {field: 'coin_name', title: '通证名称', align: 'center',sort: true},
+                {field: 'name', title: '钱包备注', align: 'center',sort: true},
+                {field: 'wallet', title: '钱包地址', align: 'center',sort: true},
+                /*{field: 'contacts_name', title: '联系人名称', align: 'center',sort: true},
+                {field: 'mobile', title: '联系电话', align: 'center',sort: true},*/
+                {field: 'addtime', title: '添加时间', align: 'center',sort: true},
+                {field: 'status', align: 'center',title: '{:lang("status")}',toolbar: '#status',sort: true},
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var  date = $('#test').val();
+            // if($.trim(key)==='') {
+            //     layer.msg('{:lang("pleaseEnter")}关键字！',{icon:0});
+            //     return;
+            // }
+            tableIn.reload({
+                where: {key: key,date:date}
+            });
+        });
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

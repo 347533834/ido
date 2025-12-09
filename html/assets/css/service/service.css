@@ -1,0 +1,32 @@
+.services{
+    padding-top: 2.75rem;
+    background-color: #F5F5F5;
+    font-size: .75rem;
+    color: black;
+}
+.services>div>p{
+    background-color: #ffffff;
+    height:3rem;
+    line-height:3rem;
+    padding: 0 .8rem;
+}
+.services>div>p:nth-of-type(1){
+    border-bottom: 1px solid #F0F0F0;
+}
+.services>div>p>span{
+    float: left;
+    font-weight: bold;
+}
+.services>div>p>i{
+    float: right;
+    color: #A5A5A5;
+}
+.services>div>p:nth-of-type(2)>i{
+    display: inline-block;
+    width: .5rem;
+    height: .8rem;
+    background: url(../../../assets/img/coin/img-4.png) no-repeat;
+    background-size: 100%;
+
+    margin-top: 1.2rem;
+}

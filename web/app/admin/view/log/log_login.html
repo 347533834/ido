@@ -1,0 +1,68 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>会员登录{:lang('list')}</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <label class="layui-label">时间：</label>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" name="date" id="test">
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('log_login')}" class="layui-btn">显示全部</a>
+
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("log_login")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'id', title: '{:lang("id")}', align: 'center',fixed: true, sort: true},
+                {field: 'username', title: '手机号', align: 'center',sort: true},
+                {field: 'id_name', title: '用户名', align: 'center',sort: true},
+                {field: 'ip', title: 'IP', align: 'center',sort: true},
+                {field: 'address', title: '登录地址', align: 'center',sort: true},
+                {field: 'desc', title: '状态', align: 'center',sort: true},
+                {field: 'addtime', title: '操作时间', align: 'center',sort: true},
+
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var  date = $('#test').val();
+            tableIn.reload({
+                where: {key: key,date:date}
+            });
+        });
+
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

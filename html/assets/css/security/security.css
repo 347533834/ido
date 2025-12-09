@@ -1,0 +1,35 @@
+.security{
+    padding-top: 2.75rem;
+    background-color: #F5F5F5;
+    font-size: .75rem;
+    color: black;
+}
+.security>ul>li{
+    height: 3rem;
+    line-height: 3rem;
+    background-color: white;
+    padding: 0 .8rem;
+    margin-bottom: .3rem;
+}
+.security>ul>li>p:nth-of-type(1){
+    float: left;
+    font-weight: bold;
+}
+.security>ul>li>p:nth-of-type(2){
+    float: right;
+}
+.security>ul>li>p:nth-of-type(2)>i{
+    display: inline-block;
+    width: .5rem;
+    height: .8rem;
+    background: url(../../../assets/img/coin/img-4.png) no-repeat;
+    background-size: 100%;
+    vertical-align: -4%;
+    margin-left: .3rem;
+}
+.security>button{
+    display: block;
+    width: 93%;
+    margin: 0 auto;
+    margin-top: 2rem;
+}

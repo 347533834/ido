@@ -1,0 +1,127 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit" ng-app="hd" ng-controller="ctrl">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{$title}</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户id</label>
+            <div class="layui-input-4">
+                <input type="text" name="" value="{$user.user_id}" class="layui-input" disabled>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-4">
+                <input type="text" name="" value="{$user.username}" class="layui-input" disabled>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">众筹数量</label>
+            <div class="layui-input-4">
+                <input type="text" name="total" ng-model="field.total" lay-verify="required" placeholder="请输入众筹数量" class="layui-input">
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">
+            <label class="layui-form-label">释放数量</label>
+            <div class="layui-input-4">
+                <input type="text" name="crowd_release" ng-model="field.crowd_release" lay-verify="" placeholder="请输入释放数量" class="layui-input">
+            </div>
+        </div>-->
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+                <a href="javascript:history.back(-1);" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<script src="__STATIC__/plugins/lrz/lrz.min.js"></script>
+<script>
+    var imgs = {};
+    var m = angular.module('hd', []);
+    m.controller('ctrl', ['$scope', function ($scope) {
+        $scope.field = '{$info}' != 'null' ? {$info} : {id: '', title: '', content: ''};
+
+        layui.use(['form', 'layer', 'layedit'], function () {
+            var form = layui.form, $ = layui.jquery, layedit = layui.layedit;
+            layedit.set({
+                uploadImage: {
+                    url: '{:url("Article/uploads")}' //接口url
+                    , type: 'post' //默认post
+                }
+            });
+
+            layedit.build('demo');
+            $('#LAY_layedit_1').contents().find('body').html($scope.field.content);
+            form.on('submit(submit)', function (data) {
+                // 提交到方法 默认为本身
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                data.field.imgs = imgs;
+                data.field.content = $('#LAY_layedit_1').contents().find('body').html();
+                data.field.id = $scope.field.id;
+
+                $.post("", data.field, function (res) {
+                    layer.close(loading);
+                    if (res.code == 1) {
+                        layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+                            location.href = res.url;
+                        });
+                    } else {
+                        layer.msg(res.msg, {time: 1800, icon: 2});
+                    }
+                });
+            })
+
+            if($scope.field.logo){
+                $('#img').attr('src',$scope.field.logo).attr('style','width:10rem;');
+            }
+
+
+            $('#field').click(function(){
+                $('input[type="file"]').click();
+            });
+
+            $('input[type="file"]').change(function () {
+                var _this = $(this);
+                var obj = $(this)[0].files[0];
+                var exts = obj.name.split('.');
+                var ext = exts[exts.length - 1];
+                if (['jpg', 'gif', 'png', 'jpeg'].indexOf(ext.toLowerCase()) == -1) {
+                    window.toast(ext.toLowerCase() + '图片格式错误！');
+                    return;
+                }
+
+                //不压缩
+                var FR= new FileReader();
+                FR.readAsDataURL(obj);
+                FR.onload = function(e){
+                    _this.parent().find('img').attr('src', this.result).attr('style','width:10rem;');
+                    imgs[_this.attr('name')] =this.result;
+                };
+
+                //压缩
+//                lrz(obj, {
+//                    width: 500
+//                }).then(function (rst) {
+//                    console.log(rst.base64.length);
+//                    $('#img').attr('src', rst.base64).attr('style','width:10rem;');
+//                    imgs[_this.attr('name')] = rst.base64;
+//                });
+
+            });
+        });
+    }]);
+
+
+
+
+</script>
+
+</script>

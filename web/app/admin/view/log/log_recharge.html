@@ -1,0 +1,82 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>充值记录日志</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+   <!--         <label class="layui-label">时间：</label>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" name="date" id="test">
+            </div>-->
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('log_recharge')}" class="layui-btn">显示全部</a>
+            <!--<button type="button" class="layui-btn layui-btn-danger" id="delAll">批量删除</button>-->
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<script type="text/html" id="status">
+    {{# if(d.status==0){ }}
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="status">未转</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-mini layui-btn-warm" lay-event="status">已转</a>
+    {{# } }}
+</script>
+
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("log_recharge")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'id', title: '{:lang("id")}',width:140,align: 'center',fixed: true, sort: true},
+                {field: 'account', title: '用户ID', width:140,align: 'center',sort: true},
+                {field: 'address', title: '钱包地址',width:140, align: 'center',sort: true},
+                {field: 'category', title: '交易类型',width:140, align: 'center',sort: true},
+                {field: 'amount', title: '交易金额', width:140,align: 'center',sort: true},
+                {field: 'confirmations', title: '交易节点确认数量',width:160, align: 'center',sort: true},
+                {field: 'blockhash', title: '节点确认后的区块哈希',width:180, align: 'center',sort: true},
+                {field: 'blockindex', title: '区块索引', width:140,align: 'center',sort: true},
+                {field: 'blocktime', title: '区块时间', width:140,align: 'center',sort: true},
+                {field: 'txid', title: 'TX id',width:140, align: 'center',sort: true},
+                {field: 'time', title: '交易时间', width:140,align: 'center',sort: true},
+                {field: 'timereceived', title: '接收时间',width:140, align: 'center',sort: true},
+                {field: 'comment', title: '备注', width:140,align: 'center',sort: true},
+                {field: 'message', title: '消息', width:140,align: 'center',sort: true},
+                {field: 'status', title: '状态',width:140, align: 'center',sort: true},
+                {field: 'status', align: 'center',title: '{:lang("status")}',toolbar: '#status',sort: true},
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var  date = $('#test').val();
+            tableIn.reload({
+                where: {key: key,date:date}
+            });
+        });
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

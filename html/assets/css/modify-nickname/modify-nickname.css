@@ -1,0 +1,20 @@
+.modify-nickname{
+    padding-top: 2.75rem;
+    background-color: #F5F5F5;
+    color: black;
+    font-size: .78rem;
+}
+.modify-nickname>p{
+    height: 2.4rem;
+    line-height: 2.4rem;
+    padding: .5rem .8rem 0 .8rem;
+    background-color: #ffffff;
+
+}
+.modify-nickname>input{
+    height: 2.4rem;
+    line-height: 2.4rem;
+    padding: .5rem .8rem 0 .8rem;
+    background-color: #ffffff;
+    width: 100%;
+}

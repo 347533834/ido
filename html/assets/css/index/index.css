@@ -1,0 +1,88 @@
+.index{
+    padding-top: 2.8rem;
+    padding-bottom: 3rem;
+}
+
+.index>.banner>img{
+    width: 100%;
+}
+.index>.inform{
+    background-color: #F5F5F5;
+    height: 2rem;
+    line-height: 2rem;
+    font-size: .75rem;
+    padding: 0 .7rem;
+}
+.index>.inform>img{
+    width: 1.2rem;
+    height: 1rem;
+    vertical-align: middle;
+    margin-right: .5rem;
+}
+.index>dl>dt{
+    line-height: 2rem;
+    padding: 0 1rem;
+
+}
+.index>dl>dt>span{
+    display: inline-block;
+    width: 25%;
+    text-align: center;
+    font-size: .7rem;
+}
+.index>dl>dt>span:nth-of-type(1){
+    width:46%;
+    text-align: left;
+}
+.index>dl>dt>span:nth-of-type(3){
+    text-indent: 1rem;
+}
+.index>dl>dd>.volume>div{
+    display: inline-block;
+}
+.index>dl>dd>.volume{
+    padding: .5rem .8rem;
+}
+.index>dl>dd{
+    border-top: 1px solid #F0F0F0;
+
+
+}
+.index>dl>dd>.volume>div:nth-of-type(1)>img{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.index>dl>dd>.volume>div:nth-of-type(2)>p:nth-child(1){
+   font-weight: bold;
+}
+.index>dl>dd>.volume>div:nth-of-type(2)>p:nth-child(2){
+    font-size: .64rem;
+}
+.index>dl>dd>.volume>div:nth-of-type(2){
+    width: 25%;
+}
+.index>dl>dd>.volume>div:nth-of-type(3){
+    width: 39%;
+    text-align: center;
+    margin-left: .8rem;
+}
+.index>dl>dd>.volume>div:nth-of-type(3)>p:nth-child(1){
+    font-weight: bold;
+}
+.index>dl>dd>.volume>div:nth-of-type(4){
+    width: 3.2rem;
+    height: 1.5rem;
+    text-align: center;
+    background-color: #10BF90;
+    line-height: 1.5rem;
+    color: white;
+    border-radius: 5px;
+    font-size: .64rem;
+    vertical-align: 24%;
+}
+.index>dl>dd>.trend-chart>p{
+    width: 100%;
+    height: 13rem;
+    background-color: #F7F5F6;
+    text-align: center;
+}

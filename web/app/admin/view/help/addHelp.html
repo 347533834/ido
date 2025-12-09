@@ -1,0 +1,100 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit" ng-app="hd" ng-controller="ctrl">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{$title}</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">问题</label>
+            <div class="layui-input-4">
+                <textarea ng-model="field.question" lay-verify="required" placeholder="请输入问题" name="question" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">回答</label>-->
+            <!--<div class="layui-input-4">-->
+                <!--<textarea ng-model="field.answer" placeholder="请输入回答" name="answer" class="layui-textarea" rows="20" ></textarea>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">答案</label>
+            <div class="layui-input-block">
+                <textarea id="demo_cn"  name="answer" style="display: none;"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">问题英文</label>
+            <div class="layui-input-4">
+                <textarea ng-model="field.question_en" placeholder="请输入问题" name="question_en" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">答案英文</label>-->
+            <!--<div class="layui-input-4">-->
+                <!--<textarea ng-model="field.answer_en" placeholder="请输入回答" name="answer_en" class="layui-textarea" rows="20" ></textarea>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">答案英文</label>
+            <div class="layui-input-block">
+                <textarea id="demo_en" name="answer_en" style="display: none;"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+                <a href="javascript:history.back(-1);" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<script>
+    var m = angular.module('hd',[]);
+    m.controller('ctrl',['$scope',function($scope) {
+        $scope.field = '{$info}' != 'null' ? {$info} : {id: '', question: '', answer: '', question_en: '', answer_en: ''};
+        $scope.field.question = $scope.field.question.replace('&#39;',"'");
+        $scope.field.answer = $scope.field.answer.replace('&#39;',"'");
+        $scope.field.question_en = $scope.field.question_en.replace('&#39;',"'");
+        $scope.field.answer_en = $scope.field.answer_en.replace('&#39;',"'");
+        layui.use(['form', 'layer', 'layedit'], function () {
+            var form = layui.form, $ = layui.jquery,layedit = layui.layedit;
+            layedit.set({
+                uploadImage: {
+                    url: '{:url("Help/uploads")}' //接口url
+                    , type: 'post' //默认post
+                }
+            });
+
+
+            layedit.build('demo_cn');
+            layedit.build('demo_en');
+            $('#LAY_layedit_1').contents().find('body').html($scope.field.answer);
+            $('#LAY_layedit_2').contents().find('body').html($scope.field.answer_en);
+            //$('#LAY_layedit_3').contents().find('body').html($scope.field.intro_en);
+            form.on('submit(submit)', function (data) {
+                // 提交到方法 默认为本身
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                data.field.answer = $('#LAY_layedit_1').contents().find('body').html();
+                data.field.answer_en = $('#LAY_layedit_2').contents().find('body').html();
+                data.field.id = $scope.field.id;
+                $.post("", data.field, function (res) {
+                    layer.close(loading);
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+                            location.href = res.url;
+                        });
+                    } else {
+                        layer.msg(res.msg, {time: 1800, icon: 2});
+                    }
+                });
+            })
+        });
+    }]);
+</script>

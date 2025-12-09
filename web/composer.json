@@ -1,0 +1,9 @@
+{
+    "require": {
+        "workerman/workerman": "^3.5",
+        "workerman/gateway-worker": "^3.0",
+        "topthink/think-queue": "^2.0",
+        "sc0vu/web3.php": "dev-master",
+        "denpa/php-bitcoinrpc": "^2.0"
+    }
+}

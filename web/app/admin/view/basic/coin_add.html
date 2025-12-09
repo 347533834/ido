@@ -1,0 +1,318 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit" ng-app="hd" ng-controller="ctrl">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{$title}</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 145px">名称</label>
+            <div class="layui-input-4">
+                <input type="text" name="name" ng-model="field.name" placeholder="{:lang('pleaseEnter')}名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 145px">简称</label>
+            <div class="layui-input-4">
+                <input type="text" name="short" ng-model="field.short" placeholder="{:lang('pleaseEnter')}简称" class="layui-input">
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">
+            <label class="layui-form-label">发币倍数（JDC为1）</label>
+            <div class="layui-input-4">
+                <input type="number" name="mulriple" ng-model="field.mulriple" placeholder="{:lang('pleaseEnter')}发币倍数（JDC为1）" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">涨跌幅</label>
+            <div class="layui-input-4">
+                <input type="number" name="margin" ng-model="field.margin" placeholder="{:lang('pleaseEnter')}涨跌幅 10代表涨跌幅10%" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">交易最小值</label>
+            <div class="layui-input-4">
+                <input type="text" name="min_num" ng-model="field.min_num" placeholder="{:lang('pleaseEnter')}交易最小值" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">交易最大值</label>
+            <div class="layui-input-4">
+                <input type="number" name="max_num" ng-model="field.max_num" placeholder="{:lang('pleaseEnter')}交易最大值" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">转盘抽奖扣除数量</label>
+            <div class="layui-input-4">
+                <input type="number" name="lottery" ng-model="field.lottery" placeholder="{:lang('pleaseEnter')}转盘抽奖扣除数量" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">第一天开盘价</label>
+            <div class="layui-input-4">
+                <input type="text" name="price" ng-model="field.price" placeholder="{:lang('pleaseEnter')}第一天开盘价" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">每天更新开盘价</label>
+            <div class="layui-input-4">
+                <input type="text" name="open_price" ng-model="field.open_price" placeholder="{:lang('pleaseEnter')}每天更新开盘价" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">交易总分红比例</label>
+            <div class="layui-input-4">
+                <input type="text" name="trade_bonus" ng-model="field.trade_bonus" placeholder="{:lang('pleaseEnter')}交易总分红比例" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">交易一代分红比例</label>
+            <div class="layui-input-4">
+                <input type="text" name="one_bonus" ng-model="field.one_bonus" placeholder="{:lang('pleaseEnter')}交易一代分红比例" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">交易二代分红比例</label>
+            <div class="layui-input-4">
+                <input type="text" name="two_bonus" ng-model="field.two_bonus" placeholder="{:lang('pleaseEnter')}交易二代分红比例" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">瓜分总分红比例</label>
+            <div class="layui-input-4">
+                <input type="text" name="total_bonus" ng-model="field.total_bonus" placeholder="{:lang('pleaseEnter')}瓜分总分红比例" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">交易手续费比例</label>
+            <div class="layui-input-4">
+                <input type="text" name="trade_fee" ng-model="field.trade_fee" placeholder="{:lang('pleaseEnter')}交易手续费比例" class="layui-input">
+            </div>
+        </div>-->
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"  style="width: 145px">logo</label>
+            <button type="button" class="layui-btn" id="field">上传图片</button>
+            <input type="file" name="logo" ng-model="field.logo" class="layui-input" style="width: 10rem;display: inline-block;opacity: 0">
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="img"/>
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">
+            <label class="layui-form-label">logo</label>
+            <button type="button" class="layui-btn" id="field_gif">上传图片</button>
+            <input type="file" name="logo_gif" ng-model="field.logo" class="layui-input" style="width: 10rem;display: inline-block;opacity: 0">
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="img_gif"/>
+            </div>
+        </div>-->
+
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">上线时间</label>-->
+            <!--<div class="layui-inline">-->
+                <!--<input type="text" class="layui-input" name="pubdate" id="test" ng-model="field.pubdate">-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 145px">简介</label>
+            <div class="layui-input-4">
+                <input type="text" name="intro" ng-model="field.intro" placeholder="{:lang('pleaseEnter')}简介" class="layui-input">
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label" style="width: 145px">第一天开盘价</label>-->
+            <!--<div class="layui-input-4">-->
+                <!--<input type="text" name="price" ng-model="field.price" placeholder="{:lang('pleaseEnter')}第一天开盘价" class="layui-input">-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 145px">每日最大提现数量</label>
+            <div class="layui-input-4">
+                <input type="text" name="draw_max_day" ng-model="field.draw_max_day" placeholder="{:lang('pleaseEnter')}每日最大提现数量" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 145px">每次最小提现数量</label>
+            <div class="layui-input-4">
+                <input type="text" name="draw_min_times" ng-model="field.draw_min_times" placeholder="{:lang('pleaseEnter')}每次最小提现数量" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 145px">提现最小手续费</label>
+            <div class="layui-input-4">
+                <input type="text" name="draw_min_fee" ng-model="field.draw_min_fee" placeholder="{:lang('pleaseEnter')}提现最小手续费" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 145px">提现手续费比例</label>
+            <div class="layui-input-4">
+                <input type="text" name="draw_rate" ng-model="field.draw_rate" placeholder="{:lang('pleaseEnter')}提现手续费比例" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 145px">USDT对应RMB价格</label>
+            <div class="layui-input-4">
+                <input type="text" name="price_cny" ng-model="field.price_cny" placeholder="{:lang('pleaseEnter')}USDT对应RMB价格" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 145px">排序</label>
+            <div class="layui-input-4">
+                <input type="text" name="sort" ng-model="field.sort" placeholder="{:lang('pleaseEnter')}排序" class="layui-input">
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">
+            <label class="layui-form-label">转盘</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_lottery" ng-model="field.is_lottery" ng-checked="field.is_lottery==1" ng-value="1" title="开启">
+                <input type="radio" name="is_lottery" ng-model="field.is_lottery" ng-checked="field.is_lottery==0" ng-value="0" title="未开启">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">充值</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_recharge" ng-model="field.is_recharge" ng-checked="field.is_recharge==1" ng-value="1" title="开启">
+                <input type="radio" name="is_recharge" ng-model="field.is_recharge" ng-checked="field.is_recharge==0" ng-value="0" title="未开启">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">提现</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_draw" ng-model="field.is_draw" ng-checked="field.is_draw==1" ng-value="1" title="开启">
+                <input type="radio" name="is_draw" ng-model="field.is_draw" ng-checked="field.is_draw==0" ng-value="0" title="未开启">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">公链</label>
+            <div class="layui-input-block">
+                <input type="radio" name="self" ng-model="field.self" ng-checked="field.self==1" ng-value="1" title="开启">
+                <input type="radio" name="self" ng-model="field.self" ng-checked="field.self==0" ng-value="0" title="未开启">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">交易</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_market" ng-model="field.is_market" ng-checked="field.is_market==1" ng-value="1" title="开启">
+                <input type="radio" name="is_market" ng-model="field.is_market" ng-checked="field.is_market==0" ng-value="0" title="未开启">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">锁仓</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_lock" ng-model="field.is_lock" ng-checked="field.is_lock==1" ng-value="1" title="开启">
+                <input type="radio" name="is_lock" ng-model="field.is_lock" ng-checked="field.is_lock==0" ng-value="0" title="未开启">
+            </div>
+        </div>-->
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 145px">是否开启</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" ng-model="field.status" ng-checked="field.status==1" ng-value="1" title="开启">
+                <input type="radio" name="status" ng-model="field.status" ng-checked="field.status==0" ng-value="0" title="未开启">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+                <a href="{:url('coin')}" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<script src="__STATIC__/plugins/lrz/lrz.min.js"></script>
+
+<script>
+    var imgs = {};
+    var m = angular.module('hd',[]);
+    m.controller('ctrl',['$scope',function($scope) {
+        $scope.field = '{$info}'!='null'?{$info}:{name:'',is_lottery:0,is_lock:0,is_market:0,self:0,is_draw:0,is_recharge:0,status:1,};
+        layui.use(['form', 'layer'], function () {
+            var form = layui.form, $ = layui.jquery;
+            form.on('submit(submit)', function (data) {
+                // 提交到方法 默认为本身
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                data.field.imgs = imgs;
+                $.post(
+                    "",
+                    data.field,
+                    function (res) {
+                    layer.close(loading);
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+                            location.href = res.url;
+                        });
+                    } else {
+                        layer.msg(res.msg, {time: 1800, icon: 2});
+                    }
+                });
+            })
+
+            if($scope.field.logo){
+                $('#img').attr('src',$scope.field.logo).attr('style','width:10rem;');
+            }
+            if($scope.field.logo_gif){
+                $('#img_gif').attr('src',$scope.field.logo_gif).attr('style','width:10rem;');
+            }
+
+            $('#field').click(function(){
+                $('input[type="file"]:eq(0)').click();
+            });
+            $('#field_gif').click(function(){
+                $('input[type="file"]:eq(1)').click();
+            });
+
+            $('input[type="file"]').change(function () {
+                var _this = $(this);
+                var obj = $(this)[0].files[0];
+                var exts = obj.name.split('.');
+                var ext = exts[exts.length - 1];
+                if (['jpg', 'gif', 'png', 'jpeg'].indexOf(ext.toLowerCase()) == -1) {
+                    window.toast(ext.toLowerCase() + '图片格式错误！');
+                    return;
+                }
+
+//                lrz(obj, {
+//                    width: 500
+//                }).then(function (rst) {
+//                    console.log(rst.base64.length);
+//                    $('#img').attr('src', rst.base64).attr('style','width:10rem;');
+//                    imgs[_this.attr('name')] = rst.base64;
+//                });
+                var FR= new FileReader();
+                FR.readAsDataURL(obj);
+                FR.onload = function(e){
+                    _this.parent().find('img').attr('src', this.result).attr('style','width:10rem;');
+                    imgs[_this.attr('name')] =this.result;
+                };
+            });
+        });
+    }]);
+</script>

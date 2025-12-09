@@ -1,0 +1,301 @@
+.coin{
+    padding: 2.75rem 0 3rem 0;
+    background-color: #F5F5F5;
+}
+.coin>.sec-1{
+    background-color: #ffffff;
+    padding: .3rem 1rem;
+}
+.coin>.sec-1>div{
+    display: inline-block;
+
+}
+.coin>.sec-1>div>p{
+    line-height: 1.1rem;
+}
+.coin>.sec-1>div>p:nth-of-type(1){
+    font-size: .64rem;
+    color: #ABABAB;
+}
+.coin>.sec-1>div:nth-of-type(1)>img{
+    width: 4rem;
+    height: 2rem;
+    /* vertical-align: middle; */
+    margin-top: .4rem;
+}
+.coin>.sec-1>div:nth-of-type(2){
+    width: 42%;
+    text-align: right;
+    vertical-align: top;
+}
+.coin>.sec-1>div:nth-of-type(3){
+    width: 32%;
+    text-align: right;
+    vertical-align: top;
+}
+.coin>.site{
+    height: 2.2rem;
+    line-height: 2.2rem;
+    text-align: center;
+}
+.coin>.site>p{
+    display: inline-block;
+    color: #939393;
+    font-size: .75rem;
+}
+.coin>.site>p>span{
+    display: inline-block;
+    text-align: center;
+    width: 3.6rem;
+}
+.coin>.site>p.active>span{
+    border-bottom: 2px solid #666666;
+    color: black;
+}
+.coin>.sec-2>.no-data>img{
+    width: 100%;
+}
+
+.coin>.sec-2>p{
+    line-height: 2.2rem;
+    margin-top: .3rem;
+    background-color: white;
+    padding: 0 1rem;
+
+}
+.coin>.sec-2>p>span:nth-of-type(1){
+    float: left;
+    font-size: .78rem;
+    font-weight: bold;
+ }
+.coin>.sec-2>p>span:nth-of-type(2){
+     float: right;
+ }
+.coin>.sec-2>p>span:nth-of-type(2)>img{
+    width: .6rem;
+    height: .8rem;
+    vertical-align: middle;
+}
+
+.coin>.sec-2>.yes-data{
+    background-color: white;
+}
+.coin>.sec-2>.yes-data>p:nth-of-type(1){
+    text-align: center;
+    line-height: 2.4rem;
+    border-bottom: 1px solid #DEDEDE;
+}
+
+.coin>.sec-2>.yes-data>p:nth-of-type(2){
+    line-height: 2.2rem;
+    border-bottom: 1px solid #DEDEDE;
+    padding: 0 .8rem;
+}
+.coin>.sec-2>.yes-data>p:nth-of-type(2)>span{
+    border-bottom: 1.5px solid #666666;
+    font-weight: bold;
+    padding-bottom: .45rem;
+    font-size: .75rem;
+}
+.coin>.sec-2>.yes-data>.buy{
+    padding: 0 .8rem;
+}
+.coin>.sec-2>.yes-data>.sell{
+    padding: 0 .8rem 1.2rem .8rem;
+}
+.coin>.sec-2>.yes-data>.buy>p{
+    line-height: 2.4rem;
+    border-bottom: 1px solid #F2F2F2;
+}
+.coin>.sec-2>.yes-data>.buy>p>input{
+    width:64%;
+    height: 2.2rem;
+    font-size: .75rem;
+    margin-left: .9rem;
+}
+.coin>.sec-2>.yes-data>.buy>p>i{
+    font-size: .78rem;
+    font-weight: bold;
+}
+.coin>.sec-2>.yes-data>.buy>p>span:nth-of-type(1){
+    display: inline-block;
+    /*width: 3rem;*/
+    width: 17%;
+    text-align: right;
+    font-size: .75rem;
+}
+.coin>.sec-2>.yes-data>.buy>p>span:nth-of-type(2){
+    width:64%;
+    display: inline-block;
+    margin-left: .9rem;
+    font-size: .75rem;
+}
+.coin>.sec-2>.yes-data>.buy>button{
+    width: 47%;
+    height: 2rem;
+    line-height:2rem;
+    color: white;
+    background-color: #5A8BDD;
+    border-radius: 5px;
+    font-size: .8rem;
+    margin: 0 auto;
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: .3rem;
+}
+.coin>.sec-2>.yes-data>p:nth-of-type(3){
+    line-height: 2.2rem;
+    border-bottom: 1px solid #DEDEDE;
+    padding: 0 .8rem;
+}
+.coin>.sec-2>.yes-data>p:nth-of-type(3)>span{
+    border-bottom: 1.5px solid #666666;
+    font-weight: bold;
+    padding-bottom: .45rem;
+    font-size: .75rem;
+}
+
+
+.coin>.sec-3>.no-data>img{
+    width: 100%;
+}
+.coin>.sec-3>p{
+    line-height: 2.2rem;
+    margin-top: .3rem;
+    background-color: white;
+    padding: 0 1rem;
+
+}
+.coin>.sec-3>p>span:nth-of-type(1){
+    float: left;
+    font-size: .78rem;
+    font-weight: bold;
+}
+.coin>.sec-3>p>span:nth-of-type(2){
+    float: right;
+}
+.coin>.sec-3>p>span:nth-of-type(2)>img{
+    width: .6rem;
+    height: .8rem;
+    vertical-align: middle;
+}
+
+
+
+.coin>.sec-3>.yes-data{
+    background-color: white;
+}
+.coin>.sec-3>.yes-data>p:nth-of-type(1){
+    text-align: center;
+    line-height: 2.4rem;
+    border-bottom: 1px solid #DEDEDE;
+}
+
+.coin>.sec-3>.yes-data>p:nth-of-type(2){
+    line-height: 2.2rem;
+    border-bottom: 1px solid #DEDEDE;
+    padding: 0 .8rem;
+}
+.coin>.sec-3>.yes-data>p:nth-of-type(2)>span{
+    border-bottom: 1.5px solid #666666;
+    font-weight: bold;
+    padding-bottom: .45rem;
+    font-size: .75rem;
+}
+.coin>.sec-3>.yes-data>.entrust{
+    padding: 0 .8rem 1.2rem .8rem;
+
+}
+.coin>.sec-3>.yes-data>.entrust>p{
+    line-height: 2.4rem;
+    border-bottom: 1px solid #F2F2F2;
+}
+.coin>.sec-3>.yes-data>.entrust>p>input{
+    width:64%;
+    height: 2.2rem;
+    font-size: .75rem;
+    margin-left: .9rem;
+}
+.coin>.sec-3>.yes-data>.entrust>p>i{
+    font-size: .78rem;
+    font-weight: bold;
+}
+.coin>.sec-3>.yes-data>.entrust>p>span:nth-of-type(1){
+    display: inline-block;
+    /*width: 3rem;*/
+    width: 17%;
+    text-align: right;
+    font-size: .75rem;
+}
+.coin>.sec-3>.yes-data>.entrust>p>span:nth-of-type(2){
+    width:64%;
+    display: inline-block;
+    margin-left: .9rem;
+    font-size: .75rem;
+}
+.coin>.sec-3>.yes-data>.entrust>button{
+    width: 47%;
+    height: 2rem;
+    line-height:2rem;
+    color: white;
+    background-color: #5A8BDD;
+    border-radius: 5px;
+    font-size: .8rem;
+    margin: 0 auto;
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: .3rem;
+}
+
+
+.box-coin>div{
+    position: absolute;
+    width: 90%;
+    height: 25rem;
+    top: 8.1%;
+    left: 50%;
+    margin-left: -45%;
+    background-color: #ffffff;
+    border-radius: 5px;
+
+}
+.box-coin>div:before{
+    content: '';
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    background: url(../../../assets/img/coin/ju.png) no-repeat;
+    background-size: 100%;
+    position: absolute;
+    top: -2%;
+    left: 47%;
+}
+.box-coin ul>li{
+    width: 24%;
+    text-align: center;
+    display: inline-block;
+    font-size: .65rem;
+    color: black;
+    padding: .5rem 0 .6rem 0;
+}
+.box-coin ul>li>p>img{
+    width: 2.8rem;
+    height: 2.8rem;
+}
+.box-coin>div>p{
+  padding:.7rem 0;
+    border-top: 1px solid #EFEFEF;
+    text-align: center;
+}
+.box-coin>div>p>img{
+    width: .5rem;
+    height: .7rem;
+
+
+}
+.box-coin>div>p>img:nth-of-type(1){
+    margin-right: .8rem;
+}
+.box-coin>div>p>img:nth-of-type(2){
+    margin-left: .8rem;
+}

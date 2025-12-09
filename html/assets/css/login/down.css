@@ -1,0 +1,138 @@
+@charset "UTF-8";
+
+.download {
+  height: 100vh;
+  background: url("../../img/login/bg-3.png") center top/100% 100%;
+  margin: 0;
+  padding: 0;
+
+}
+
+.download .logo {
+  padding-top: 6rem;
+  padding-bottom: 3rem;
+}
+
+.download .logo > img {
+  display: block;
+  width: 5.5rem;
+  margin: 0 auto;
+}
+
+.download .link {
+  padding: .8rem 2rem 0;
+  margin-bottom: 6rem;
+  bottom: 6rem;
+  width: 82%;
+}
+.download .link>.android{
+  width: 100%;
+  height: 2.4rem;
+  line-height: 2.4rem;
+  border-radius: 5px;
+  background-color: white;
+  padding: 0 4rem;
+  box-sizing: border-box;
+
+}
+.download .link>p>i{
+  float: left;
+}
+.download .link>.android>i{
+  display: inline-block;
+  width: 1.1rem;
+  height: 1.3rem;
+  background: url(../../../assets/img/login/image-2.png) no-repeat;
+  background-size: 100%;
+  vertical-align: -14%;
+  margin-right: .8rem;
+  margin-top: .5rem;
+}
+.download .link>.android>button{
+  background-color: white;
+  font-size: .75rem;
+  color: #5A8BDD;
+}
+.download .link>.ios>button{
+  font-size: .75rem;
+  background-color: transparent;
+  color: white;
+}
+.download .link>.ios{
+  width: 100%;
+  height: 2.4rem;
+  line-height: 2.4rem;
+  border-radius: 5px;
+ border: 1px solid white;
+  margin-top: 1rem;
+  padding: 0 4rem;
+  box-sizing: border-box;
+  background-color: transparent;
+}
+.download .link>.ios>i{
+  display: inline-block;
+  width: 1.1rem;
+  height: 1.4rem;
+  background: url(../../../assets/img/login/image-3.png) no-repeat;
+  background-size: 100%;
+  margin-top: .4rem;
+  margin-right:.8rem;
+}
+
+
+.download .set-up {
+  background: #484848;
+  margin: 1rem 0 0;
+  padding: 0.5rem;
+  /* margin-bottom: 0rem; */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.download .set-up p {
+  line-height: 1.7rem;
+}
+
+.download .set-up > p:nth-of-type(1) > i {
+  width: 1.2rem;
+  height: 1.2rem;
+  background: url("../../img/public/hint-icon.png") no-repeat;
+  background-size: 96%;
+  display: inline-block;
+  vertical-align: -22%;
+}
+
+.download .set-up > p:nth-of-type(1) > span {
+  font-size: .8rem;
+  color: #FFAA00;
+}
+
+.download .set-up > p:nth-of-type(2) {
+  text-align: center;
+}
+
+.download .set-up > p:nth-of-type(2) > i {
+  width: 1.2rem;
+  height: 1.2rem;
+  background: url("../../img/public/setting-icon.png") no-repeat;
+  background-size: 96%;
+  display: inline-block;
+  vertical-align: -18%;
+}
+
+.download .set-up > p:nth-of-type(2) span:nth-child(odd) {
+  font-size: .8rem;
+  color: #549BFF;
+  width: 1.2rem;
+  height: 1rem;
+  background: url("../../img/public/right-icon.png") no-repeat;
+  background-size: 75%;
+  display: inline-block;
+  vertical-align: -20%;
+}
+
+.download .set-up > p:nth-of-type(2) > span {
+  font-size: .8rem;
+  color: #549BFF;
+}

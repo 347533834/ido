@@ -1,0 +1,274 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+  <style>
+    .token_price span {
+      width: 100px;
+      display:block;
+      float:left;
+    }
+  </style>
+  <fieldset class="layui-elem-field layui-field-title">
+    <legend>会员兑换申请{:lang('list')}</legend>
+  </fieldset>
+  <blockquote class="layui-elem-quote">
+    <div class="demoTable">
+      <div class="layui-inline">
+        <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+      </div>
+      <div class="layui-inline">
+        <label class="layui-label">通证名称：</label>
+        <select name="coin" id="select_status" class="layui-select">
+          <option value="">请选择通证</option>
+          {volist name="coins" id="vo"}
+          <option value="{$vo.coin_id}">{$vo.name}</option>
+          {/volist}
+        </select>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-label">类型：</label>
+        <select id="select_status2" class="layui-select">
+          <option value="">请选择类型</option>
+          <option value="1">通证兑换MRC</option>
+          <option value="2">MRC兑换通证</option>
+        </select>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-label">状态：</label>
+        <select id="select_status3" class="layui-select">
+          <option value="">请选择状态</option>
+          <option value="0">申请中</option>
+          <option value="1">已通过</option>
+          <option value="-1">未通过</option>
+          <!--<option value="-1">已审核</option>-->
+        </select>
+      </div>
+
+
+      <label class="layui-label">时间：</label>
+      <div class="layui-inline">
+        <input type="text" class="layui-input" name="date" id="test">
+      </div>
+
+      <button class="layui-btn" id="search" data-type="reload">搜索</button>
+      <a href="{:url('user_exchange')}" class="layui-btn">显示全部</a>
+      <button type="button" class="layui-btn layui-btn-danger" id="delAll">批量通过</button>
+      <button type="button" class="layui-btn layui-btn-warm" id="revoke">批量拒绝</button>
+    </div>
+  </blockquote>
+
+  <table class="layui-table" id="list" lay-filter="list"></table>
+
+
+  <div class="token_price">
+
+    <span>Token</span>
+    {volist name="coin_data" id="vo"}
+    <span>{$key}</span>
+    {/volist}<br>
+
+    <span>价格</span>
+    {volist name="coin_data" id="vo"}
+    <span>{$vo}</span>
+    {/volist}
+  </div>
+  <!--<dl>
+    <dt>
+      <span>Token</span>
+      <span style="margin-left: 50px">价格</span>
+    </dt>
+    {volist name="coin_data" id="vo"}
+      <dd>
+        <span>{$key}</span>
+        <span style="margin-left: 50px">{$vo}</span>
+      </dd>
+    {/volist}
+  </dl>-->
+  <br><br>
+
+  <span>实际通证兑换MRC排队总量：</span>{$queues.real_queues}
+  |<span style="margin-left: 10px">前台显示总量：</span>{$queues.show_queues}
+  |<span style="margin-left: 10px">后台调整数量：</span><span class="num" style="cursor:pointer;color: red">{$queues.change_queues}</span>
+  <input name="num" class="change_num" value="{$queues.change_queues}" style="display: none;"/>
+
+</div>
+<script type="text/html" id="status">
+  {{# if(d.status==0){ }}
+  <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="">申请中</a>
+  {{# }else if(d.status==1){ }}
+  <a class="layui-btn layui-btn-xs layui-btn" lay-event="">已通过</a>
+  {{# }else{  }}
+  <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="">未通过</a>
+  {{# } }}
+</script>
+<script type="text/html" id="type">
+  {{# if(d.type==1){ }}
+  <a class="layui-btn layui-btn-xs layui-btn" lay-event="">通证换MRC</a>
+  {{# }else if(d.type==2){ }}
+  <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="">MRC换通证</a>
+  {{# } }}
+</script>
+<script type="text/html" id="action">
+  {{# if(d.status==0){ }}
+  <a href="{:url('audit_exchange')}?id={{d.id}}" class="layui-btn layui-btn-xs">审核</a>
+  {{# } }}
+  <!--{{# if(d.status==1){ }}
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">重置状态</a>
+  {{# } }}-->
+</script>
+<script type="text/html" id="transaction">
+  {{# if(d.transaction_id!=''){ }}
+  <a class="layui-btn layui-btn-xs" target="_blank" href="https://etherscan.io/tx/{{d.transaction_id}}">{{d.transaction_id}}</a>
+  {{# } }}
+</script>
+<script type="text/html" id="operator_time">
+  {{# if(d.operator_time == '1970-01-01 08:00:00'){ }}
+
+  {{# }else{  }}
+  <div class="layui-table-cell">{{d.operator_time}}</div>
+  {{# } }}
+</script>
+
+{include file="common/foot"/}
+<script>
+
+
+  layui.use('table', function () {
+    var table = layui.table, $ = layui.jquery;
+    var tableIn = table.render({
+      id: 'id',
+      elem: '#list',
+      url: '{:url("user_exchange")}',
+      method: 'post',
+      page: true,
+      minWidth:200,
+      cols: [[
+        {checkbox: true, fixed: true},
+        {field: 'id', title: '{:lang("id")}', sort: true, width: '80',},
+        {field: 'user_id', title: '会员ID', sort: true, width: '80',},
+        {field: 'username', title: '会员名', sort: true, width: '100',},
+        {field: 'coin_name', title: '通证名称', sort: true, width: '100',},
+        {field: 'type', title: '类型', toolbar: '#type', sort: true, width: '150',},
+        {field: 'first_coin_price', title: '预估通证价格', sort: true, width: '150',},
+        {field: 'final_coin_price', title: '审核通证价格', sort: true, width: '150',},
+        {field: 'first_coin_num', title: '预估通证数量', sort: true, width: '150',},
+        {field: 'final_coin_num', title: '审核通证数量', sort: true, width: '150',},
+        {field: 'first_mrc_price', title: '预估MRC价格', sort: true, width: '150',},
+        {field: 'final_mrc_price', title: '审核MRC价格', sort: true, width: '150',},
+        {field: 'first_mrc_num', title: '预估MRC数量', sort: true, width: '150',},
+        {field: 'final_mrc_num', title: '审核MRC数量', sort: true, width: '150',},
+        {field: 'addtime', title: '申请时间', sort: true, width: '200',},
+        {field: 'operator_time', title: '审批时间', toolbar: '#operator_time', sort: true, width: '200',},
+        {field: 'operator', title: '审批人', sort: true, width: '100'},
+        {field: 'status', width: '100', title: '{:lang("status")}', toolbar: '#status', sort: true,},
+        {title: '操作', align: 'center', toolbar: '#action', width: '150'}
+      ]],
+      limit: 10,//每页默认显示的数量
+
+    });
+    //搜索
+    $('#search').on('click', function () {
+      var key = $('#key').val();
+      var status1 = $('#select_status').val();
+      var status2 = $('#select_status2').val();
+      var status3 = $('#select_status3').val();
+      var date = $('#test').val();
+
+      tableIn.reload({
+        where: {key: key, status1: status1, status2: status2, status3: status3, date: date}
+      });
+    });
+
+    $('#revoke').click(function () {
+      layer.confirm('确认要拒绝选中信息吗？', {icon: 3}, function (index) {
+        layer.close(index);
+        var checkStatus = table.checkStatus('id'); //test即为参数id设定的值
+        console.log(checkStatus);
+        var ids = [];
+        $(checkStatus.data).each(function (i, o) {
+          ids.push(o.id);
+        });
+        var loading = layer.load(1, {shade: [0.1, '#fff']});
+        $.post("{:url('deny_all')}", {ids: ids}, function (data) {
+          layer.close(loading);
+          if (data.code === 1) {
+            layer.msg(data.msg, {time: 1000, icon: 1});
+            tableIn.reload();
+          } else {
+            layer.msg(data.msg, {time: 1000, icon: 2});
+          }
+        });
+      });
+    })
+
+    $('#delAll').click(function () {
+      layer.confirm('确认要审核通过选中信息吗？', {icon: 3}, function (index) {
+        layer.close(index);
+        var checkStatus = table.checkStatus('id'); //test即为参数id设定的值
+        console.log(checkStatus);
+        var ids = [];
+        $(checkStatus.data).each(function (i, o) {
+          ids.push(o.id);
+        });
+        var loading = layer.load(1, {shade: [0.1, '#fff']});
+        $.post("{:url('allow_all')}", {ids: ids}, function (data) {
+          layer.close(loading);
+          if (data.code === 1) {
+            layer.msg(data.msg, {time: 1000, icon: 1});
+            tableIn.reload();
+          } else {
+            layer.msg(data.msg, {time: 1000, icon: 2});
+          }
+        });
+      });
+    });
+    table.on('tool(list)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'reset') {
+        layer.confirm('您确定要重置该订单状态吗？', function (index) {
+          var loading = layer.load(1, {shade: [0.1, '#fff']});
+          $.post("{:url('user_draw_reset')}", {id: data.id}, function (res) {
+            layer.close(loading);
+            if (res.code === 1) {
+              layer.msg(res.msg, {time: 1000, icon: 1});
+              tableIn.reload();
+            } else {
+              layer.msg('操作失败！', {time: 1000, icon: 2});
+            }
+          });
+          layer.close(index);
+        });
+      }
+    });
+
+    $('.num').on('click', function () {
+      $('.num').hide();
+      $("input[name='num']").show();
+      $("input[name='num']").focus()
+    });
+
+    $('.change_num').blur(function () {
+      var num = $("input[name='num']").val();
+      $.post("{:url('change_queues')}", {num: num}, function (res) {
+        if (res.code === 1) {
+          layer.msg(res.msg, {time: 1000, icon: 1});
+          window.location.reload();
+        } else {
+          layer.msg('操作失败！', {time: 1000, icon: 2});
+        }
+      });
+    });
+
+
+  });
+  layui.use('laydate', function () {
+    var laydate = layui.laydate;
+    laydate.render({
+      elem: '#test'
+      , type: 'datetime'
+      , range: true
+      , theme: 'molv'
+    });
+  });
+</script>
+</body>
+</html>

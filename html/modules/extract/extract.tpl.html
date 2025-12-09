@@ -1,0 +1,61 @@
+<main class="content extract">
+    <div>
+        <p>
+            <span>可用数量</span>
+            <span class="balance"><!--200.8729--></span>
+            <i class="token"><!--USDT--></i>
+        </p>
+        <p>
+            <span>提取数量</span>
+            <input type="text" name="num" id="num" placeholder="" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')">
+            <i class="token"><!--USDT--></i>
+        </p>
+        <p>
+            <span>提取地址</span>
+            <input type="text" placeholder="请输入钱包地址" id="wallet" name="wallet">
+        </p>
+        <div>
+            <span>手续费</span>
+            <span>单次提取扣除<i class="rate_num"><!--5.0000--></i><i class="tokens">USDT</i></span>
+        </div>
+        <input type="hidden" id="min-num">
+        <input type="hidden" id="usdt">
+    </div>
+    <button class="btn btn-lan coin-btn">确认提取</button>
+
+
+    <!--弹窗-->
+    <article class="box-mask box-extract none">
+        <div>
+            <p><span>交易密码</span></p>
+            <p>本次交易将扣除<span class="number"><!--30.2078--></span><i class="token"><!--USDT--></i><i class="fee-num"></i><i class="token"><!--USDT--></i></p>
+            <input type="hidden" name="add_wallet" id="add_wallet" placeholder="" value="" readonly>
+            <style>
+                .ipt-box-nick input{
+                    caret-color: transparent;
+                }
+            </style>
+            <div class="ipt-box-nick mb15-nick">
+                <input type="tel" maxlength="6" class="ipt-real-nick"/>
+                <div class="ipts-box-nick">
+                    <div class="ipt-fake-box">
+                        <input type="password" >
+                        <input type="password" >
+                        <input type="password" >
+                        <input type="password" >
+                        <input type="password" >
+                        <input type="password" >
+                    </div>
+                </div>
+            </div>
+            <p class="psd clearfix">
+                <span class="red"><!--密码错误,还有<i>2</i>次机会--></span>
+                <span class="paypass">忘记密码?</span>
+            </p>
+            <div class="clearfix d-btn">
+                <button>返回</button>
+                <button>提交</button>
+            </div>
+        </div>
+    </article>
+</main>

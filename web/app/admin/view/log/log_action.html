@@ -1,0 +1,86 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>后台操作{:lang('list')}</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-label">分类名称：</label>
+                <select name="coin" id="select_status" class="layui-select coin">
+
+                </select>
+            </div>
+            <label class="layui-label">时间：</label>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" name="date" id="test">
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('log_action')}" class="layui-btn">显示全部</a>
+
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("log_action")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'id', title: '{:lang("id")}', align: 'center',fixed: true, sort: true},
+                {field: 'admin_name', title: '用户名称', align: 'center',sort: true},
+                {field: 'ip', title: '登录IP', align: 'center',sort: true},
+                {field: 'object', title: '操作内容', align: 'center',sort: true},
+                {field: 'union', title: '关联表', align: 'center',sort: true},
+                {field: 'union_id', title: '关联ID', align: 'center',sort: true},
+                {field: 'type', title: '操作类型', align: 'center',sort: true},
+                {field: 'last_time', title: '操作时间', align: 'center',sort: true},
+
+            ]],
+            limit: 10, //每页默认显示的数量
+            //回调  获取返回的数据
+            done: function(res, curr, count){
+//                  console.log(res.date_num);
+                var cat = res.action;
+                var option = '<option value="">请选择分类</option>';
+                $.each(cat,function (k,v) {
+                    option += '<option value="'+k+'">'+v+'</option>';
+                })
+                $('select.coin').html(option);
+
+            }
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var date = $('#test').val();
+            var cat_id = $('#select_status').val();
+            tableIn.reload({
+                where: {key: key,date:date,cat_id:cat_id}
+            });
+        });
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

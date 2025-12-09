@@ -1,0 +1,235 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>会员提现申请{:lang('list')}</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <!--<div class="layui-inline">-->
+            <!--<label class="layui-label">通证名称：</label>-->
+            <!--<select name="coin" id="select_status" class="layui-select">-->
+            <!--<option value="">请选择通证</option>-->
+            <!--{volist name="coins" id="vo"}-->
+            <!--<option value="{$vo.coin_id}">{$vo.name}</option>-->
+            <!--{/volist}-->
+            <!--</select>-->
+            <!--</div>-->
+
+            <div class="layui-inline">
+                <label class="layui-label">状态：</label>
+                <select id="select_status3" class="layui-select">
+                    <option value="">请选择状态</option>
+                    <option value="0">申请中</option>
+                    <option value="1">已通过</option>
+                    <option value="-1">已撤销</option>
+                </select>
+            </div>
+
+            <label class="layui-label">时间：</label>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" name="date" id="test" style="width: 300px;">
+            </div>
+
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('user_cash')}" class="layui-btn">显示全部</a>
+            <button type="button" class="layui-btn layui-btn-danger" id="delAll">批量审核</button>
+            <button type="button" class="layui-btn layui-btn-warm" id="revoke">批量撤销</button>
+            <button class="layui-btn" id="export">导出</button>
+        </div>
+    </blockquote>
+
+    <div class="layui-inline" style="margin-left: 1rem;">
+        <label class="layui-label" style="margin-right: 1rem">已审批：{$data.num}</label>
+        <label class="layui-label" style="margin-right: 1rem">待审批：{$data.d_num}</label>
+        <label class="layui-label">提现总数量：{$data.d_num+$data.num}</label>
+    </div>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<script type="text/html" id="status">
+    {{# if(d.status==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="">申请中</a>
+    {{# }else if(d.status==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn" lay-event="">已通过</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="">已撤销</a>
+    {{# } }}
+</script>
+<script type="text/html" id="type">
+    {{# if(d.type==1){ }}
+
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="">提现</a>
+    {{# } }}
+</script>
+
+
+<script type="text/html" id="transaction">
+    {{# if(d.transaction_id!=''){ }}
+    <a class="layui-btn layui-btn-xs" target="_blank" href="https://etherscan.io/tx/{{d.transaction_id}}">{{d.transaction_id}}</a>
+    {{# } }}
+</script>
+<script type="text/html" id="operator_time">
+    {{# if(d.operator_time == '1970-01-01 08:00:00'){ }}
+
+    {{# }else{  }}
+    <div class="layui-table-cell">{{d.operator_time}}</div>
+    {{# } }}
+</script>
+
+
+{include file="common/foot"/}
+<script>
+    layui.use('table', function () {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("user_cash")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox: true, fixed: true},
+                {field: 'id', title: '{:lang("id")}', sort: true, align: 'center',},
+                {field: 'user_id', title: '会员编号', sort: true, align: 'center',},
+                //{field: 'number', title: '卖家会员ID', sort: true, align: 'center',},
+                {field: 'username', title: '会员名', sort: true, align: 'center',},
+                {field: 'mobile', title: '手机号', sort: true, align: 'center',},
+                {field: 'id_name', title: '真实姓名', sort: true, align: 'center',},
+                {field: 'name', title: '通证名称', sort: true, align: 'center',},
+                {field: 'wallet', title: '提现钱包地址', align: 'center', sort: true},
+                {field: 'num', title: '提现数量', sort: true, align: 'center',},
+                {field: 'fee', title: '手续费', sort: true, align: 'center',},
+                //{field: 'total', title: '实际到账数量', sort: true, align: 'center',},
+                {field: 'addtime', title: '申请时间', sort: true, align: 'center',},
+                {field: 'operator_time', title: '审批时间', toolbar: '#operator_time', sort: true, align: 'center',},
+                {field: 'operator', title: '审批人', sort: true, align: 'center',},
+                {field: 'status', title: '{:lang("status")}', toolbar: '#status', sort: true, align: 'center',},
+                {field: 'transaction_id', title: 'tx_id', align: 'center', sort: true},
+                {field: 'remark', title: '备注', sort: true, align: 'center'},
+            ]],
+            limit: 10,//每页默认显示的数量
+
+
+        });
+        //搜索
+        $('#search').on('click', function () {
+            var key = $('#key').val();
+            var status1 = $('#select_status').val();
+            var status3 = $('#select_status3').val();
+            var date = $('#test').val();
+
+            tableIn.reload({
+                where: {key: key, status1: status1, status3: status3, date: date}
+            });
+        });
+
+        //导出
+        $('#export').on('click', function () {
+            layer.confirm('确认要导出吗？', {icon: 3}, function (index) {
+                layer.close(index);
+                var key = $('#key').val();
+                var status1 = $('#select_status').val();
+                var status3 = $('#select_status3').val();
+                var date = $('#test').val();
+                window.location.href = "Users/export?" + 'key=' + key + '&status1=' + status1 + '&status3=' + status3 + '&date=' + date;
+            });
+        });
+
+        $('#revoke').click(function () {
+            layer.confirm('确认要撤销选中信息吗？', {icon: 3}, function (index) {
+                layer.close(index);
+                var checkStatus = table.checkStatus('id'); //test即为参数id设定的值
+                console.log(checkStatus);
+                var ids = [];
+                $(checkStatus.data).each(function (i, o) {
+                    ids.push(o.id);
+                });
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                $.post("{:url('revoke')}", {ids: ids}, function (data) {
+                    layer.close(loading);
+                    if (data.code === 1) {
+                        layer.msg(data.msg, {time: 1000, icon: 1});
+                        tableIn.reload();
+                    } else {
+                        layer.msg(data.msg, {time: 1000, icon: 2});
+                    }
+                });
+            });
+        });
+
+        $('#delAll').click(function () {
+            layer.confirm('确认要审核通过选中信息吗？', {icon: 3}, function (index) {
+                layer.close(index);
+                var checkStatus = table.checkStatus('id'); //test即为参数id设定的值
+                console.log(checkStatus);
+                var ids = [];
+                $(checkStatus.data).each(function (i, o) {
+                    ids.push(o.id);
+                });
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                $.post("{:url('cash_delall')}", {ids: ids}, function (data) {
+                    layer.close(loading);
+                    if (data.code === 1) {
+                        layer.msg(data.msg, {time: 1000, icon: 1});
+                        tableIn.reload();
+                    } else {
+                        layer.msg(data.msg, {time: 1000, icon: 2});
+                    }
+                });
+            });
+        });
+
+        table.on('tool(list)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('您确定要撤销该提现申请吗？', function (index) {
+                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+                    $.post("{:url('cancel')}", {id: data.id}, function (res) {
+                        layer.close(loading);
+                        if (res.code === 1) {
+                            layer.msg(res.msg, {time: 1000, icon: 1});
+                            tableIn.reload();
+                        } else {
+                            layer.msg('操作失败！', {time: 1000, icon: 2});
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
+        table.on('tool(list)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'reset') {
+                layer.confirm('您确定要重置该订单状态吗？', function (index) {
+                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+                    $.post("{:url('user_draw_reset')}", {id: data.id}, function (res) {
+                        layer.close(loading);
+                        if (res.code === 1) {
+                            layer.msg(res.msg, {time: 1000, icon: 1});
+                            tableIn.reload();
+                        } else {
+                            layer.msg('操作失败！', {time: 1000, icon: 2});
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            , type: 'datetime'
+            , range: true
+            , theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

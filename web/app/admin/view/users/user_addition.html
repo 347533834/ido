@@ -1,0 +1,102 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>会员能源{:lang('list')}</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <label class="layui-label">时间：</label>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" name="date" id="test">
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('user_addition')}" class="layui-btn">显示全部</a>
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+<script type="text/html" id="status">
+    {{# if(d.status==1){ }}
+    <a class="layui-btn layui-btn-xs">同意</a>
+    {{# }else if(d.status==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm">申请中</a>
+    {{# }else if(d.status==2){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger">拒绝</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="is_owner">
+    {{# if(d.is_owner==1){ }}
+    <a class="layui-btn layui-btn-xs">是</a>
+    {{# }else if(d.is_owner==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm">否</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="is_admin">
+    {{# if(d.is_admin==1){ }}
+    <a class="layui-btn layui-btn-xs">是</a>
+    {{# }else if(d.is_admin==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm">否</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="is_refuse">
+    {{# if(d.is_refuse==1){ }}
+    <a class="layui-btn layui-btn-xs">是</a>
+    {{# }else if(d.is_refuse==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm">否</a>
+    {{# } }}
+</script>
+
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("user_addition")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'user_id', title: '会员ID', align: 'center',fixed: true, sort: true},
+                {field: 'username', title: '会员名', align: 'center',sort: true},
+                {field: 'force', title: '当前算力', align: 'center',sort: true},
+                {field: 'total', title: '总获得算力', align: 'center',sort: true},
+                {field: 'sign_get', title: '签到总获得算力', align: 'center',sort: true},
+                {field: 's1_get', title: '推荐一级算力', align: 'center',sort: true},
+                {field: 's2_get', title: '推荐二级算力', align: 'center',sort: true},
+                {field: 'uptime', title: '更新时间', align: 'center',sort: true},
+
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var  date = $('#test').val();
+            tableIn.reload({
+                where: {key: key,date:date}
+            });
+        });
+
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>广告图片</legend>
+    </fieldset>
+    <div class="demoTable">
+        <a href="{:url('picture_add')}" class="layui-btn"><i class="fa fa-plus" aria-hidden="true"></i>新增广告图片</a>
+        <div style="clear: both;"></div>
+    </div>
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+{include file="common/foot"/}
+
+<script type="text/html" id="action">
+    <a href="{:url('picture_edit')}?id={{d.id}}" class="layui-btn layui-btn-xs">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="status">
+    {{# if(d.status==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">开启</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="status">关闭</a>
+    {{# } }}
+</script>
+<script type="text/html" id="logo">
+    {{# if(d.url != ''){ }}
+    <img class="layui-btn" style="padding: 0" src="{:config('OSS_GLOBAL')['oss_url']}/{{d.url}}?{{d.addtime}}" onclick="parent.layer.alert('<img src={:config(\'OSS_GLOBAL\')[\'oss_url\']}/{{d.url}}?{{d.addtime}}>',{offset: '-10px', area: '550px'});">
+    {{# } }}
+</script>
+<!--<script type="text/html" id="type">-->
+    <!--{{# if(d.type==0){ }}-->
+    <!--<a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="type">首页</a>-->
+    <!--{{# }else if(d.type==1){ }}-->
+    <!--<a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="type">早起挑战</a>-->
+    <!--{{# }else if(d.type==2){  }}-->
+    <!--<a class="layui-btn layui-btn-mini layui-btn-warm" lay-event="type">导航</a>-->
+    <!--{{# }else if(d.type==3){  }}-->
+    <!--<a class="layui-btn layui-btn-mini layui-btn-warm" lay-event="type">首页轮播</a>-->
+    <!--{{# }else if(d.type==4){  }}-->
+    <!--<a class="layui-btn layui-btn-mini layui-btn-warm" lay-event="type">DAPP轮播</a>-->
+    <!--{{# } }}-->
+<!--</script>-->
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("picture")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {field: 'id', title: '{:lang("id")}', align: 'center',fixed: true, sort: true},
+                {field: 'name', title: '图片显示位置', align: 'center',},
+                {field: 'url', title: 'logo', align: 'center',toolbar: '#logo'},
+                {field: 'title', title: '标题',align: 'center',},
+                {field: 'jump_url', title: '跳转地址', align: 'center',},
+                {field: 'sorting', title: '排序', align: 'center',},
+                {field: 'operation', title: '操作人', align: 'center',},
+                //{field: 'jump_url', title: '跳转地址', align: 'center',},
+                {field: 'title', title: '外链标题', align: 'center',},
+                {field: 'addtime', title: '添加时间', align: 'center',},
+                {field: 'status', align: 'center',title: '{:lang("status")}',toolbar: '#status'},
+                {title: '操作',align: 'center', toolbar: '#action'}
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+
+        table.on('tool(list)', function(obj) {
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('您确定要删除吗？', function(index){
+                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+                    $.post("{:url('picture_del')}",{id:data.id},function(res){
+                        layer.close(loading);
+                        if(res.code===1){
+                            layer.msg(res.msg,{time:1000,icon:1});
+                            tableIn.reload();
+                        }else{
+                            layer.msg('操作失败！',{time:1000,icon:2});
+                        }
+                    });
+                    layer.close(index);
+                });
+            }else if (obj.event === 'status') {
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                $.post('{:url("picture_state")}', {'id': data.id}, function (res) {
+                    layer.close(loading);
+                    if (res.status === 1) {
+                        obj.update({
+                            status: '<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">开启</a>'
+                        });
+                    } else {
+                        obj.update({
+                            status: '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="status">关闭</a>'
+                        });
+                    }
+                })
+            }
+        });
+    });
+</script>

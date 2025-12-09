@@ -1,0 +1,90 @@
+{include file="common/head"/}
+
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>问题反馈</legend>
+    </fieldset>
+    <div class="demoTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+        </div>
+        <button class="layui-btn" id="search" data-type="reload">搜索</button>
+        <a href="{:url('work')}" class="layui-btn">显示全部</a>
+    </div>
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+<!--<script type="text/html" id="status">
+    <input type="checkbox" name="status" value="{{d.user_id}}" lay-skin="switch" lay-text="是|否" lay-filter="status" {{ d.status== 0 ? 'checked' : '' }}>
+</script>-->
+<script type="text/html" id="img">
+
+    {{# if(d.img != ''){ }}
+    <img class="layui-btn" style="padding: 0" src="{:config('OSS_GLOBAL')['oss_url']}/{{d.img}}?{{d.addtime}}" onclick="parent.layer.alert('<img src={:config(\'OSS_GLOBAL\')[\'oss_url\']}/{{d.img}}?{{d.addtime}} style=\'width: 100%\'>',{offset: '-10px',width:'100%'});">
+    {{# } }}
+</script>
+
+<script type="text/html" id="action">
+    <a href="{:url('work_edit')}?work_id={{d.work_id}}" class="layui-btn layui-btn-xs">回复</a>
+</script>
+
+<script type="text/html" id="status">
+    {{# if(d.status==1){ }}
+    <a class="" style="color: #0a8415">已回复</a>
+    {{# }else{  }}
+    <a class="" style="color: red">有新消息</a>
+    {{# } }}
+</script>
+
+<!--<script type="text/html" id="status_two">-->
+    <!--{{# if(d.status_two==1){ }}-->
+    <!--<a class="layui-bg-green">已回复</a>-->
+    <!--{{# }else{  }}-->
+    <!--<a class="layui-bg-red" >有新回复</a>-->
+    <!--{{# } }}-->
+<!--</script>-->
+
+{include file="common/foot"/}
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table, form = layui.form, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("work")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox: true, fixed: true},
+                {field: 'user_id', title: '用户ID', align: 'center', fixed: true},
+                {field: 'username', title: '用户名', align: 'center'},
+                {field: 'title', title: '主题', align: 'center'},
+                {field: 'content', title: '描述', align: 'center'},
+                {field: 'img', title: '图片', align: 'center',toolbar:'#img'},
+                {field: 'mobile', title: '手机号码', align: 'center'},
+                {field: 'addtime', title: '添加时间', align: 'center'},
+                {field: 'status', title: '消息状态', align: 'center', toolbar: '#status'},
+//                {field: 'status_two', title: '新回复消息状态', align: 'center', toolbar: '#status_two'},
+                {title: '操作', align: 'center', toolbar: '#action'},
+
+
+
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+//搜索
+        $('#search').on('click', function () {
+            var key = $('#key').val();
+            if ($.trim(key) === '') {
+                layer.msg('{:lang("pleaseEnter")}关键字！', {icon: 0});
+                return;
+            }
+            tableIn.reload({
+                where: {key: key}
+            });
+        });
+
+    });
+</script>
+</body>
+</html>

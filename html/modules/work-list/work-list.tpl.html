@@ -1,0 +1,49 @@
+<main class="content work-list">
+    <section>
+        <div>
+            <h2><%=lang.motivation%></h2>
+            <p><%=lang.Suggestions%></p>
+        </div>
+
+        <div>
+            <p><%=lang.theme%><span>*</span></p>
+            <input type="text" name="title" id="title">
+        </div>
+
+        <div>
+            <p><%=lang.describe%><span>*</span></p>
+            <textarea rows="7" cols="63" id="content" name="content"  placeholder="<%=lang.questions%>"></textarea>
+        </div>
+        <div>
+            <p><span></span><%=lang.Problem%></p>
+            <div class="wechat-ma works">
+
+                <label for="work">
+                    <img id="img1" src="assets/img/finance/bond-bg.png">
+                </label>
+                <input type="file" name="work" id="work" class="none">
+            </div>
+        </div>
+        <div>
+            <p><%=lang.contact%><span>*</span></p>
+            <input type="text" name="mobile" id="mobile">
+        </div>
+        <div class="verification">
+<!--            <p>验证码</p>
+            <input type="text" name="validate_code" id="validate_code" placeholder="请输入验证码"><span class="captcha"><img id="img2" src="assets/img/login/tu-1.png" alt="" style="width: 35%; vertical-align: middle;"></span>-->
+        </div>
+        <button id="btn"><%=lang.Submit%></button>
+    </section>
+
+
+    <article class="box-mask  work-box none">
+        <div>
+<!--
+          <i><img src="assets/img/user/guanbi.png"></i>
+-->
+            <img src="assets/img/user/work-1.png">
+            <p><%=lang.gongdan%></p>
+        </div>
+    </article>
+
+</main>

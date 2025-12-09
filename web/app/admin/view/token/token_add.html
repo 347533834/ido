@@ -1,0 +1,183 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit" ng-app="hd" ng-controller="ctrl">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{$title}</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">映射名称</label>
+            <div class="layui-input-4">
+                <input type="text" name="asset" ng-model="field.asset" placeholder="{:lang('pleaseEnter')}映射名称" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">Token名称</label>
+            <div class="layui-input-4">
+                <input type="text" name="name" ng-model="field.name" placeholder="{:lang('pleaseEnter')}Token名称" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">映射接收地址</label>
+            <div class="layui-input-4">
+                <input type="text" name="asset_addr" ng-model="field.asset_addr" placeholder="{:lang('pleaseEnter')}映射接收地址" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">映射手续费接收地址</label>
+            <div class="layui-input-4">
+                <input type="text" name="fee_asset_addr" ng-model="field.fee_asset_addr" placeholder="{:lang('pleaseEnter')}映射手续费接收地址" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">公链名称</label>
+            <div class="layui-input-4">
+                <input type="text" name="chain" ng-model="field.chain" placeholder="{:lang('pleaseEnter')}公链名称" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">主钱包名称</label>
+            <div class="layui-input-4">
+                <input type="text" name="wallet" ng-model="field.wallet" placeholder="{:lang('pleaseEnter')}主钱包名称" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">公链标识</label>
+            <div class="layui-input-4">
+                <input type="text" name="identifier" ng-model="field.identifier" placeholder="{:lang('pleaseEnter')}公链标识" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">合约地址</label>
+            <div class="layui-input-4">
+                <input type="text" name="contract" ng-model="field.contract" placeholder="{:lang('pleaseEnter')}合约地址" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">转帐消耗资产名称</label>
+            <div class="layui-input-4">
+                <input type="text" name="fee_asset" ng-model="field.fee_asset" placeholder="{:lang('pleaseEnter')}转帐消耗资产名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">普通转账手续费</label>
+            <div class="layui-input-4">
+                <input type="text" name="fee" ng-model="field.fee" placeholder="{:lang('pleaseEnter')}普通转账手续费" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">经济转账手续费</label>
+            <div class="layui-input-4">
+                <input type="text" name="fee_slow" ng-model="field.fee_slow" placeholder="{:lang('pleaseEnter')}经济转账手续费" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">优先转账手续费</label>
+            <div class="layui-input-4">
+                <input type="text" name="fee_fast" ng-model="field.fee_fast" placeholder="{:lang('pleaseEnter')}优先转账手续费" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">简介</label>
+            <div class="layui-input-4">
+                <input type="text" name="desc" ng-model="field.desc" placeholder="{:lang('pleaseEnter')}简介" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-4">
+                <input type="text" name="sorting" ng-model="field.sorting" placeholder="{:lang('pleaseEnter')}排序" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">最大发行量</label>
+            <div class="layui-input-4">
+                <input type="text" name="issue_max" ng-model="field.issue_max" placeholder="{:lang('pleaseEnter')}最大发行量" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">初始数量</label>
+            <div class="layui-input-4">
+                <input type="text" name="issued_num" ng-model="field.issued_num" placeholder="{:lang('pleaseEnter')}初始数量" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">转入的数量</label>
+            <div class="layui-input-4">
+                <input type="text" name="transfer_in" ng-model="field.transfer_in" placeholder="{:lang('pleaseEnter')}转入的数量" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">总转出的量</label>
+            <div class="layui-input-4">
+                <input type="text" name="transfer_out" ng-model="field.transfer_out" placeholder="{:lang('pleaseEnter')}总转出的量" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否开启</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" ng-model="field.status" ng-checked="field.status==1" ng-value="1" title="开启">
+                <input type="radio" name="status" ng-model="field.status" ng-checked="field.status==0" ng-value="0" title="未开启">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+                <a href="{:url('index')}" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<script>
+    var m = angular.module('hd',[]);
+    m.controller('ctrl',['$scope',function($scope) {
+        $scope.field = '{$info}'!='null'?{$info}:{asset:'',name:'',asset_addr:'',fee_asset_addr:'',chain:'',transfer_in:'',transfer_out:'',fee_asset:'',fee:'',fee_slow:'',fee_fast:'',desc:'',status:'',issue_max:'',issued_num:''};
+        layui.use(['form', 'layer'], function () {
+            var form = layui.form, $ = layui.jquery;
+            form.on('submit(submit)', function (data) {
+                // 提交到方法 默认为本身
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                data.field.date = $scope.field.date;
+                $.post("", data.field, function (res) {
+                    layer.close(loading);
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+                            location.href = res.url;
+                        });
+                    } else {
+                        layer.msg(res.msg, {time: 1800, icon: 2});
+                    }
+                });
+            })
+        });
+    }]);
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'date'
+            ,range: false
+            ,theme: 'molv'
+        });
+    });
+</script>
+

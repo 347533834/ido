@@ -1,0 +1,55 @@
+.invitation{
+    padding-top: 2.75rem;
+
+}
+.invitation>.invitation-bg{
+    position: relative;
+    width: 100%;
+    min-height:52rem;
+    background: url(../../../assets/img/user/background.png) center/100% 100% no-repeat;
+}
+.invitation>.invitation-bg>p:nth-of-type(1){
+    position: absolute;
+    top: 19%;
+    left: 33%;
+    color: white;
+    font-size: 1.5rem;
+}
+.invitation>.invitation-bg>p:nth-of-type(2){
+    position: absolute;
+    top: 25%;
+    left: 27.5%;
+}
+.invitation>.invitation-bg>p:nth-of-type(2)>img{
+    width: 7.5rem;
+    height: 7.5rem;
+    border: 15px solid #ffffff;
+    border-radius: 5px;
+}
+.invitation>.invitation-bg>p:nth-of-type(3){
+    position: absolute;
+    top: 65%;
+    left: 31%;
+    color: white;
+    font-size: .75rem;
+}
+.invitation>.invitation-bg>ul{
+    position: absolute;
+    /*bottom: 6.5%;*/
+    bottom: 37.5%;
+    left: 14%;
+    color: white;
+    font-size: .7rem;
+    width: 75%;
+}
+.invitation>.invitation-bg>ul>li>i{
+    display: inline-block;
+    background-color: white;
+    width: .5rem;
+    height: .5rem;
+    margin-right: .3rem;
+}
+.invitation>.invitation-bg>ul>li{
+    padding-bottom: .3rem;
+    line-height: 1.1rem;
+}

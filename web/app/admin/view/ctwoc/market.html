@@ -1,0 +1,139 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>委托记录</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-label">通证名称：</label>
+                <select name="coin_id" id="select_status2" class="layui-select coin">
+                    <option value="">全部</option>
+                    {foreach name='cat' item='v'}
+                    <option value="{$v.coin_id}" name="main_coin_name">{$v.name}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <label class="layui-label">时间：</label>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" name="date" id="test" style="width: 300px;">
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('market')}" class="layui-btn">显示全部</a>
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<script type="text/html" id="action">
+    {{# if(d.status==0 || d.status==1){ }}
+
+    <a class="layui-btn layui-btn layui-btn-xs" lay-event="repeal">撤销</a>
+    {{# } }}
+</script>
+<script type="text/html" id="type">
+    {{# if(d.type==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn" lay-event="">挂买</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="">挂卖</a>
+    {{# } }}
+</script>
+<script type="text/html" id="status">
+    {{# if(d.status==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="">未成交</a>
+    {{# }else if(d.status==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="">部分成交</a>
+    {{# }else if(d.status==2){ }}
+    <a class="layui-btn layui-btn-xs layui-btn" lay-event="">已成交</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="">已撤销</a>
+    {{# } }}
+</script>
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("market")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'market_id', title: '{:lang("id")}',align: 'center',fixed: true, sort: true},
+                //{field: 'user_id', title: '会员ID', align: 'center',sort: true},
+                //{field: 'username', title: '会员名', align: 'center',sort: true},
+                {field: 'mobile', title: '手机号', align: 'center'},
+                {field: 'id_name', title: '真实姓名', align: 'center'},
+                {field: 'type', title: '交易类型', align: 'center',sort: true,toolbar: '#type'},
+                {field: 'name', title: '通证名称', align: 'center',sort: true},
+                {field: 'price', title: '价格(USDT)', align: 'center',sort: true},
+                {field: 'num', title: '数量', align: 'center',sort: true},
+                {field: 'total', title: '总额(USDT)', align: 'center',sort: true},
+                {field: 'deal_num', title: '成交数量', align: 'center',sort: true},
+                {field: 'deal_total', title: '成交额(USDT)', align: 'center',sort: true},
+                {field: 'fee', title: '手续费', align: 'center',sort: true},
+                {field: 'deal_fee', title: '成交手续费', align: 'center',sort: true},
+                {field: 'status', title: '状态', align: 'center',sort: true,toolbar: '#status'},
+                {field: 'addtime', title: '添加时间', align: 'center',sort: true},
+//                {field: 'remark', title: '备注', align: 'center',sort: true},
+//                {title: '操作', align: 'center', toolbar: '#action', width: 160}
+
+            ]],
+            limit: 10, //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var  date = $('#test').val();
+            var coin_id = $('#select_status2').val();
+            tableIn.reload({
+                where: {key: key,date:date,coin_id:coin_id}
+            });
+        });
+        table.on('tool(list)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'pass'){
+                layer.confirm('确定交易通过吗？', function(index){
+                    $.post("{:url('pass')}",{id:data.market_id},function(res){
+                        if(res.code==1){
+                            layer.msg(res.msg,{time:1000,icon:1});
+
+                        }else{
+                            layer.msg(res.msg,{time:1000,icon:2});
+                        }
+                    });
+                    location.reload();
+                });
+            }else if(obj.event === 'repeal'){
+                layer.confirm('确定交易撤销吗？', function(index){
+                    $.post("{:url('repeal')}",{id:data.market_id,type:data.type},function(res){
+                        if(res.code==1){
+                            layer.msg(res.msg,{time:1000,icon:1});
+
+                        }else{
+                            layer.msg(res.msg,{time:1000,icon:2});
+                        }
+                    });
+                    location.reload();
+                });
+            };
+        });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+    });
+
+</script>
+</body>
+</html>

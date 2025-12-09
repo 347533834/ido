@@ -1,0 +1,87 @@
+<main class="content coin">
+    <section class="sec-2">
+        <div class="yes-data">
+            <p class="orange" id="morning_notice"></p>
+            <p><span>买币</span></p>
+            <div class="buy">
+                <p>
+                    <span>购买数量</span>
+                    <input type="number" placeholder="" id="count">
+                    <i class="exch_coin_name">USDT</i>
+                </p>
+                <p>
+                    <span>支付方式</span>
+                    <select class="morning_price" id="payType"
+                            style="width: 80%;text-align-last: right;font-size: .78rem;font-weight: bold;">
+                        <option value="">选择支付方式</option>
+                        <option value="Bao">支付宝</option>
+                        <option value="Wechat">微信</option>
+                        <option value="Bank">银行</option>
+                    </select>
+                </p>
+                <button id="otc_buy">购买</button>
+            </div>
+            <p><span>卖币</span></p>
+            <div class="buy sell">
+                <p>
+                    <span>出售数量</span>
+                    <input type="number" placeholder="" id="count_sell">
+                    <i class="exch_coin_name">USDT</i>
+                </p>
+                <p>
+                    <span>收款方式</span>
+                    <select class="morning_price" id="payType_sell"
+                            style="width: 80%;text-align-last: right;font-size: .78rem;font-weight: bold;">
+                        <option value="">选择收款方式</option>
+                        <option value="Bao">支付宝</option>
+                        <option value="Wechat">微信</option>
+                        <option value="Bank">银行</option>
+                    </select>
+                </p>
+                <p>
+                    <span>真实姓名</span>
+                    <input type="text" placeholder="" id="real_name">
+                </p>
+                <p class="select_bank" style="display: none">
+                    <span>收款银行</span>
+                    <select class="morning_price" id="bankCode"
+                            style="width: 80%;text-align-last: right;font-size: .78rem;font-weight: bold;">
+                        <option value="">选择银行</option>
+                        <option value="icbc">工商银行</option>
+                        <option value="ccb">建设银行</option>
+                        <option value="abc">农业银行</option>
+                        <option value="comm">交通银行</option>
+                        <option value="cmb">招商银行</option>
+                        <option value="spdb">浦发银行</option>
+                        <option value="cib">兴业银行</option>
+                        <option value="boc">中国银行</option>
+                        <option value="post">邮政储蓄</option>
+                        <option value="ecitic">中信银行</option>
+                        <option value="cmbc">民生银行</option>
+                        <option value="ceb">光大银行</option>
+                        <option value="hxb">华夏银行</option>
+                        <option value="pab">平安银行</option>
+                        <option value="gdb">广发银行</option>
+                    </select>
+                </p>
+                <p class="select_bank" style="display: none">
+                    <span>银行卡号</span>
+                    <input type="text" placeholder="" id="no">
+                </p>
+                <p class="select_bank" style="display: none">
+                    <span>支行名称</span>
+                    <input type="text" placeholder="" id="bankBranch">
+                </p>
+                <button id="otc_sell">出售</button>
+            </div>
+        </div>
+        <p class="clearfix commission-1 out-url" id="buyListUrl" data-title="买单列表" data-jump="https://buy">
+            <span>买单列表</span>
+            <span><img src="assets/img/coin/img-4.png"></span>
+        </p>
+        <p class="clearfix commission-1 out-url" id="sellListUrl" data-title="卖单列表" data-jump="https://sell">
+            <span>卖单列表</span>
+            <span><img src="assets/img/coin/img-4.png"></span>
+        </p>
+    </section>
+</main>

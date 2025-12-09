@@ -1,0 +1,96 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>充值管理</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('trx_coin')}" class="layui-btn">显示全部</a>
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<!--<script type="text/html" id="type">
+    {{# if(d.type==1){ }}
+    投资
+    {{# }else if(d.type==2){  }}
+    复投
+    {{# }else if(d.type==666){  }}
+    释放
+    {{# }else if(d.type==667){  }}
+    超级节点
+    {{# }else if(d.type==33){  }}
+    补充超级节点释放
+    {{# }else if(d.type==34){  }}
+    补充超级节点释放超出限制
+    {{# } }}
+</script>-->
+<script type="text/html" id="status">
+{{# if(d.status==0){ }}
+<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="">未确认</a>
+{{# }else if(d.status==1){ }}
+<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="">确认</a>
+{{# }else{  }}
+<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="">已到账</a>
+{{# } }}
+</script>
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("trx_coin")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'id', title: '编号',align: 'center',fixed: true ,sort: true},
+                {field: 'txid', title: '交易ID', align: 'center'  },
+                {field: 'number', title: '会员ID', align: 'center'  },
+                {field: 'username', title: '会员名', align: 'center'  },
+                {field: 'name', title: '通证名称', align: 'center'  },
+                {field: 'fee', title: '手续费', align: 'center'  },
+                {field: 'from', title: '发送者', align: 'center'  },
+                {field: 'to', title: '接收者', align: 'center'  },
+                {field: 'amount', title: '转账数量', align: 'center'  },
+                {field: 'propid', title: 'PropertyID', align: 'center'  },
+                {field: 'addtime', title: '交易时间', align: 'center'  },
+                {field: 'block', title: '区块高度', align: 'center'  },
+                {field: 'blocktime', title: '区块时间', align: 'center'  },
+                {field: 'confirms', title: '确认数', align: 'center'  },
+                {field: 'contract', title: '合约地址', align: 'center'  },
+                {field: 'status', title: '状态', align: 'center', toolbar: '#status'},
+
+
+
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var  date = $('#test').val();
+            tableIn.reload({
+                where: {key: key,date:date}
+            });
+        });
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

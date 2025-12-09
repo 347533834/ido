@@ -1,0 +1,213 @@
+<main class="content coin">
+    <section class="sec-1">
+        <div>
+            <img src="assets/img/coin/IDO.png" id="coin_logo">
+        </div>
+        <div>
+            <p><span>最新价</span></p>
+            <p><span id="new_price"><!--6.8707 USDT--></span></p>
+            <p><span id="new_price_cny"><!--≈52.28 CNY--></span></p>
+        </div>
+        <div id="change_rate" style="display: none">
+            <p><span>跌涨幅</span></p>
+            <p><span class="green">+0.00%</span></p>
+        </div>
+    </section>
+    <div class="site" style="display: none">
+        <p class="active" id="change_morning"><span>上午场</span></p>
+        <p id="change_afternoon"><span>下午场</span></p>
+    </div>
+    <!--上午场-->
+    <section class="sec-2">
+        <!--无数据-->
+        <div class="no-data none">
+            <img src="assets/img/coin/img-2.png">
+        </div>
+        <!--有数据-->
+        <div class="yes-data">
+            <p class="orange" id="morning_notice"><!--每天09:00到12:00以平台标价兑换，先到先得！--></p>
+            <p><span>挂买</span></p>
+            <div class="buy">
+                <p>
+                    <span>购买数量</span>
+                    <input type="number" placeholder="可买0" id="morning_buy_num">
+                    <i class="exch_coin_name">IDO</i>
+                </p>
+                <p>
+                    <span>今日单价</span>
+                    <span class="morning_price">0</span>
+                    <i class="main_coin_name">USDT</i>
+                </p>
+                <p>
+                    <span>手续费</span>
+                    <span id="morning_buy_fee">0.00</span>
+                    <i class="main_coin_name">USDT</i>
+                </p>
+                <p>
+                    <span>应付数量</span>
+                    <input type="number" placeholder="可用0" id="main_coin_balance" readonly>
+                    <i class="main_coin_name">USDT</i>
+                </p>
+                <button id="trade_buy">挂买</button>
+            </div>
+            <p><span>挂卖</span></p>
+            <div class="buy sell">
+                <p>
+                    <span>出售数量</span>
+                    <input type="number" placeholder="可用0" id="morning_sell_num">
+                    <i class="exch_coin_name">IDO</i>
+                </p>
+                <p>
+                    <span>今日单价</span>
+                    <span class="morning_price">0</span>
+                    <i class="main_coin_name">USDT</i>
+                </p>
+                <p>
+                    <span>手续费</span>
+                    <span id="morning_sell_fee">0.00</span>
+                    <i class="main_coin_name">USDT</i>
+                </p>
+                <p>
+                    <span>应收数量</span>
+                    <span id="morning_sell_total">0.00</span>
+                    <i class="main_coin_name">USDT</i>
+                </p>
+                <button id="trade_sell">挂卖</button>
+            </div>
+        </div>
+        <p class="clearfix commission-1" id="morning_current_order">
+            <span>上午场当前委托</span>
+            <span><img src="assets/img/coin/img-4.png"></span>
+        </p>
+        <p class="clearfix commission-1" id="morning_history_order">
+            <span>上午场历史订单</span>
+            <span><img src="assets/img/coin/img-4.png"></span>
+        </p>
+    </section>
+
+
+    <!--下午场-->
+    <section class="sec-3 none">
+        <!--无数据-->
+        <div class="no-data none">
+            <img src="assets/img/coin/img-3.png">
+        </div>
+        <!--有数据-->
+        <div class="yes-data">
+            <p class="orange" id="afternoon_notice"><!--每天15:00到17:00可自由交易--></p>
+            <p><span>发布委托</span></p>
+            <div class="entrust">
+                <p>
+                    <span>出售数量</span>
+                    <input type="number" placeholder="可用0" id="afternoon_sell_num">
+                    <i class="exch_coin_name">IDO</i>
+                </p>
+                <p>
+                    <span>出售单价</span>
+                    <input type="number" placeholder="最低0" id="afternoon_price">
+                    <i class="main_coin_name">USDT</i>
+                </p>
+                <p>
+                    <span>手续费</span>
+                    <span id="afternoon_sell_fee">0.00</span>
+                    <i class="main_coin_name">USDT</i>
+                </p>
+                <p>
+                    <span>应收数量</span>
+                    <span id="afternoon_sell_total">0.00</span>
+                    <i class="main_coin_name">USDT</i>
+                </p>
+                <button id="market_sell">提交</button>
+            </div>
+        </div>
+        <p class="clearfix" id="market_lists">
+            <span>下午场购买列表</span>
+            <span><img src="assets/img/coin/img-4.png"></span>
+        </p>
+        <p class="clearfix commission-1" id="afternoon_current_order">
+            <span>下午场当前委托</span>
+            <span><img src="assets/img/coin/img-4.png"></span>
+        </p>
+        <p class="clearfix commission-1" id="afternoon_history_order">
+            <span>下午场历史订单</span>
+            <span><img src="assets/img/coin/img-4.png"></span>
+        </p>
+    </section>
+
+
+    <!--弹窗-->
+    <article class="box-mask box-coin none">
+        <div>
+            <ul>
+                <!-- <li>
+                     <p><img src="assets/img/coin/eth.png"></p>
+                     <p>ETH/USDT</p>
+                 </li>
+                 <li>
+                     <p><img src="assets/img/coin/eth.png"></p>
+                     <p>ETH/USDT</p>
+                 </li>
+                 <li>
+                     <p><img src="assets/img/coin/eth.png"></p>
+                     <p>ETH/USDT</p>
+                 </li>-->
+                <!--<li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>
+                <li>
+                    <p><img src="assets/img/coin/eth.png"></p>
+                    <p>ETH/USDT</p>
+                </li>-->
+            </ul>
+            <!--<p>
+                <img src="assets/img/coin/right.png">
+                <img src="assets/img/coin/left.png">
+            </p>-->
+        </div>
+    </article>
+</main>

@@ -1,0 +1,91 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>USDT充值管理</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-label">状态：</label>
+                <select name="status" id="select_status" class="layui-select" lay-verify="required" ng-model="field.code"
+                        ng-options="v.code as v.name for v in country" ng-selected="v.code==field.code">
+                    <option value="">全部</option>
+                    <option value="0">未确认</option>
+                    <option value="1">确认</option>
+                    <option value="2">已到账</option>
+                </select>
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('trx_usdt')}" class="layui-btn">显示全部</a>
+        </div>
+    </blockquote>
+    <div class="layui-inline" style="margin-left: 1rem;">
+        <label class="layui-label">充值总数量：{$data.num}</label>
+    </div>
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+<script type="text/html" id="status">
+    {{# if(d.status==0){ }}
+    <a class="" lay-event="">未确认</a>
+    {{# }else if(d.status==1){ }}
+    <a class="" lay-event="">确认</a>
+    {{# }else{  }}
+    <a class="" lay-event="">已到账</a>
+    {{# } }}
+</script>
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("trx_usdt")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'id', title: '编号',align: 'center',fixed: true ,sort: true,width:80},
+                {field: 'user_id', title: '会员ID', align: 'center',width:100},
+                {field: 'id_name', title: '姓名', align: 'center',width:100},
+                {field: 'mobile', title: '手机', align: 'center',width:120},
+                {field: 'txid', title: '交易ID', align: 'center',width:520},
+                {field: 'fee', title: '手续费', align: 'center',width:120},
+                {field: 'from', title: '发送者', align: 'center',width:300},
+                {field: 'to', title: '接收者', align: 'center',width:300},
+                {field: 'amount', title: '转账数量', align: 'center',width:100},
+                {field: 'propid', title: 'PropertyID', align: 'center',width:100},
+                {field: 'addtime', title: '交易时间', align: 'center',width:180},
+                {field: 'block', title: '区块高度', align: 'center',width:100},
+                {field: 'blocktime', title: '区块时间', align: 'center',width:180},
+                {field: 'confirms', title: '确认数', align: 'center',width:100},
+                {field: 'status', title: '状态', align: 'center',toolbar: '#status',width:100},
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var  date = $('#test').val();
+            var status = $('#select_status').val();
+            tableIn.reload({
+                where: {key: key,date:date,status:status}
+            });
+        });
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

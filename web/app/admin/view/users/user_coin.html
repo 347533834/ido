@@ -1,0 +1,186 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>会员资产{:lang('list')}</legend>
+    </fieldset>
+    <div class="demoTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+        </div>
+        <!--<div class="layui-inline">-->
+            <!--<label class="layui-label">通证名称：</label>-->
+            <!--<select name="coin" id="select_status" class="layui-select coin" lay-verify="required"-->
+                    <!--ng-model="field.code"-->
+                    <!--ng-options="v.code as v.name for v in country" ng-selected="v.code==field.code">-->
+            <!--</select>-->
+        <!--</div>-->
+
+        <div class="layui-inline">
+            <label class="layui-label">通证名称：</label>
+            <select name="coin" id="select_status" class="layui-select" lay-verify="required" ng-model="field.code"
+                    ng-options="v.code as v.name for v in country" ng-selected="v.code==field.code">
+                <option value="">请选择</option>
+                <option value="1">IDO</option>
+                <option value="2">USDT</option>
+                <option value="23">ACH</option>
+                <option value="24">FID</option>
+            </select>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-label">价格排序：</label>
+            <select name="sort" id="sort" class="layui-select" lay-verify="required" ng-model="field.code"
+                    ng-options="v.code as v.name for v in country" ng-selected="v.code==field.code">
+                <option value="asc">升序</option>
+                <option value="desc">降序</option>
+            </select>
+        </div>
+
+        <button class="layui-btn" id="search" data-type="reload">搜索</button>
+        <a href="{:url('user_coin')}" class="layui-btn">显示全部</a>
+        <button class="layui-btn" id="allbean" data-type="allbean">批量拨豆豆</button>
+        <button class="layui-btn" id="add_fid" data-type="add_fid">确认拨豆豆</button>
+       <!-- <div class="layui-inline">
+            <label class="layui-label">手机号：</label>
+        　　　<textarea rows="3" cols="20"></textarea>
+            <button class="layui-btn" id="search" data-type="reload">确认</button>
+        </div>-->
+    </div>
+
+    <div class="layui-inline" style="margin-left: 1rem;margin-top: 1rem;">
+        <label class="layui-label" style="margin-right: 1rem">USDT总数：{$data[1]['balance']}</label>
+        <label class="layui-label" style="margin-right: 1rem">IDO总数：{$data[0]['balance']}</label>
+        <label class="layui-label">ACH总数：{$data[2]['balance']}</label>
+    </div>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+<script type="text/html" id="action">
+    <button data-coin="{{d.coin_id}}" data-uid="{{d.user_id}}" class="layui-btn layui-btn-xs exchange-coin">修改余额</button>
+</script>
+
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'user_id',
+            elem: '#list',
+            url: '{:url("user_coin")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox: true, fixed: true},
+                {field: 'user_id', title: '用户ID', align: 'center', fixed: true,sort:true},
+                {field: 'username', title: '用户名', align: 'center',},
+                {field: 'mobile', title: '手机号', align: 'center',},
+                {field: 'id_name', title: '真实姓名', align: 'center',},
+                {field: 'name', title: '通证名称', align: 'center',},
+                {field: 'balance', title: '余额', align: 'center',},
+//                {field: 'froze', title: '冻结', align: 'center',},
+                {field: 'wallet', title: '本地钱包地址', align: 'center',},
+                {title: '操作', align: 'center', toolbar: '#action'}
+            ]],
+            limit: 10, //每页默认显示的数量
+            done: function (res, curr, count) {
+                var coin = res.coin;
+                var option = '<option value="">请选择通证</option>';
+                $.each(coin, function (k, v) {
+                    option += '<option value="' + v.coin_id + '">' + v.name + '</option>';
+                })
+                $('select.coin').html(option);
+
+            }
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var status1 = $('#select_status').val();
+            var sort = $('#sort').val();
+            tableIn.reload({
+                where: {key: key,status1:status1,sort:sort}
+            });
+        });
+
+      $('#allbean').on('click', function() {
+        layer.prompt({title: '请输入需要拨豆豆的手机号码,多个手机号码请用英文空隔分开', formType: 2,maxlength: 500000}, function (text, index) {
+          var loading = layer.load(1, {shade: [0.1, '#fff']});
+          console.log(text);
+          $.post("{:url('bean')}", {text: text}, function (res) {
+            layer.close(loading);
+            if (res.code === 1) {
+              layer.msg(res.msg, {time: 1000, icon: 1});
+              tableIn.reload();
+            } else {
+              layer.msg('操作失败！', {time: 1000, icon: 2});
+            }
+            layer.close(index);
+          });
+        });
+      });
+
+      $('#add_fid').on('click', function() {
+          layer.confirm('您确定要拨豆豆吗？', function (index) {
+            var loading = layer.load(1, {shade: [0.1, '#fff']});
+            $.post("{:url('add_fid')}", {}, function (res) {
+              layer.close(loading);
+              if (res.code === 1) {
+                layer.msg(res.msg, {time: 1000, icon: 1});
+                tableIn.reload();
+              } else {
+                layer.msg('操作失败！', {time: 1000, icon: 2});
+              }
+              layer.close(index);
+            });
+            layer.close(index);
+          });
+
+      });
+
+      $(document).on('click', '.exchange-coin', function () {
+        var coin_id = $(this).data('coin');
+        var user_id = $(this).data('uid');
+        layer.prompt({ title: '请输入数量 (注:负数减少)',},function (val, index) {
+          layer.close(index);
+          $.post('{:url("exchange")}', {coin_id: coin_id, user_id: user_id, num: val}, function (data) {
+            if (data.code === 1) {
+              layer.msg(data.msg, {time: 1000, icon: 1});
+              tableIn.reload();
+            } else {
+              layer.msg(data.msg, {time: 1000, icon: 2});
+            }
+          });
+
+        });
+
+      });
+
+
+        table.on('tool(list)', function(obj) {
+            var data = obj.data;
+            if (obj.event === 'status') {
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                $.post('{:url("usersState")}', {'id': data.id}, function (res) {
+                    layer.close(loading);
+                    if (res.code ===1) {
+                        if (res.status === 1) {
+                            obj.update({
+                                status: '<a class="layui-btn layui-btn-mini layui-btn-warm" lay-event="status">正常</a>'
+                            });
+                        } else {
+                            obj.update({
+                                status: '<a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="status">禁用</a>'
+                            });
+                        }
+                    } else {
+                        layer.msg('操作失败！', {time: 1000, icon: 2});
+                        return false;
+                    }
+                })
+            }
+        });
+    });
+</script>
+</body>
+</html>

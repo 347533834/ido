@@ -1,0 +1,91 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit" ng-app="hd" ng-controller="ctrl">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{$title}</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">币种</label>-->
+            <!--<div class="layui-input-4">-->
+
+                <!--<select name="coin_id">-->
+                    <!--<option value=""></option>-->
+                    <!--{foreach name='cat' item='v'}-->
+                    <!--<option value="{$v.coin_id}" {if condition="$v.coin_id eq $infos['coin_id']" } selected="selected"{/if}>{$v.name} </option>-->
+                    <!--{/foreach}-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">IDO匹配比例(%)</label>
+            <div class="layui-input-4">
+                <input type="text" name="rate_1" ng-model="field.rate_1" lay-verify="required" placeholder="{:lang('pleaseEnter')}匹配比例" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">ACH匹配比例(%)</label>
+            <div class="layui-input-4">
+                <input type="text" name="rate_23" ng-model="field.rate_23" lay-verify="required" placeholder="{:lang('pleaseEnter')}匹配比例" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">FID匹配比例(%)</label>
+            <div class="layui-input-4">
+                <input type="text" name="rate_24" ng-model="field.rate_24" lay-verify="required" placeholder="{:lang('pleaseEnter')}匹配比例" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">最小业绩</label>
+            <div class="layui-input-4">
+                <input type="text" name="min" ng-model="field.min" lay-verify="required" placeholder="{:lang('pleaseEnter')}最小业绩" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">最大业绩</label>
+            <div class="layui-input-4">
+                <input type="text" name="max" ng-model="field.max" lay-verify="required" placeholder="{:lang('pleaseEnter')}最大业绩" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否开启</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" ng-model="field.status" ng-checked="field.status==1" ng-value="1" title="开启">
+                <input type="radio" name="status" ng-model="field.status" ng-checked="field.status==0" ng-value="0" title="未开启">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+                <a href="{:url('matching')}" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<script>
+    var m = angular.module('hd',[]);
+    m.controller('ctrl',['$scope',function($scope) {
+        $scope.field = '{$info}'!='null'?{$info}:{coin_id:'',matching_id:'',rate:'',min:'',max:'',status:1};
+        layui.use(['form', 'layer'], function () {
+            var form = layui.form, $ = layui.jquery;
+            form.on('submit(submit)', function (data) {
+                // 提交到方法 默认为本身
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                data.field.matching_id = $scope.field.matching_id;
+                $.post("", data.field, function (res) {
+                    layer.close(loading);
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+                            location.href = res.url;
+                        });
+                    } else {
+                        layer.msg(res.msg, {time: 1800, icon: 2});
+                    }
+                });
+            })
+        });
+    }]);
+</script>

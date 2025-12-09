@@ -1,0 +1,59 @@
+.feedback-record {
+    background-color: #f2f2f2;
+    padding-bottom: 2rem;
+}
+
+.feedback-record .ARROW {
+    font-family: "宋体";
+    font-weight: bolder;
+    font-size: .8rem;
+    color:#999999;
+    margin-left:.1rem;
+}
+.feedback-record>ul{
+    padding-top:3.8rem;
+}
+.feedback-record>ul >li{
+    margin:0 .8rem .8rem;
+    background-color:white ;
+    padding-bottom: .8rem;
+    box-shadow: 0 0 3px 3px #e9e9e9;
+
+}
+.feedback-record .no_data img{
+    width:11rem;
+}
+.feedback-record>ul >li >p{
+    color:#999999;
+    line-height: 2rem;
+    border-bottom:1px solid #ececec;
+    padding:0 .8rem;
+    font-size: .65rem;
+}
+.feedback-record>ul >li >p>span:nth-child(2)>span{
+    color:#5095eb;
+}
+.feedback-record>ul >li >p>span:nth-child(2)>span.has{
+    color:#999999;
+}
+.feedback-record>ul >li>div{
+    padding:0 .8rem;
+}
+.feedback-record>ul >li>div>h1{
+     margin:1rem 0 .5rem;
+ }
+.feedback-record>ul >li>div>p{
+ font-size: .6rem;
+    color:#999999;
+}
+
+.feedback-record>ul >li>div>h1>span{
+   color:#999999;
+
+}
+
+.feedback-record .no_data>img {
+    width: 48%;
+    margin-top: 2rem;
+}
+

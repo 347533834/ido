@@ -1,0 +1,112 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit" ng-app="hd" ng-controller="ctrl">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{$title}</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane">
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">实名：</label>
+            <div class="layui-input-4">
+                <input type="text" name="id_name" value="{$info.id_name}" placeholder="{:lang('pleaseEnter')}实名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份证：</label>
+            <div class="layui-input-4">
+                <input type="text" name="id_card" value="{$info.id_card}" placeholder="{:lang('pleaseEnter')}身份证" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份证正面：</label>
+            <div class="layui-input-4">
+                <div id="layer-photos-demo" class="layer-photos-demo">
+                    <img layer-pid="" layer-src="" src="{$info.front_attach}" id="img" alt="身份证正面" style=" width: 50rem">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份证反面：</label>
+            <div class="layui-input-4">
+                <div id="layer-photos-demo1" class="layer-photos-demo">
+                    <img layer-pid="" layer-src="" src="{$info.back_attach}" id="img0" alt="身份证反面" style=" width: 50rem">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">手持身份证：</label>
+            <div class="layui-input-4">
+                <div id="layer-photos-demo2" class="layer-photos-demo">
+                    <img layer-pid="" layer-src="" src="{$info.hand_attach}" id="img2" alt="手持身份证" style=" width: 50rem">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"> 操作类型：  </label>
+            <div class="layui-input-4">
+                <select name="status" class="selected">
+                    <option value="0">待审核</option>
+                    <option value="1">通过</option>
+                    <option value="-1">不合格</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"> 备注信息：  </label>
+            <div class="layui-input-4">
+                <textarea  name="remark" cols="60" rows="4" >{$info.remark}</textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+                <a href="{:url('idaudit')}" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+            </div>
+        </div>
+        <input name="user_id" type="hidden" value="{$info.user_id}">
+    </form>
+</div>
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<script>
+    var m = angular.module('hd',[]);
+    m.controller('ctrl',['$scope',function($scope) {
+        $scope.field = '{$info}'!='null'?{$info}:{id_name:'',id_card:'',status:'',remark:'',user_id:''};
+        layui.use(['form', 'layer'], function () {
+            var form = layui.form, $ = layui.jquery;
+            form.on('submit(submit)', function (data) {
+                // 提交到方法 默认为本身
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                data.field.date = $scope.field.date;
+                $.post("", data.field, function (res) {
+                    layer.close(loading);
+                    if (res.code > 0) {
+                        layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+                            location.href = res.url;
+                        });
+                    } else {
+                        layer.msg(res.msg, {time: 1800, icon: 2});
+                    }
+                });
+            })
+        });
+    }]);
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'date'
+            ,range: false
+            ,theme: 'molv'
+        });
+    });
+</script>

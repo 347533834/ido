@@ -1,0 +1,62 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>会员关系{:lang('list')}</legend>
+    </fieldset>
+    <div class="demoTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+        </div>
+        <button class="layui-btn" id="search" data-type="reload">搜索</button>
+        <a href="{:url('userRela')}" class="layui-btn">清空</a>
+    </div>
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<div class="page-content" id="page-contents">
+    <div class="page-contents" style="padding:0px;margin: 60px 20px 10px;border: 1px solid black;width: 750px" id="{$user.user_id}">
+        <button class="button" data-user_id="{$user.user_id}">点击加载更多</button><span>=={$user.user_id}/{$user.username}/{$user.mobile}/{:date('Y-m-d',$user['addtime'])}（ 直推：{$user.direct}，军团：{$user.team}）---------上级ID：{$user.pid}</span>
+    </div><!-- /.page-content -->
+</div>
+{include file="common/foot"/}
+<script>
+    layui.use(['jquery','layer'],function(){
+        var $ = layui.jquery,layer=layui.layer;
+        $('#page-contents').on('click','.page-contents .button',function(){
+            var url = '{:url("userRela")}';
+            var pid = $(this).data('user_id');
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                type: 'post',
+                data: {pid: pid},
+                success: function (result) {
+                    var margin_left = parseInt($('#' + pid).css('margin-left'));
+                    var html = '';
+                    for ($k in result) {
+                        html += ' <div class="page-contents" style="padding:0;margin:10px 10px 10px ' + (margin_left + 20) + 'px ;border: 1px solid black;width: 750px" id="' + result[$k].user_id + '">';
+                        if (result[$k].direct) {
+                            html += '<button class="button" data-user_id="'+result[$k].user_id+'">点击加载更多</button>';
+                        }
+                        html += '<span>' + result[$k].user_id + '/' + result[$k].username + '/' + result[$k].mobile + '/'+result[$k].id_name + '/' +
+                            result[$k].addtime + '/（直推：' + result[$k].direct + '）/（军团：' + result[$k].team + '）---------上级ID：'+result[$k].pid+'</span>';
+                        html += '</div>';
+                    }
+                    $('#' + pid).after(html);
+                    $('#' + pid).children('button').remove();
+                },
+                error: function () {
+                    layer.msg('服务器繁忙，请稍后再试')
+                }
+            })
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            if($.trim(key)==='') {
+                layer.msg('{:lang("pleaseEnter")}关键字！',{icon:0});
+                return;
+            }
+            location.href='{:url("userRela")}'+'?key='+key;
+        });
+    })
+</script>

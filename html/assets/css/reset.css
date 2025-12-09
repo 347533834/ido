@@ -1,0 +1,195 @@
+body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, dt, dd, a, img, button, form, table, th, tr, td, tbody, article,
+aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-weight: normal;
+}
+
+/*body{font: normal 14px/1.5 Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei;}*/
+/*html { -moz-osx-font-smoothing: grayscale; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }*/
+body {
+  font-family: Microsoft YaHei;
+}
+
+em, i {
+  font-style: normal;
+}
+
+strong {
+  font-weight: normal;
+}
+
+.clearfix:after {
+  content: "";
+  display: block;
+  visibility: hidden;
+  height: 0;
+  clear: both;
+}
+
+.clearfix {
+  zoom: 1;
+}
+
+a {
+  text-decoration: none;
+  color: #969696;
+  font-family: Microsoft YaHei;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+ul, ol, li {
+  list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: 100%;
+  font-family: Microsoft YaHei;
+}
+
+img {
+  border: none;
+}
+
+input, button {
+  font-family: Microsoft YaHei;
+}
+
+input[type="submit"], input[type="reset"], input[type="button"], input[type="tel"], input {
+  -webkit-appearance: none;
+  resize: none;
+  outline: none;
+  border-radius: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+a:focus {
+  outline: none;
+  -moz-outline: none;
+}
+
+a, img {
+  -webkit-touch-callout: none;
+}
+
+button, input, optgroup, select, textarea {
+  -webkit-appearance: none;
+  outline: medium
+}
+
+a, button, input, optgroup, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.relative {
+  position: relative;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+@media screen and (min-width: 320px) and (max-width: 359px) {
+  /*4 5*/
+  html {
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 360px) and (max-width: 374px) {
+  /*4 5*/
+  html {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 375px) and (max-width: 413px) {
+  /*6*/
+  html {
+    font-size: 18.75px
+  }
+}
+
+@media screen and (min-width: 414px) and (max-width: 479px) {
+  /*6p*/
+  html {
+    font-size: 20.7px
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 539px) {
+  html {
+    font-size: 24px
+  }
+}
+
+@media screen and (min-width: 540px) and (max-width: 639px) {
+  html {
+    font-size: 27px
+  }
+}
+
+/* @media screen and (min-width: 640px) {
+  html {
+    font-size:28px
+  }
+} */
+/* 新加大分辨率显示 */
+@media screen and (min-width: 640px) and (max-width: 767px) {
+  html {
+    font-size: 32px
+  }
+}
+
+/*@media screen and (min-width: 768px) and (max-width: 959px) {
+	html {
+		font-size: 38.4px
+	}
+}
+!* pc显示 *!
+@media screen and (min-width: 960px) and (max-width: 1199px) {
+	html {
+		font-size: 48px;
+	}
+}*/
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/*fix ios8 box-shadow*/
+*, *:before, *:after {
+  -webkit-appearance: none;
+}
+
+/*input ios 不能输入fix*/
+input, textarea {
+  -webkit-user-select: initial;
+}
+
+.no_data {
+  line-height: 3rem;
+  text-align: center;
+  color: #a1a1a1;
+}
+
+.no_data>img {
+  width: 48%;
+  margin-top: 2rem;
+}

@@ -1,0 +1,89 @@
+.work-list{
+    background-color: white;
+    padding: 3rem .8rem 1rem .8rem;
+    box-sizing: border-box;
+}
+.work-list h2 {
+    height: 2.4rem;
+    line-height: 2.4rem;
+    font-size: .8rem;
+}
+
+.work-list>section>div>p:nth-of-type(1){
+font-size: .75rem;
+    padding-bottom: .5rem;
+}
+.work-list>section>div:nth-of-type(1)>p{
+    font-size: .64rem;
+    color: #989898;
+    padding-bottom: 1rem;
+
+}
+.work-list>section>div>p:nth-of-type(1)>span{
+    color: red;
+    vertical-align: middle;
+}
+.work-list>section>div>input{
+    width: 100%;
+    height: 2.2rem;
+    border: 1px solid #E7E7E7;
+    text-indent: 10px;
+}
+.work-list>section>div>textarea{
+    border: 1px solid #E7E7E7;
+    width: 100%;
+}
+.work-list>section>div:nth-of-type(n+2){
+    padding-bottom: 1.2rem;
+}
+.work-list>section>div:nth-of-type(4) img{
+    width: 100%;
+}
+.work-list>section>div:nth-last-of-type(1)>input{
+    width: 56%;
+    margin-right:.5rem;
+}
+
+
+.work-list>section>button {
+    display: block;
+    width:100%;
+    background-color: #5889D5;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    color: white;
+    font-size: .8rem;
+}
+
+
+.work-list>.work-box>div {
+    width: 78%;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -8.5rem;
+    margin-left: -39%;
+    color: black;
+    padding: 1rem 0 1.5rem 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+.work-list>.work-box>div>img{
+    width: 30%;
+}
+.work-list>.work-box>div>p{
+   padding-top: 1.6rem;
+}
+.work-list>.work-box>div>i{
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 1.5rem;
+}
+.work-list>.work-box>div>i>img{
+    width: .8rem;
+    position: absolute;
+    right: .6rem;
+
+}

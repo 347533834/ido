@@ -1,0 +1,15 @@
+.opinion{
+    background-color: #F5F5F5;
+    padding: 3.8rem .8rem 0 .8rem;
+}
+.opinion>div{
+    width: 100%;
+    background-color: #ffffff;
+}
+.opinion>div>textarea{
+    width: 100%;
+
+}
+.opinion>button{
+    margin-top: 2rem;
+}

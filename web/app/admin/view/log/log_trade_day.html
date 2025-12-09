@@ -1,0 +1,83 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>币币日K交易日志</legend>
+    </fieldset>
+    <div class="demoTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+        </div>
+        <div class="layui-inline">
+            <label class="layui-label">通证名称：</label>
+            <select name="coin_id" id="coin_id" class="layui-select">
+                <option value="">全部</option>
+                {foreach name='cat' item='v'}
+                <option value="{$v.coin_id}" name="main_coin_name">{$v.name}</option>
+                {/foreach}
+            </select>
+        </div>
+        <button class="layui-btn" id="search" data-type="reload">搜索</button>
+        <a href="{:url('log_trade_day')}" class="layui-btn">显示全部</a>
+    </div>
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+<script type="text/html" id="a1">
+    <span  >AWT</span>
+</script>
+<script type="text/html" id="a2">
+    <span  >USDT</span>
+</script>
+
+<script type="text/html" id="action">
+    <a href="{:url('log_trade_day_edit')}?id={{d.id}}" class="layui-btn layui-btn-xs">编辑</a>
+    <!--<a class="layui-btn layui-btn-xs" lay-event="del">删除</a>-->
+</script>
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'user_cash_id',
+            elem: '#list',
+            url: '{:url("log_trade_day")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {field:'id', title: '编号', align: 'center', fixed: true},
+                {field:'date', title: '日期', align: 'center'},
+                {field:'name', title: '通证名称', align: 'center'},
+                {field:'num', title: '成交量', align: 'center'},
+                {field:'price', title: '交易价格', align: 'center'},
+                {field:'open_price', title: '开盘价', align: 'center'},
+                {field:'close_price', title: '收盘价', align: 'center'},
+                {field:'high_price', title: '最高价', align: 'center'},
+                {field:'low_price', title: '最低价', align: 'center'},
+                {field:'addtime', title: '交易时间', align: 'center'},
+                //{field:'remarks', title: '备注说明', align: 'center'},
+                {title: '操作', align: 'center',width:150, toolbar: '#action'},
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var date = $('#test').val();
+            var coin_id = $('#coin_id').val();
+            tableIn.reload({
+                where: {key: key,date:date,coin_id:coin_id}
+            });
+        });
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            , type: 'datetime'
+            , range: true
+            , theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

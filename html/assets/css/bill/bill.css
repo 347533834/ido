@@ -1,0 +1,24 @@
+.bill{
+    padding: 3rem .8rem 0 .8rem;
+
+}
+.bill>div>ul>li{
+    border-bottom: 1px solid #F1F1F1;
+    padding: .4rem 0 .4rem 0;
+}
+.bill>div>ul>li>p:nth-of-type(1){
+    text-align: right;
+    color: #A5A5A5;
+    font-size: .65rem;
+}
+.bill>div>ul>li>p:nth-of-type(2){
+    font-size: .78rem;
+    color: black;
+    padding-top: .4rem;
+}
+.bill>div>ul>li>p:nth-of-type(2)>span:nth-of-type(1){
+    float: left;
+}
+.bill>div>ul>li>p:nth-of-type(2)>span:nth-of-type(2){
+    float: right;
+}

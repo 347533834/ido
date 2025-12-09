@@ -1,0 +1,86 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>钱包{:lang('list')}</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key1" placeholder="{:lang('pleaseEnter')}SERC钱包地址">
+            </div>
+            <div class="layui-inline">
+                <input class="layui-input" name="key2" placeholder="{:lang('pleaseEnter')}资产名称">
+            </div>
+            <div class="layui-inline">
+                <input class="layui-input" name="key3" placeholder="{:lang('pleaseEnter')}映射资产钱包地址">
+            </div>
+            <label class="layui-label">时间：</label>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" name="date" id="test">
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('index')}" class="layui-btn">显示全部</a>
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<script type="text/html" id="status">
+    {{# if(d.status==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">开启</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="status">关闭</a>
+    {{# } }}
+</script>
+<!--<script type="text/html" id="days">-->
+    <!--<div class="layui-table-cell laytable-cell-1-days">{{d.days}}天</div>-->
+<!--</script>-->
+<!--<script type="text/html" id="action">-->
+    <!--<a href="{:url('wallet_plan_edit')}?admin_id=1" class="layui-btn layui-btn-xs">编辑</a>-->
+    <!--&lt;!&ndash;<a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>&ndash;&gt;-->
+<!--</script>-->
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("index")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'id', title: '{:lang("id")}', width: 80,fixed: true, sort: true},
+                {field: 'address', title: 'SERC钱包地址', width: 320,sort: true},
+                {field: 'asset', title: '资产名称', width: 150,sort: true},
+                {field: 'asset_address', title: '映射资产钱包地址', width: 600,sort: true},
+                {field: 'transfer_in', title: '转入数量', width: 150,sort: true},
+                {field: 'transfer_out', title: '转出的数量', width: 150,sort: true},
+                {field: 'timestamp', title: '获取时间', width: 180,sort: true},
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key1 = $('input[name="key1"]').val();
+            var key2 = $('input[name="key2"]').val();
+            var key3 = $('input[name="key3"]').val();
+            var  date = $('#test').val();
+            tableIn.reload({
+                where: {key1: key1,key2:key2,key3:key3,date:date}
+            });
+        });
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

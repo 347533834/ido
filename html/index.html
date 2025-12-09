@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ChangeEX</title>
+  <!--<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui" />-->
+  <meta name="viewport" content="initial-scale=1, width=device-width, height=device-height, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <!-- viewport 后面加上 minimal-ui 在safri 体现效果 -->
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <!-- iphone safri 全屏 -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <!-- iphone safri 状态栏的背景颜色 -->
+  <meta name="apple-mobile-web-app-title" content="鸡多宝">
+  <!-- iphone safri 添加到主屏界面的显示标题 -->
+  <!--<meta name="format-detection" content="telphone=no, email=no" />-->
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="format-detection" content="email=no"/>
+  <!-- 禁止数字识自动别为电话号码 -->
+  <meta name="renderer" content="webkit">
+  <!-- 启用360浏览器的极速模式(webkit) -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="HandheldFriendly" content="true">
+  <!-- 是针对一些老的不识别viewport的浏览器，列如黑莓 -->
+  <meta name="MobileOptimized" content="320">
+  <!-- 微软的老式浏览器 -->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <!-- 禁止百度转码 -->
+  <meta name="screen-orientation" content="portrait">
+  <!-- uc强制竖屏 -->
+  <meta name="browsermode" content="application">
+  <!-- UC应用模式 -->
+  <meta name="full-screen" content="yes">
+  <!-- UC强制全屏 -->
+  <meta name="x5-orientation" content="portrait">
+  <!-- QQ强制竖屏 -->
+  <meta name="x5-fullscreen" content="true">
+  <!-- QQ强制全屏 -->
+  <meta name="x5-page-mode" content="app">
+  <!-- QQ应用模式 -->
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="msapplication-TileColor" content="#000"/>
+  <!-- Windows 8 磁贴颜色 -->
+  <meta name="msapplication-TileImage" content="icon.png"/>
+  <!-- Windows 8 磁贴图标 -->
+  <link rel="Shortcut Icon" href="favicon.ico">
+  <!-- 浏览器tab图标 -->
+  <link rel="apple-touch-icon" href="assets/images/icon.jpg"/>
+  <!-- iPhone 和 iTouch，默认 57x57 像素，必须有 -->
+  <link rel="apple-touch-icon" sizes="72x72" href="assets/images/icon.jpg"/>
+  <!-- iPad，72x72 像素  -->
+  <link rel="apple-touch-icon" sizes="114x114" href="assets/images/icon.jpg"/>
+  <!-- Retina iPhone 和 Retina iTouch，114x114 像素 -->
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/fonts/css/font-awesome.css">
+
+  <script type="text/javascript" src="assets/plugins/tradingview/charting_library/charting_library.min.js"></script>
+  <script type="text/javascript" src="assets/plugins/tradingview/datafeeds/udf/dist/polyfills.js"></script>
+  <script type="text/javascript" src="assets/plugins/tradingview/datafeeds/udf/dist/bundle.js"></script>
+
+  <script src="assets/plugins/clipboard.js"></script>
+  <!--<script src="assets/plugins/sercjs/browserify-serc.js"></script>-->
+  <script data-baseurl="./" data-main="assets/js/main.js" src="assets/plugins/require.js" id="main"></script>
+</head>
+
+<body>
+<div id="app" class="page">
+</div>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript">
+    /*
+     * Licensed to the Apache Software Foundation (ASF) under one
+     * or more contributor license agreements.  See the NOTICE file
+     * distributed with this work for additional information
+     * regarding copyright ownership.  The ASF licenses this file
+     * to you under the Apache License, Version 2.0 (the
+     * "License"); you may not use this file except in compliance
+     * with the License.  You may obtain a copy of the License at
+     *
+     * http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing,
+     * software distributed under the License is distributed on an
+     * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     * KIND, either express or implied.  See the License for the
+     * specific language governing permissions and limitations
+     * under the License.
+     */
+    var app = {
+        // Application Constructor
+        initialize: function () {
+            document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        },
+
+        onBackKeyDown: function () {
+            window.history.back();
+            window.toast('再按一次退出');
+
+            var _this = this;
+            document.removeEventListener("backbutton", _this.onBackKeyDown, false); // 注销返回键
+            document.addEventListener("backbutton", _this.exitApp, false);//绑定退出事件
+            // 3秒后重新注册
+            window.setTimeout(function () {
+                window.clearInterval(intervalID);
+                document.removeEventListener("backbutton", _this.exitApp, false); // 注销返回键
+                document.addEventListener("backbutton", _this.onBackKeyDown, false); // 返回键
+            }, 3000);
+        },
+
+        exitApp: function () {
+            navigator.app.exitApp();
+        },
+
+        /*copy: function (text) {
+            cordova.plugin.clipboard.copy(text);
+        },
+        paste: function () {
+            cordova.plugin.clipboard.paste(function (text) {
+                console.log(text);
+            });
+        },*/
+
+        // deviceready Event Handler
+        //
+        // Bind any cordova events here. Common events are:
+        // 'pause', 'resume', etc.
+        onDeviceReady: function () {
+            // alert(window.device.version);
+            // if (parseFloat(window.device.version) >= 7.0) {
+            //     document.body.style.marginTop = "20px";
+            // }
+            StatusBar.hide();
+            // console.log(StatusBar);
+            // document.addEventListener("backbutton", this.onBackKeyDown, false);
+
+            // this.copy('hoho');
+            // this.paste();
+
+            // setTimeout(function () {
+            //     navigator.splashscreen.hide();
+            // }, 1000);
+
+            this.receivedEvent('deviceready');
+        },
+
+        // Update DOM on a Received Event
+        receivedEvent: function (id) {
+            // var parentElement = document.getElementById(id);
+            // var listeningElement = parentElement.querySelector('.listening');
+            // var receivedElement = parentElement.querySelector('.received');
+
+            // listeningElement.setAttribute('style', 'display:none;');
+            // receivedElement.setAttribute('style', 'display:block;');
+
+            //console.log('Received Event: ' + id);
+        }
+    };
+
+    app.initialize();
+</script>
+</body>
+<style>
+  /*body {*/
+    /*padding-top: constant(safe-area-inset-top);   //为导航栏+状态栏的高度 88px*/
+  /*padding-left: constant(safe-area-inset-left);   //如果未竖屏时为0*/
+  /*padding-right: constant(safe-area-inset-right); //如果未竖屏时为0*/
+  /*padding-bottom: constant(safe-area-inset-bottom);//为底下圆弧的高度 34px*/
+  /*}*/
+</style>
+</html>

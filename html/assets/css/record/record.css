@@ -1,0 +1,18 @@
+.record{
+    padding: 2.75rem .8rem 0 .8rem;
+}
+.record>div>ul>li {
+    border-bottom: 1px solid #EFEFEF;
+    padding: .8rem 0 .5rem 0;
+}
+.record>div>ul>li>p:nth-of-type(1){
+    text-align: right;
+    color: #666666;
+    font-size: .64rem;
+}
+.record>div>ul>li>p:nth-of-type(2){
+    font-size: .75rem;
+    line-height: 1.2rem;
+    color: black;
+    padding-top: .3rem;
+}

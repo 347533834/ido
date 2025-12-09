@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API DOCs</title>
+    <style type="text/css">
+        textarea {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<h2>{$list.name}</h2>
+{volist name="list.methods" id="v"}
+    <dl>
+        <dt>{$list.name}/{$v.name}</dt>
+        <dd>
+            {$v.comment}
+            <form>
+                {volist name="v.params" id="p"}
+                    <input type="text" id="{$p}" name="{$p}" placeholder="{$p}"/>
+                {/volist}
+                <input type="button" id="{$v.name}" onclick="t(this)" value="提交">
+            </form>
+            <textarea placeholder="result."></textarea>
+        </dd>
+    </dl>
+{/volist}
+</body>
+</html>
+<script type="text/javascript"
+        src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+    function t(t) {
+        var $obj = $(t).parent(); // form
+        var url = 'http://api.mrc.com/'+ $obj.parent().prev().text();
+//        var url = 'http://api.jdc.com/'+ $obj.parent().prev().text();
+        var data = $obj.serialize();
+        $.get(url, data, function (result) {
+            if (typeof(result) == "object")
+                result = JSON.stringify(result);
+            $obj.next().text(result);
+        },'jsonp');
+    }
+</script>

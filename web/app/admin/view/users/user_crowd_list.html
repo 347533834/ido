@@ -1,0 +1,124 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{:lang('user')}众筹{:lang('list')}</legend>
+    </fieldset>
+    <div class="demoTable">
+        <a href="{:url('add_crowd',array('id'=>input('id')))}" class="layui-btn">{:lang('add')}</a>
+        <!--<a href="{:url('user_crowd_list',array('id'=>input('id')))}" class="layui-btn">显示全部</a>-->
+        <a href="{:url('user_crowd')}" class="layui-btn layui-btn-normal">返回</a>
+    </div>
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<script type="text/html" id="status">
+    {{# if(d.status==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="status">正常</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">禁用</a>
+    {{# } }}
+</script>
+<script type="text/html" id="is_lock">
+    {{# if(d.is_lock==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="is_lock">正常</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="is_lock">禁用</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="deleted">
+    {{# if(d.deleted==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="deleted">正常</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="deleted">删除</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="num">
+    {{# if(d.num == '1970-01-01 08:00:00'){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm">无不良状态</a>
+    {{# }else{  }}
+    <div class="layui-table-cell">{{d.num}}</div>
+    {{# } }}
+</script>
+
+<script type="text/html" id="action">
+    <!--<a href="{:url('edit_crowd')}?id={{d.id}}" class="layui-btn layui-btn-xs">编辑</a>-->
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="email">
+    {{d.email}}
+    {{# if(d.email && d.email_validated=='0'){ }}
+    (未验证)
+    {{# } }}
+</script>
+<script type="text/html" id="img">
+    <img class="layui-btn" style="padding: 0" src="__PUBLIC__\static\user\images\avatar\default.png"/>
+</script>
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'user_id',
+            elem: '#list',
+            url: '{:url("user_crowd_list")}',
+            where:{id:'{:input("id")}'},
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'user_crowd_id', title: '编号', width: 80, fixed: true},
+                {field: 'number', title: '会员ID', align:'center',},
+                {field: 'username', title: '会员名', align:'center',},
+                {field: 'total', title: '众筹数量', align:'center',},
+                {field: 'balance', title: '众筹余额', align:'center',},
+                {field: 'addtime', title: '添加时间', align:'center',},
+                /*{title: '操作', align: 'center', toolbar: '#action'}*/
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var status = $('#select_status').val();
+            var  date = $('#test').val();
+//            if($.trim(key)==='') {
+//                layer.msg('{:lang("pleaseEnter")}关键字！',{icon:0});
+//                return;
+//            }
+            tableIn.reload({
+                where: {key: key,status:status,date:date}
+            });
+        });
+        table.on('tool(list)', function(obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('您确定要删除该数据吗？', function(index){
+                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+                    $.post("{:url('del_crowd')}",{id:data.id},function(res){
+                        layer.close(loading);
+                        if(res.code===1){
+                            layer.msg(res.msg,{time:1000,icon:1});
+                            tableIn.reload();
+                        }else{
+                            layer.msg('操作失败！',{time:1000,icon:2});
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

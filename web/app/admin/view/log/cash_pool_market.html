@@ -1,0 +1,71 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>资金池日志</legend>
+    </fieldset>
+    <div class="demoTable">
+        <label class="layui-label">时间：</label>
+        <div class="layui-inline">
+            <input type="text" class="layui-input" name="date" id="test">
+        </div>
+        <div class="layui-inline">
+            <label class="layui-label">通证名称：</label>
+            <select name="coin_id" id="coin_id" class="layui-select">
+                <option value="">全部</option>
+                {foreach name='cat' item='v'}
+                <option value="{$v.coin_id}" name="main_coin_name">{$v.name}</option>
+                {/foreach}
+            </select>
+        </div>
+        <button class="layui-btn" id="search" data-type="reload">搜索</button>
+        <a href="{:url('cash_pool_market')}" class="layui-btn">显示全部</a>
+        <span>累计收益：{$sum} USDT</span>
+    </div>
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'user_cash_id',
+            elem: '#list',
+            url: '{:url("cash_pool_market")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {field: 'id', title: '{:lang("id")}', align: 'center',fixed: true, sort: true},
+                {field:'date', title: '日期', align: 'center'},
+                {field:'name', title: '通证名称', align: 'center'},
+                {field:'buy_total', title: '购买量(USDT)', align: 'center'},
+                {field:'fact_total', title: '用户实际获得(USDT)', align: 'center'},
+                {field:'left', title: '资金池(USDT)', align: 'center'},
+                {field:'fee', title: '手续费(USDT)', align: 'center'},
+                {field:'total', title: '总收益(USDT)', align: 'center'},
+                {field:'addtime', title: '时间', align: 'center'},
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var date = $('#test').val();
+          var coin_id = $('#coin_id').val();
+            tableIn.reload({
+                where: {key: key,date:date,coin_id:coin_id}
+            });
+        });
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            , type: 'datetime'
+            , range: true
+            , theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

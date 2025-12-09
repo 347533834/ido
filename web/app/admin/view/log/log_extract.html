@@ -1,0 +1,89 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>收益提取{:lang('list')}</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <label class="layui-label">时间：</label>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" name="date" id="test">
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('log_extract')}" class="layui-btn">显示全部</a>
+            <!--<button type="button" class="layui-btn layui-btn-danger" id="delAll">批量删除</button>-->
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<script type="text/html" id="status">
+    {{# if(d.status==1){ }}
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="status">已结束</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-mini layui-btn-warm" lay-event="status">进行中</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="type">
+    {{# if(d.type==401){ }}
+        <div class="layui-table-cell laytable-cell-1-type">收益提取</div>
+    {{# }else if(d.type==402){  }}
+        <div class="layui-table-cell laytable-cell-1-type">锁仓提取</div>
+    {{# } }}
+</script>
+<!--<script type="text/html" id="action">-->
+    <!--<a href="{:url('wallet_plan_edit')}?id={{d.id}}" class="layui-btn layui-btn-mini">编辑</a>-->
+    <!--<a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>-->
+<!--</script>-->
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'extract_id',
+            elem: '#list',
+            url: '{:url("log_extract")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'extract_id', title: '{:lang("id")}', align: 'center',fixed: true, sort: true},
+                {field: 'user_id', title: '会员ID', align: 'center',sort: true},
+                {field: 'name', title: 'Token', align: 'center',sort: true},
+                {field: 'type', title: '提取类型', align: 'center',sort: true,toolbar: '#type'},
+                {field: 'num', title: '提现数量', align: 'center',sort: true},
+                {field: 'amount_use', title: '操作前可用数量', align: 'center',sort: true},
+                {field: 'balance_use', title: '操作后可用数量', align: 'center',sort: true},
+                {field: 'amount_total', title: '操作前数量', align: 'center',sort: true},
+                {field: 'balance_total', title: '操作后数量', align: 'center',sort: true},
+                {field: 'addtime', title: '开始时间', align: 'center',sort: true},
+                {field: 'remarks', title: '备注', align: 'center',sort: true},
+                {field: 'status', align: 'center',title: '{:lang("status")}', toolbar: '#status',sort: true},
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var  date = $('#test').val();
+            tableIn.reload({
+                where: {key: key,date:date}
+            });
+        });
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

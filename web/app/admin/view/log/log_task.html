@@ -1,0 +1,78 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>会员任务{:lang('list')}</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-label">状态：</label>
+                <select name="id" id="select" class="layui-select" lay-verify="required" >
+                    <option value="">请选择任务</option>
+                </select>
+            </div>
+            <label class="layui-label">时间：</label>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" name="date" id="test">
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('log_task')}" class="layui-btn">显示全部</a>
+
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+{include file="common/foot"/}
+<script src="__STATIC__/common/js/angular.min.js"></script>
+<script>
+    var task = '{$info}' != 'null' ? {$info} : {};
+    var str = '';
+    for (var k in task){
+        str += '<option value="'+task[k].task_id+'">'+task[k].name+'</option>';
+    }
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        $('#select').append(str);
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("log_task")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'id', title: '{:lang("id")}', align: 'center',fixed: true, sort: true},
+                {field: 'user_id', title: '会员ID', align: 'center',sort: true},
+                {field: 'name', title: '任务名称', align: 'center',sort: true},
+                {field: 'remarks', title: '备注', align: 'center',sort: true},
+                {field: 'addtime', title: '操作时间', align: 'center',sort: true},
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var id = $('#select').val();
+            var  date = $('#test').val();
+            tableIn.reload({
+                where: {key: key,date:date,id:id}
+            });
+        });
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

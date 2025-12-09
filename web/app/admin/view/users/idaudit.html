@@ -1,0 +1,226 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>会员身份认证{:lang('list')}</legend>
+    </fieldset>
+    <div class="demoTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-label">类型：</label>
+            <select name="status" id="select_status" class="layui-select" lay-verify="required" ng-model="field.code"
+                    ng-options="v.code as v.name for v in country" ng-selected="v.code==field.code">
+                <option value="">全部</option>
+                <option value="0">待审核</option>
+                <option value="1">已审核</option>
+                <option value="-1">不合格</option>
+            </select>
+        </div>
+
+        <label class="layui-label">时间：</label>
+        <div class="layui-inline">
+            <input type="text" class="layui-input" name="date" id="test">
+        </div>
+
+        <button class="layui-btn" id="search" data-type="reload">搜索</button>
+        <a href="{:url('idaudit')}" class="layui-btn">显示全部</a>
+        <button type="button" class="layui-btn layui-btn-danger" id="delAll">批量审核</button>
+        <button type="button" class="layui-btn layui-btn-warm" id="revoke">批量撤销</button>
+    </div>
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<script type="text/html" id="status">
+    {{# if(d.status==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm">已审核</a>
+    {{# }else if(d.status==0){ }}
+    <a class="layui-btn layui-btn-xs">待审核</a>
+    {{# }else if(d.status==2){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm">历史</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs">不合格</a>
+    {{# } }}
+</script>
+
+
+<script type="text/html" id="auditor_time">
+    {{# if(d.audit_time == '1970-01-01 08:00:00'){ }}
+    {{# }else{  }}
+    <div class="layui-table-cell">{{d.audit_time}}</div>
+    {{# } }}
+</script>
+
+<script type="text/html" id="action">
+    {{# if(d.status==0){ }}
+     <a href="{:url('idaudit_edit')}?id={{d.number}}" class="layui-btn layui-btn-danger layui-btn-xs">审核</a>
+    {{# }else{  }}
+    <a href="{:url('idaudit_lock')}?id={{d.number}}" class="layui-btn layui-btn-warm layui-btn-xs">查看</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="img">
+    <img class="layui-btn" style="padding: 0" src="__PUBLIC__\static\user\images\avatar\default.png"/>
+</script>
+{include file="common/foot"/}
+
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'user_id',
+            elem: '#list',
+            url: '{:url("idaudit")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'user_id', title: '会员编号', align: 'center',fixed: true, sort: true},
+                // {field: 'number', title: '会员ID', align: 'center',},
+                {field: 'username', title: '会员名', align: 'center',},
+                {field: 'mobile', title: '手机号', align: 'center',},
+                {field: 'id_name', title: '实名', align: 'center',},
+                {field: 'id_card',title: '身份证', align: 'center',},
+                {field: 'status', align: 'center', title: '状态', toolbar: '#status'},
+                {field: 'p_mobile', title: '上级手机号', align: 'center',},
+                {field: 'p_id_name', title: '上级姓名', align: 'center',},
+                {field: 'addtime', title: '添加时间',align: 'center',},
+                {field: 'auditor', title: '审核人',align: 'center',},
+                {field: 'audit_time', title: '审核时间', align: 'center',toolbar: '#auditor_time'},
+                {title: '操作', align: 'center', toolbar: '#action'}
+            ]],
+            limit: 10 ,//每页默认显示的数量
+
+          done: function (res, curr, count) {
+//            console.log(res);
+            for (var i in res.data) {
+              var item = res.data[i];
+              if (item.status == 1 || item.status == -1) {
+                $('tr[data-index=' + i + '] input[type="checkbox"]').prop('disabled', true);
+//                form.render();
+              }
+            }
+          }
+
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var key = $('#key').val();
+            var status = $('#select_status').val();
+            var  date = $('#test').val();
+            tableIn.reload({
+                where: {key: key,status:status,date:date}
+            });
+        });
+
+      $('#delAll').click(function () {
+        layer.confirm('确认要审核通过选中信息吗？', {icon: 3}, function (index) {
+          layer.close(index);
+          var checkStatus = table.checkStatus('user_id'); //test即为参数id设定的值
+          console.log(checkStatus);
+          var ids = [];
+          $(checkStatus.data).each(function (i, o) {
+            ids.push(o.user_id);
+          });
+          var loading = layer.load(1, {shade: [0.1, '#fff']});
+          $.post("{:url('idaudit_all')}", {ids: ids}, function (data) {
+            layer.close(loading);
+            if (data.code === 1) {
+              layer.msg(data.msg, {time: 1000, icon: 1});
+              tableIn.reload();
+            } else {
+              layer.msg(data.msg, {time: 1000, icon: 2});
+            }
+          });
+        });
+      });
+
+      $('#revoke').click(function () {
+        layer.confirm('确认要撤销选中信息吗？', {icon: 3}, function (index) {
+          layer.close(index);
+          var checkStatus = table.checkStatus('user_id'); //test即为参数id设定的值
+          console.log(checkStatus);
+          var ids = [];
+          $(checkStatus.data).each(function (i, o) {
+            ids.push(o.user_id);
+          });
+          var loading = layer.load(1, {shade: [0.1, '#fff']});
+          $.post("{:url('id_revoke')}", {ids: ids}, function (data) {
+            layer.close(loading);
+            if (data.code === 1) {
+              layer.msg(data.msg, {time: 1000, icon: 1});
+              tableIn.reload();
+            } else {
+              layer.msg(data.msg, {time: 1000, icon: 2});
+            }
+          });
+        });
+      });
+
+
+        table.on('tool(list)', function(obj) {
+            var data = obj.data;
+            console.log(obj);
+            if (obj.event === 'status') {
+//
+//                layer.prompt({title: '请填写原因，并确认', formType: 2}, function (text, index) {
+//                    var title = text;
+//                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+//                    $.post('{:url("usersState")}', {'id': data.user_id,title:title}, function (res) {
+//                        layer.close(loading);
+//                        if (res.code === 1) {
+//                            if (res.status === 1) {
+//                                obj.update({
+//                                    status: '<a class="layui-btn layui-btn-mini layui-btn-warm" lay-event="status">正常</a>'
+//                                });
+//                            } else {
+//                                obj.update({
+//                                    status: '<a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="status">禁用</a>'
+//                                });
+//                            }
+//                        } else {
+//                            layer.msg('操作失败！', {time: 1000, icon: 2});
+//                            return false;
+//                        }
+//                    })
+//                    layer.close(index);
+//                });
+            }else if (obj.event === 'delnum') {
+                layer.confirm('确认要审核通过选中信息吗？', function(index){
+                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+                    $.post("{:url('auditor')}",{id:data.week_id,ranking:data.ranking},function(res){
+                        layer.close(loading);
+                        if(res.code===1){
+                            layer.msg(res.msg,{time:1000,icon:1});
+                            tableIn.reload();
+                        }else{
+                            layer.msg('操作失败！',{time:1000,icon:2});
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test1'
+            ,type: 'datetime'
+            ,range:false
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>

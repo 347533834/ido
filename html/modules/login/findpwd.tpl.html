@@ -1,0 +1,31 @@
+<main class="content findpwd">
+    <div class="logo">
+        <img src="assets/img/login/logo.png" alt="">
+    </div>
+    <article>
+        <div>
+            <span>手机号</span>
+            <input type="text" name="mobile" placeholder="请输入手机号">
+        </div>
+        <div class="verification" style="position: relative;">
+            <span>图形验证</span>
+            <input type="text" name="validate_code" id="validate_code" placeholder="请输入图形验证"/>
+            <span class="captcha" style=" position: absolute;color: #322d96;font-size: .75rem;top: 0.8rem;right: 20px;display: inline-block;"><img src="assets/img/login/tu-1.png" alt="" style="width: 4.8rem;
+    height: 2.2rem;"></span>
+        </div>
+        <div class="verification">
+            <span>验证码</span>
+            <input type="number" name="verify" placeholder="输入短信验证码">
+            <span id="get_Code">获取验证码</span>
+        </div>
+        <div>
+            <span>新密码</span>
+            <input type="password" name="pwd1" placeholder="设置新登录密码">
+        </div>
+        <div>
+            <span>确认</span>
+            <input type="password" name="pwd2" placeholder="确认新密码">
+        </div>
+        <button class="btn btn-lan">提交</button>
+    </article>
+</main>

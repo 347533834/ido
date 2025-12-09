@@ -1,0 +1,381 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>{:lang('user')}{:lang('list')}</legend>
+    </fieldset>
+    <div class="demoTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="key" id="key" placeholder="{:lang('pleaseEnter')}关键字">
+        </div>
+        <div class="layui-inline">
+            <label class="layui-label">类型：</label>
+            <select name="status" id="select_status" class="layui-select" lay-verify="required" ng-model="field.code"
+                    ng-options="v.code as v.name for v in country" ng-selected="v.code==field.code">
+                <option value="">全部</option>
+                <option value="1">新用户</option>
+                <option value="2">普通用户</option>
+                <option value="3">高级用户</option>
+                <option value="4">合伙人</option>
+            </select>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-label">后台设置匹配等级：</label>
+            <select name="status" id="select_status2" class="layui-select">
+                <option value="">全部</option>
+                <option value="1">1级</option>
+                <option value="2">2级</option>
+                <option value="3">3级</option>
+                <option value="4">4级</option>
+                <option value="5">5级</option>
+            </select>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-label">用户星级：</label>
+            <select name="status" id="select_status3" class="layui-select">
+                <option value="">全部</option>
+                <option value="1">1星</option>
+                <option value="2">2星</option>
+                <option value="3">3星</option>
+            </select>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-label">是否股东分成：</label>
+            <select name="status" id="select_status4" class="layui-select">
+                <option value="">全部</option>
+                <option value="1">是</option>
+                <option value="-1">否</option>
+            </select>
+        </div>
+        <button class="layui-btn" id="search" data-type="reload">搜索</button>
+        <a href="{:url('index')}" class="layui-btn">显示全部</a>
+    </div>
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+
+<script type="text/html" id="status">
+    <input type="checkbox" name="status" value="{{d.user_id}}" lay-skin="switch" lay-text="是|否" lay-filter="status" {{
+           d.status== 0 ? 'checked' : '' }}>
+</script>
+
+<script type="text/html" id="action">
+    <a href="{:url('edit')}?id={{d.user_id}}" class="layui-btn layui-btn-xs">编辑</a>
+    <!--    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="check">清空不良</a>
+</script>
+
+<script type="text/html" id="user_level">
+    {{# if(d.user_level==1){ }}
+    <a class="" lay-event="approval">新用户</a>
+    {{# }else if(d.user_level==2){  }}
+    <a class="" lay-event="approval">普通用户</a>
+    {{# }else if(d.user_level==3){ }}
+    <a class="" lay-event="approval">高级用户</a>
+    {{# }else{ }}
+    <a class="" lay-event="approval">合伙人</a>
+    {{# } }}
+</script>
+
+
+<!--<script type="text/html" id="node">
+  <input type="checkbox" name="node" value="{{d.user_id}}" lay-skin="switch" lay-text="是|否" lay-filter="node" {{ d.node== 0 ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="vip_node">
+  <input type="checkbox" name="vip_node" value="{{d.user_id}}" lay-skin="switch" lay-text="是|否" lay-filter="vip_node" {{ d.vip_node== 1 ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="is_crowd">
+  <input type="checkbox" name="is_crowd" value="{{d.user_id}}" lay-skin="switch" lay-text="是|否" lay-filter="is_crowd" {{ d.is_crowd== 1 ? 'checked' : '' }}>
+</script>-->
+
+<script type="text/html" id="freeze_time">
+    {{# if(d.freeze_time==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="">无不良状态</a>
+    {{# }else{  }}
+    <a lay-event="">{{d.freeze_time}}</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="userLevel">
+    {{# if(d.user_level==4){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="userLevel">开启</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="userLevel">关闭</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="team">
+
+    {{# if(d.team > 0){ }}
+    <a class="layui-btn-xs" lay-event="team">{{d.team}}(点击查看)</a>
+    {{# }else{  }}
+    {{d.team}}
+    {{# } }}
+</script>
+
+{include file="common/foot"/}
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table, form = layui.form, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("index")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox: true, fixed: true},
+                {field: 'user_id', title: '编号', align: 'center', fixed: true, width: 80},
+                // {field: 'number', title: '会员ID', align: 'center', width: 80},
+                {field: 'id_name', title: '真实姓名', align: 'center', width: 100},
+                {field: 'mobile', title: '手机号', align: 'center', width: 120},
+                {field: 'pid', title: '上级ID', align: 'center', width: 80},
+                {field: 'p_name', title: '上级姓名', align: 'center', width: 100},
+                {field: 'p_mobile', title: '上级手机', align: 'center', width: 120},
+                {field: 'p_address', title: '上级注册地', align: 'center', width: 150},
+                {field: 'invite', title: '邀请码', align: 'center', width: 100},
+                {field: 'reg_ip', title: '注册ip', align: 'center', width: 150},
+                {field: 'buy_total', title: '入金量', align: 'center', width: 120},
+                {field: 'team', title: '团队人数', align: 'center', width: 150, toolbar: '#team'},
+                {field: 'team_total', title: '团队业绩', align: 'center', width: 150},
+                {field: 'fact_level', title: '实际匹配等级', align: 'center', width: 100},
+                {field: 'matching_level', title: '设置匹配等级', align: 'center', width: 100},
+                {field: 'user_level2', title: '会员星级', align: 'center', width: 100},
+                {field: 'admin_level', title: '设置会员星级', align: 'center', width: 100},
+                {field: 'shareholder_rate', title: '股东分成百分比', align: 'center', width: 100},
+                {field: 'user_level', align: 'center', title: '用户级别', toolbar: '#user_level', width: 100},
+                {field: 'status', align: 'center', title: '是否锁定', toolbar: '#status', width: 100},
+                {field: 'addtime', title: '注册时间', align: 'center', width: 150},
+                {field: 'freeze_time', title: '不良状态到期时间', align: 'center', toolbar: '#freeze_time', width: 150},
+                {title: '合伙人设置', align: 'center', toolbar: '#userLevel', width: 100},
+                {title: '操作', align: 'center', toolbar: '#action', width: 100}
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        form.on('switch(status)', function (obj) {
+            loading = layer.load(1, {shade: [0.1, '#fff']});
+            var id = this.value;
+            var status = obj.elem.checked === true ? 1 : 0;
+            $.post('{:url("usersStatus")}', {'id': id, 'status': status}, function (res) {
+                layer.close(loading);
+                if (res.code == 1) {
+                    tableIn.reload();
+                } else {
+                    layer.msg(res.msg, {time: 1000, icon: 2});
+                    return false;
+                }
+            })
+        });
+
+        form.on('switch(is_crowd)', function (obj) {
+            loading = layer.load(1, {shade: [0.1, '#fff']});
+            var id = this.value;
+            var is_crowd = obj.elem.checked === true ? 1 : 0;
+            $.post('{:url("is_crowd")}', {'id': id, 'is_crowd': is_crowd}, function (res) {
+                layer.close(loading);
+                if (res.code == 1) {
+                    tableIn.reload();
+                } else {
+                    layer.msg(res.msg, {time: 1000, icon: 2});
+                    return false;
+                }
+            })
+        });
+
+        form.on('switch(node)', function (obj) {
+            loading = layer.load(1, {shade: [0.1, '#fff']});
+            var id = this.value;
+            var node = obj.elem.checked === true ? 1 : 0;
+            $.post('{:url("userNode")}', {'id': id, 'node': node}, function (res) {
+                layer.close(loading);
+                if (res.code == 1) {
+                    tableIn.reload();
+                } else {
+                    layer.msg(res.msg, {time: 1000, icon: 2});
+                    return false;
+                }
+            })
+        });
+
+        form.on('switch(vip_node)', function (obj) {
+            loading = layer.load(1, {shade: [0.1, '#fff']});
+            var id = this.value;
+            var vip_node = obj.elem.checked === true ? 1 : 0;
+            $.post('{:url("userVipNode")}', {'id': id, 'vip_node': vip_node}, function (res) {
+                layer.close(loading);
+                if (res.code == 1) {
+                    tableIn.reload();
+                } else {
+                    layer.msg(res.msg, {time: 1000, icon: 2});
+                    return false;
+                }
+            })
+        });
+
+        //搜索
+        $('#search').on('click', function () {
+            var key = $('#key').val();
+            var status = $('#select_status').val();
+            var matching_level = $('#select_status2').val();
+            var select_status3 = $('#select_status3').val();
+            var select_status4 = $('#select_status4').val();
+//      if ($.trim(key) === '') {
+//        layer.msg('{:lang("pleaseEnter")}关键字！', {icon: 0});
+//        return;
+//      }
+            tableIn.reload({
+                where: {
+                    key: key,
+                    user_level: status,
+                    matching_level: matching_level,
+                    select_status3: select_status3,
+                    select_status4: select_status4,
+                }
+            });
+        });
+
+        table.on('tool(list)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('您确定要删除该会员吗？', function (index) {
+                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+                    $.post("{:url('usersDel')}", {id: data.user_id}, function (res) {
+                        layer.close(loading);
+                        if (res.code === 1) {
+                            layer.msg(res.msg, {time: 1000, icon: 1});
+                            tableIn.reload();
+                        } else {
+                            layer.msg('操作失败！', {time: 1000, icon: 2});
+                        }
+                    });
+                    layer.close(index);
+                });
+            } else if (obj.event === 'userLevel') {
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                $.post('{:url("userLevel")}', {id: data.user_id}, function (res) {
+                    layer.close(loading);
+//                if (res.user_level != 4) {
+//                  obj.update({
+//                    userLevel: '<a class="layui-btn layui-btn-xs" lay-event="userLevel">开启</a>'
+//                  });
+//                } else {
+//                  obj.update({
+//                    userLevel: '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="userLevel">关闭</a>'
+//                  });
+//                }
+                    if (res.code == 1) {
+                        window.location.reload();
+                    }
+                })
+            } else if (obj.event === 'check') {
+                layer.confirm('您确定要清空不良记录吗？', function (index) {
+                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+                    $.post("{:url('usersCheck')}", {id: data.user_id}, function (res) {
+                        layer.close(loading);
+                        if (res.code === 1) {
+                            layer.msg(res.msg, {time: 1000, icon: 1});
+                            tableIn.reload();
+                        } else {
+                            layer.msg('操作失败！', {time: 1000, icon: 2});
+                        }
+                    });
+                    layer.close(index);
+                });
+            } else if (obj.event === 'team') {
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                console.log(data);
+                if (data.team < 1) return;
+                $.post("{:url('usersSuperior')}", {id: data.user_id}, function (res) {
+                    layer.close(loading);
+                    if (res.code === 1) {
+                        var str = '';
+                        var arr = res.data.data;
+                        for (var i = 0; i < arr.length; i++) {
+                            str += '<tr>' +
+                                '<td>' + (arr[i].id_name ? arr[i].id_name : '-') + '</td>' +
+                                '<td>' + arr[i].mobile + '</td>' +
+                                '<td>' + arr[i].addtime + '</td>' +
+                                '<td>' + arr[i].address + '</td>' +
+                                '<td>' + parseFloat(arr[i].USDT) + '</td>' +
+                                '<td>' + parseFloat(arr[i].IDO) + '</td>' +
+                                '<td>' + parseFloat(arr[i].ACF) + '</td>' +
+                                '</tr>';
+                        }
+                        layer.open({
+                            type: 1,
+                            skin: 'layui-layer-rim', //加上边框
+                            area: ['1000px', '600px'], //宽高
+                            content: '<table class="layui-table"><colgroup><col width="150"><col width="200"><col></colgroup><thead><tr><th style="width: 8%;">姓名</th><th style="width: 13%;">手机号</th><th style="width: 18%;">注册时间</th><th style="width: 15%;">注册地</th><th>USDT数量</th><th>IDO数量</th><th>ACF数量</th></tr></thead><tbody class="tbody-list">' + str + '</tbody></table><div class="more" data-num="1" style="text-align: center;margin-top: 1rem;margin-bottom: 1rem;">查看更多</div>'
+                        });
+
+                        if (res.data.current_page == res.data.last_page) {
+                            $('.more').hide();
+                        }
+
+                        $('.more').click(function () {
+                            var pages = parseInt($(this).attr("data-num")) + 1;
+                            $(this).attr('data-num', pages);
+                            Superior(data.user_id, pages);
+                        });
+                    }
+                });
+            }
+        });
+
+
+        $('#delAll').click(function () {
+            layer.confirm('确认要删除选中信息吗？', {icon: 3}, function (index) {
+                layer.close(index);
+                var checkStatus = table.checkStatus('user'); //test即为参数id设定的值
+                var ids = [];
+                $(checkStatus.data).each(function (i, o) {
+                    ids.push(o.id);
+                });
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                $.post("{:url('delall')}", {ids: ids}, function (data) {
+                    layer.close(loading);
+                    if (data.code === 1) {
+                        layer.msg(data.msg, {time: 1000, icon: 1});
+                        tableIn.reload();
+                    } else {
+                        layer.msg(data.msg, {time: 1000, icon: 2});
+                    }
+                });
+            });
+        })
+    });
+
+    function Superior(id, pages) {
+        var page = pages ? pages : 1;
+        var loading = layer.load(1, {shade: [0.1, '#fff']});
+        layui.jquery.post("{:url('usersSuperior')}", {id: id, page: page}, function (res) {
+            layer.close(loading);
+            if (res.code === 1) {
+                var str = '';
+                var arr = res.data.data;
+
+                if (res.data.current_page == res.data.last_page) {
+                    layui.jquery('.more').hide();
+                }
+                for (var i = 0; i < arr.length; i++) {
+                    str += '<tr>' +
+                        '<td>' + (arr[i].id_anme ? arr[i].id_anme : '-') + '</td>' +
+                        '<td>' + arr[i].mobile + '</td>' +
+                        '<td>' + arr[i].addtime + '</td>' +
+                        '<td>' + arr[i].address + '</td>' +
+                        '<td>' + parseFloat(arr[i].USDT) + '</td>' +
+                        '<td>' + parseFloat(arr[i].IDO) + '</td>' +
+                        '<td>' + parseFloat(arr[i].ACF) + '</td>' +
+                        '</tr>';
+                }
+                layui.jquery('.tbody-list').append(str);
+//        layer.open({
+//          type: 1,
+//          skin: 'layui-layer-rim', //加上边框
+//          area: ['1000px', '600px'], //宽高
+//          content: '<table class="layui-table"><colgroup><col width="150"><col width="200"><col></colgroup><thead><tr><th style="width: 8%;">姓名</th><th style="width: 15%;">手机号</th><th style="width: 20%;">注册时间</th><th>USDT数量</th><th>IDO数量</th><th>ACF数量</th></tr></thead><tbody>'+str+'</tbody></table><div class="more">查看更多</div>'
+//        });
+            }
+        });
+    }
+</script>
+</body>
+</html>

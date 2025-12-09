@@ -1,0 +1,232 @@
+<?php
+
+namespace app\api\controller;
+
+use think\Db;
+use think\Exception;
+use think\Log;
+
+/**
+ * Otc
+ * Class Trade
+ * @package app\api\controller
+ */
+class Otc extends Base
+{
+    //商户号
+    protected $MerchantNo = '19051717571085';
+    //密钥
+    protected $Key = 'e1804df9557fb9dfd35781c3d9b9b43e';
+    //本系统的根地址，用于拼接通知地址（noticeUrl）
+    protected $ServerUrl = 'https://html.changex.info';
+    //币支付front地址（用商户号和密钥登录币支付后台，到“对接管理/接口文档”中，找到【币支付front地址】作替换）
+    protected $CoinpayFrontUrl = 'http://front.bitcpay.net';
+    //币支付server地址（用商户号和密钥登录币支付后台，到“对接管理/接口文档”中，找到【币支付server地址】作替换）
+    protected $CoinpayServerUrl = 'http://www.bitcpay.net';
+
+    public function show_otc()
+    {
+        $data = Array('merchantNo' => $this->MerchantNo, 'merchantCustId' => $this->user_id, 'returnUrl' => $this->ServerUrl . '/#otc');
+        $data['sign'] = $this->sign($data);
+
+        $paramData = $this->toParamData($data, true);
+        $data['buyListUrl'] = 'https://front.bitcpay.net/buyOrders?' . $paramData;
+        $data['sellListUrl'] = 'https://front.bitcpay.net/sellOrders?' . $paramData;
+        $this->apiResp($data);
+    }
+
+    public function otc_buy($num, $payType)
+    {
+        $noticeUrl = 'https://api.changex.info/login/otc_buy_notice';
+        $orderNo = $this->mill() . $this->user_id;
+        //去掉小数点末位的0
+        $count = floatval($num);
+        if ($count < 200) $this->apiReply(2, '购买数量不能小于200');
+        $data = Array('merchantNo' => $this->MerchantNo, 'merchantCustId' => $this->user_id,
+            'orderNo' => $orderNo, 'count' => $count, 'payType' => $payType,
+            'noticeUrl' => $noticeUrl, 'returnUrl' => $this->ServerUrl . '/#otc');
+
+        $data['sign'] = $this->sign($data);
+        $paramData = $this->toParamData($data);
+        $returnStr = $this->post($this->CoinpayServerUrl . '/fhDirect/buy', $paramData);
+        $return = json_decode($returnStr);
+
+        switch ($return->code) {
+            case 0:
+                $this->apiReply(2, $return->msg);
+                break;
+            case 1:
+                //保存订单
+                db('otc_buy')->insertGetId([
+                    'user_id' => $this->user_id,
+                    'amount' => $count,
+                    'orderNo' => $orderNo,
+                    'payType' => $payType,
+                    'addtime' => time(),
+                    'status' => 0,
+                    'coin_id' => 2,
+                ]);
+
+                $this->apiReply(1, '操作成功', $return->url);
+                break;
+            case 2:
+                //已经有一笔在处理中的订单，跳转到币支付让客户去处理完
+                $this->apiReply(2, $return->msg, $return->url);
+                break;
+        }
+        exit;
+    }
+
+    public function otc_sell($num, $payType, $real_name, $bankCode = '', $no = '', $bankBranch = '')
+    {
+        $noticeUrl = 'https://api.changex.info/login/otc_sell_notice';
+        $orderNo = $this->mill() . $this->user_id;
+        //去掉小数点末位的0
+        $count = floatval($num);
+        //if ($count < 100) $this->apiReply(2, '出售数量不能小于100');
+        Db::startTrans();
+        try {
+            //判断用户余额
+            $old_balance = db('user_coin')->where(['user_id' => $this->user_id, 'coin_id' => 2])->lock(true)->value('balance');
+            if ($old_balance < $count) {
+                $this->apiReply(2, '余额不足,您当前USDT数量为' . floatval($old_balance));
+            }
+
+            //判断用户是否上传收款码
+            if ($payType == 'Wechat') {
+                $user['wechat_code'] = db('users')->where(['user_id' => $this->user_id])->value('wechat_code');
+                if ($user['wechat_code'] == 0) {
+                    $this->apiReply(22, '请先上传微信收款码');
+                } else {
+                    $wechat_code = Db('attach')->where('attach_id', $user['wechat_code'])->field('url,addtime')->find();
+                    $qrUrl = config('OSS_GLOBAL')['oss_url'] . '/' . $wechat_code['url'] . '?' . $wechat_code['addtime'];
+                }
+            }
+            if ($payType == 'Bao') {
+                $user['alipay_code'] = db('users')->where(['user_id' => $this->user_id])->value('alipay_code');
+                if ($user['alipay_code'] == 0) {
+                    $this->apiReply(22, '请先上传支付宝收款码');
+                } else {
+                    $alipay_code = Db('attach')->where('attach_id', $user['alipay_code'])->field('url,addtime')->find();
+                    $qrUrl = config('OSS_GLOBAL')['oss_url'] . '/' . $alipay_code['url'] . '?' . $alipay_code['addtime'];
+                }
+            }
+
+            $data = Array('merchantNo' => $this->MerchantNo, 'merchantCustId' => $this->user_id,
+                'orderNo' => $orderNo, 'realName' => $real_name, 'count' => $count, 'payType' => $payType, 'qrUrl' => $qrUrl, 'no' => $no,
+                'bankCode' => $bankCode, 'bankBranch' => $bankBranch, 'noticeUrl' => $noticeUrl);
+            $data['sign'] = $this->sign($data);
+
+
+            $paramData = $this->toParamData($data);
+
+            $returnStr = $this->post($this->CoinpayServerUrl . '/fhDirect/sell', $paramData);
+            $return = json_decode($returnStr);
+
+            if ($return->ok) {
+                //扣除用户余额
+                $new_balance = bcsub($old_balance, $count, 8);
+                db('user_coin')->where(['user_id' => $this->user_id, 'coin_id' => 2])->update(['balance' => $new_balance]);
+                //保存订单
+                $order_id = db('otc_sell')->insertGetId([
+                    'user_id' => $this->user_id,
+                    'amount' => $count,
+                    'orderNo' => $orderNo,
+                    'payType' => $payType,
+                    'addtime' => time(),
+                    'status' => 0,
+                    'coin_id' => 2,
+                ]);
+                //日志
+                Db('log_coin')->insert([
+                    'user_id' => $this->user_id,
+                    'coin_id' => 2,
+                    'type' => 44,
+                    'num' => $count,
+                    'amount' => $old_balance,
+                    'balance' => $new_balance,
+                    'addtime' => time(),
+                    'status' => 1,
+                    'remark' => 'OTC出售',
+                    'union' => 'otc_sell',
+                    'union_id' => $order_id,
+                ]);
+
+                Db::commit();
+                $this->apiReply(1, '操作成功，请确认收到转账后再前往卖单列表中点击确认收款');
+            } else {
+                $this->apiReply(2, $return->msg);
+            }
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            Db::rollback();
+            $this->apiReply(2, '操作失败！');
+        }
+    }
+
+    /**
+     * 签名
+     */
+    public function sign($data)
+    {
+        ksort($data);
+        $srcStr = '';
+        foreach ($data as $k => $v) {
+            if (!$this->nullOrEmpty($v) && $k != 'sign') {
+                $srcStr .= ($k . '=' . $v . '&');
+            }
+        }
+        $srcStr .= ('key=' . $this->Key);
+        return md5($srcStr);
+    }
+
+    /**
+     * 转成形如"k1=v1&k2=v2"的数据，$urlEncode控制是否对参数值进行url编码
+     */
+    public function toParamData($data, $urlEncode = false)
+    {
+        $paramData = '';
+        foreach ($data as $k => $v) {
+            if (!$this->nullOrEmpty($v)) {
+                $value = $urlEncode ? urlencode($v) : $v;
+                $paramData .= ($k . '=' . $value . '&');
+            }
+        }
+        return rtrim($paramData, '&');
+    }
+
+    /**
+     * 检查字符串是否有效
+     */
+    public static function nullOrEmpty($str)
+    {
+        return (!isset($str) || trim($str) === '');
+    }
+
+    /**
+     * 获取毫秒：用于生成订单号，仅供演示使用，实际中不要用，因为不能保证绝对唯一
+     */
+    public static function mill()
+    {
+        return strVal(round(microtime(true) * 1000));
+    }
+
+    public static function post($url, $post_data = '', $timeout = 5)
+    {//curl
+        header('Content-type: text/html; charset=UTF-8');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        if ($post_data != '') {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        }
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $file_contents = curl_exec($ch);
+        curl_close($ch);
+        return $file_contents;
+    }
+
+
+}

@@ -1,0 +1,120 @@
+{include file="common/head"/}
+<div class="admin-main layui-anim layui-anim-upbit">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>钱包{:lang('list')}</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" name="trx_id" placeholder="{:lang('pleaseEnter')}交易单号">
+            </div>
+            <div class="layui-inline">
+                <input class="layui-input" name="block_num" placeholder="{:lang('pleaseEnter')}交易被确认的区块">
+            </div>
+            <div class="layui-inline">
+                <input class="layui-input" name="contract_id" placeholder="{:lang('pleaseEnter')}合约地址">
+            </div>
+            <div class="layui-inline">
+                <input class="layui-input" name="amount_asset" placeholder="{:lang('pleaseEnter')}转账资产id">
+            </div>
+            <div class="layui-inline">
+                <input class="layui-input" name="from_addr" placeholder="{:lang('pleaseEnter')}转出地址">
+            </div>
+            <div class="layui-inline">
+                <input class="layui-input" name="to_addr" placeholder="{:lang('pleaseEnter')}接收地址">
+            </div>
+            <label class="layui-label">时间：</label>
+            <div class="layui-inline">
+                <input type="text" class="layui-input" name="date" id="test">
+            </div>
+            <button class="layui-btn" id="search" data-type="reload">搜索</button>
+            <a href="{:url('achain_in')}" class="layui-btn">显示全部</a>
+        </div>
+    </blockquote>
+
+    <table class="layui-table" id="list" lay-filter="list"></table>
+</div>
+<script type="text/html" id="status">
+    {{# if(d.status==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="status">入账</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="status">待入账</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="is_completed">
+    {{# if(d.is_completed==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="is_completed">完成</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="is_completed">未完成</a>
+    {{# } }}
+</script>
+
+<script type="text/html" id="trx_type">
+    {{# if(d.trx_type==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="trx_type">主链</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="trx_type">侧链</a>
+    {{# } }}
+</script>
+{include file="common/foot"/}
+<script>
+    layui.use('table', function() {
+        var table = layui.table, $ = layui.jquery;
+        var tableIn = table.render({
+            id: 'id',
+            elem: '#list',
+            url: '{:url("achain_in")}',
+            method: 'post',
+            page: true,
+            cols: [[
+                {checkbox:true,fixed: true},
+                {field: 'id', title: '{:lang("id")}', width: 80,fixed: true, sort: true},
+                {field: 'trx_id', title: '交易单号', width: 350,sort: true},
+                {field: 'trx_type', title: '交易类型', width: 100,sort: true,toolbar: '#trx_type'},
+                {field: 'trx_time', title: '交易创建时间', width: 180,sort: true},
+                {field: 'block_num', title: '交易被确认的区块', width: 120,sort: true},
+                {field: 'contract_id', title: '合约地址', width: 320,sort: true},
+//                {field: 'call_abi', title: '', width: 80, sort: true},
+//                {field: 'event_param', title: '', width: 320,sort: true},
+//                {field: 'event_type', title: '', width: 150,sort: true},
+                {field: 'amount', title: '转账数量', width: 100,sort: true},
+                {field: 'amount_asset', title: '转账资产id', width: 100,sort: true},
+                {field: 'fee', title: '手续费数量', width: 100,sort: true},
+                {field: 'fee_asset', title: '手续费资产', width: 100,sort: true},
+//                {field: 'from_acc', title: '发送账号', width: 80, sort: true},
+                {field: 'from_addr', title: '转出地址', width: 350,sort: true},
+//                {field: 'to_acc', title: '接收账号', width: 150,sort: true},
+                {field: 'remark', title: '备注', width: 200,sort: true},
+                {field: 'is_completed', title: '交易是否完成', width: 80,sort: true,toolbar: '#is_completed'},
+                {field: 'to_addr', title: '接收地址', width: 350,sort: true},
+                {field: 'status', title: '状态', width: 80,sort: true,toolbar: '#status'},
+            ]],
+            limit: 10 //每页默认显示的数量
+        });
+        //搜索
+        $('#search').on('click', function() {
+            var trx_id = $('input[name="trx_id"]').val();
+            var block_num = $('input[name="block_num"]').val();
+            var contract_id = $('input[name="contract_id"]').val();
+            var amount_asset = $('input[name="amount_asset"]').val();
+            var from_addr = $('input[name="from_addr"]').val();
+            var to_addr = $('input[name="to_addr"]').val();
+            var  date = $('#test').val();
+            tableIn.reload({
+                where: {trx_id: trx_id,block_num:block_num,contract_id:contract_id,amount_asset:amount_asset,from_addr:from_addr,to_addr:to_addr,date:date}
+            });
+        });
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true
+            ,theme: 'molv'
+        });
+    });
+</script>
+</body>
+</html>
