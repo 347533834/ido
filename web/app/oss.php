@@ -12,8 +12,8 @@
 return [
 
     'OSS_GLOBAL' => [
-        'accessKeyId' => 'LTAI5tMoiWebLwUBwgntTNBa',
-        'accessKeySecret' => 'u9i2fwp6Cn8U2NUrmESgksXWK9vZaT',
+        'accessKeyId' => '',
+        'accessKeySecret' => '',
         'endpoint' => 'http://oss-cn-shanghai.aliyuncs.com',
         'bucket' => 'trade-changex-oss',
         'oss_url' =>'http://trade-changex-oss.oss-cn-shanghai.aliyuncs.com',
