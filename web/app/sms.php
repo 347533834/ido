@@ -35,8 +35,8 @@ return [
         9 => '您正在ChangeEX进行提现操作，密码为{$var}，请在页面上提交密码，此密码在10分钟内有效。',   //提现
     ],
     'SMS_CONFIG' => [
-        'AccessKey_ID' => 'LTAImHZ3A0Sv6DDO',
-        'Access_Key_Secret' => 'j3k13dYBWjTv1mEk5eoMq6byIKaYN1',
+        'AccessKey_ID' => '',
+        'Access_Key_Secret' => '',
         'sms_sign' => 'ChangeEX',
     ],
     'SMS_GLOBAL' => [
