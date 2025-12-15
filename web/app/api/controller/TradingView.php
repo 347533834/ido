@@ -77,7 +77,7 @@ class TradingView extends Controller
                     $new_data['v'][] = floatval($v['num']);
                 }
                 $new_data['s'] = 'ok';
-                echo('http://api.zb.cn/data/v1/kline?market=' . $symbol . '&type=' . 1);die;
+
                 return Json($new_data);
             }
         } else {
@@ -107,7 +107,6 @@ class TradingView extends Controller
             $coin_name = explode('_', $symbol)[0];
 
             $data = http('http://api.zb.cn/data/v1/kline?market=' . $symbol . '&type=' . $type)['data'];
-            echo('http://api.zb.cn/data/v1/kline?market=' . $symbol . '&type=' . $type);die;
 
             if ($data) {
                 $price['price'] = $data[sizeof($data) - 1][4];

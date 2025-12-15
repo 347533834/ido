@@ -16,7 +16,7 @@ return array(
       'host' => '127.0.0.1',
       // 是否自动开启 SESSION
         'auto_start'     => true,
-        'select'         => '15',
+        'select'         => '0',
         'expire' => 86400,
     ],
 );
