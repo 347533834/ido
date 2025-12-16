@@ -17,7 +17,7 @@ define(function (require, exports, modules) {
       if (isDebug) {
         // 测试
         util.domain = 'html.changex.info';
-        util.host = '47.98.170.119:1000';
+        util.host = '47.98.170.119:1001';
         util.port = '';
         util.cdn = 'trade-changex-oss.oss-cn-shanghai.aliyuncs.com';
       } else {
