@@ -17,14 +17,14 @@ define(function (require, exports, modules) {
             },
 
             'click .login-1': function () {
-
-                if(this.flat) {
-                    Backbone.history.navigate('login', {trigger: true});
-                }else{
-                    window.alert('请先下载APP，再进行登录操作',function () {
-                        Backbone.history.navigate('down', {trigger: true});
-                    });
-                }
+                Backbone.history.navigate('login', {trigger: true});
+                // if(this.flat) {
+                //     Backbone.history.navigate('login', {trigger: true});
+                // }else{
+                //     window.alert('请先下载APP，再进行登录操作',function () {
+                //         Backbone.history.navigate('down', {trigger: true});
+                //     });
+                // }
             },
 
             'click #verificationCode': "verificationCode",  //短信验证码
