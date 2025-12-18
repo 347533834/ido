@@ -249,7 +249,7 @@ class Login extends Common
             $this->register_log(1, $mobile, $verify);
             Db::commit();
 
-            //Queue::push('app\api\job\UserRela', ['user_id' => $user_id, 'pid' => $data['pid']]); // 添加队列
+            Queue::push('app\api\job\UserRela', ['user_id' => $user_id, 'pid' => $data['pid']]); // 添加队列
 
             $data['yes'] = 'login';
             $data['no'] = '';
