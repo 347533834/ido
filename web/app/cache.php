@@ -9,13 +9,13 @@ return array(
         'type' => 'redis',
         //'host' => '172.31.99.3',//线下
         'host' => '127.0.0.1',
-      // 缓存保存目录
+        // 缓存保存目录
         // 'path' => CACHE_PATH,
         // 缓存前缀
         'prefix' => 'allwin',
         // 缓存有效期 0表示永久缓存
         'expire' => 0,
-        'password' => 'qq420984',
+        //'password' => 'qq420984',
         'select' => '0',
     ],
 );
