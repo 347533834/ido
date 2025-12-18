@@ -14,7 +14,7 @@
     $_public = rtrim(dirname(rtrim($_SERVER['SCRIPT_NAME'], '/')), '/');
     define('__PUBLIC__', (('/' == $_public || '\\' == $_public) ? '' : $_public).'/public');
 }*/
-//echo phpinfo();die;
+echo phpinfo();die;
 // 定义应用目录
 define('APP_PATH', __DIR__ . '/../app/');
 define('BIND_MODULE', 'api');
