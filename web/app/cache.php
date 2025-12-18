@@ -15,7 +15,7 @@ return array(
         'prefix' => 'allwin',
         // 缓存有效期 0表示永久缓存
         'expire' => 0,
-
+        'password' => 'qq420984',
         'select' => '0',
     ],
 );

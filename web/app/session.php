@@ -14,6 +14,7 @@ return array(
         'type'           => 'redis',
         //'host'           => '172.31.99.3',//线下
       'host' => '127.0.0.1',
+        'password' => 'qq420984',
       // 是否自动开启 SESSION
         'auto_start'     => true,
         'select'         => '0',
