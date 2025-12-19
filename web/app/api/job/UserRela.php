@@ -21,6 +21,7 @@ class UserRela {
      * @param array $data
      */
     public function fire(Job $job, array $data) {
+        echo 1;die;
         $user_id = $data['user_id'];
         $pid = $data['pid'];
         print("user_id: {$data['user_id']}\n");
