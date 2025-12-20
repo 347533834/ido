@@ -180,7 +180,7 @@ class Windows extends Pipes
 
         $this->unblock();
 
-        $r = null !== $this->input ? ['input' => $this->input] : null;
+        $r = null !== $this->input ? ['input' => $this->input] : [];
         $w = isset($this->pipes[0]) ? [$this->pipes[0]] : null;
         $e = null;
 

@@ -12,7 +12,6 @@ return array(
         'prefix'         => 'session',
         // 驱动方式 支持redis memcache memcached
         'type'           => 'redis',
-        //'host'           => '172.31.99.3',//线下
         'host' => '127.0.0.1',
         'password' => 'qq420984',
         // 是否自动开启 SESSION

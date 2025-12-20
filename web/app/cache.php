@@ -7,7 +7,6 @@ return array(
     'cache'                  => [
         // 驱动方式 支持redis memcache memcached
         'type' => 'redis',
-        //'host' => '172.31.99.3',//线下
         'host' => '127.0.0.1',
         // 缓存保存目录
         // 'path' => CACHE_PATH,
