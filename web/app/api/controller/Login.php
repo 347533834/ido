@@ -138,20 +138,20 @@ class Login extends Common
             $number = rand(10000, 1000000);
         } while (Db('users')->where('number', $number)->count());
 
-        $ip = long2ip(request()->ip(1));
-        $url = "http://ip.taobao.com/service/getIpInfo.php?ip=" . $ip;
-        $arr = json_decode(@file_get_contents($url));
-
-        if ((string)$arr->code == '1') {
-            $address = '';
-        } else {
-            $data = (array)$arr->data;
-            if ($data['county'] = 'XX') {
-                $data['county'] = '';
-            }
-            $address = $data['region'] . $data['city'] . $data['county'];
-        }
-
+//        $ip = long2ip(request()->ip(1));
+//        $url = "http://ip.taobao.com/service/getIpInfo.php?ip=" . $ip;
+//        $arr = json_decode(@file_get_contents($url));
+//
+//        if ((string)$arr->code == '1') {
+//            $address = '';
+//        } else {
+//            $data = (array)$arr->data;
+//            if ($data['county'] = 'XX') {
+//                $data['county'] = '';
+//            }
+//            $address = $data['region'] . $data['city'] . $data['county'];
+//        }
+        $address = '';
         $data = [
             'username' => $mobile,
             'code' => $code,
